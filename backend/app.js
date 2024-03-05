@@ -19,7 +19,7 @@ app.post('/register', async (req, res) => {
     const email = req.body.email;
     if(!username || !password || !email) return res.status(400).json({message: "You must provide a username, password, and email"});
     const data = await userService.registerUser(username, password, email);
-    if(data) return res.status(201).json({message: `User ${username} created`});
+    if(data) return res.status(201).json({message: `User ${username} created`, data});
     else return res.status(400).json({message: `User ${username} already exists`});
 });
 

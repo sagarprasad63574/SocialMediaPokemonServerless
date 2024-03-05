@@ -27,10 +27,11 @@ const getUserByUsername = async username => {
 const registerUser = async (username, password, email) => {
     if(!username || !password || !email) return null;
     const user_id = uuid.v4();
+    const enc_password = await bcrypt.hash(password, saltRounds);
     let user = {
         user_id,
         username,
-        password,
+        password: enc_password,
         email
     };
     const data = await userDAO.postUser(user);
@@ -39,7 +40,7 @@ const registerUser = async (username, password, email) => {
 
 const loginUser = async (username, password) => {
     if(!username || !password) return null;
-    const foundUser = getUserByUsername(username);
+    const foundUser = await getUserByUsername(username);
     if(!foundUser || !(await bcrypt.compare(password, foundUser.password))) return null;
     const token = jwt.sign(
         {
