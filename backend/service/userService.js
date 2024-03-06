@@ -120,5 +120,6 @@ module.exports = {
     getUserByUsername,
     registerUser,
     loginUser,
+    addBio,
     deleteUser
 };
