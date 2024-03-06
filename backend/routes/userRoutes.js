@@ -1,17 +1,20 @@
 const express = require('express');
 const userService = require('../service/userService');
+const { BadRequestError } = require('../util/expressError');
+const {createToken} = require('../util/tokens');
 
 const router = express.Router();
 
-// app.post('/register', async (req, res) => {
-//     const username = req.body.username;
-//     const password = req.body.password;
-//     const email = req.body.email;
-//     if (!username || !password || !email) return res.status(400).json({ message: "You must provide a username, password, and email" });
-//     const data = await userService.registerUser(username, password, email);
-//     if (data) return res.status(201).json({ message: `User ${username} created`, data });
-//     else return res.status(400).json({ message: `User ${username} already exists` });
-// });
+router.post('/register', async (req, res) => {
+    const data = await userService.registerUser(req.body);
+    if(!data.response) throw new BadRequestError(data.errors);
+    return res.status(201).json(data);
+});
+
+router.post('/login', async (req, res) => {
+    const data = await userService.loginUser(req.body);
+    const token = createToken(data);
+});
 
 // app.post('/login', async (req, res) => {
 //     const username = req.body.username;
