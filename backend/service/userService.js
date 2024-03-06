@@ -25,6 +25,7 @@ const getUserByUsername = async username => {
 };
 
 const registerUser = async (username, password, email) => {
+
     if(!username || !password || !email) return null;
     const user_id = uuid.v4();
     const enc_password = await bcrypt.hash(password, saltRounds);
@@ -70,6 +71,40 @@ const deleteUser = async user_id => {
 const validateUser = (username, password) => {
     
 }
+
+// const registerUser = async (receivedData) => {
+//     let employee_id = uuid.v4();
+//     let teams = []
+
+//     let { response, errors } = validateRegister(receivedData);
+//     if (!response) return { response: false, errors: errors }
+
+//     let duplicatedUser = await getUserByUsername(receivedData.username);
+//     if (duplicatedUser) return { response: false, errors: "Duplicated username" }
+
+//     let hashedPassword = await bcrypt.hash(receivedData.password, BCRYPT_WORK_FACTOR);
+
+//     let data = await userDAO.createUser({
+//         employee_id: employee_id,
+//         username: receivedData.username,
+//         password: hashedPassword,
+//         email: receivedData.email,
+//         teams: teams
+//     });
+//     return { response: true, message: "user created" };
+
+// }
+
+// function validateRegister(receivedData) {
+//     const validator = jsonschema.validate(receivedData, userRegisterSchema);
+//     if (!validator.valid) {
+//         const errs = validator.errors.map(e => e.stack);
+//         logger.error(errs);
+//         //throw new BadRequestError(errs); 
+//         //return { response: false, errors: errs };
+//     }
+//     return { response: true };
+// }
 
 module.exports = {
     getAllUsers,
