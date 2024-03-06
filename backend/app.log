@@ -1,0 +1,48 @@
+2024-03-05T21:50:08.185Z, [info]: POST request at /register
+2024-03-05T21:51:50.910Z, [info]: POST request at /register
+2024-03-05T21:52:18.074Z, [info]: POST request at /register
+2024-03-05T21:52:58.317Z, [info]: POST request at /register
+2024-03-05T21:55:31.807Z, [info]: POST request at /login
+2024-03-05T21:55:41.726Z, [info]: POST request at /login
+2024-03-05T21:55:56.443Z, [info]: POST request at /login
+2024-03-05T21:57:11.722Z, [info]: POST request at /login
+2024-03-05T21:57:58.436Z, [info]: POST request at /login
+2024-03-05T21:59:02.104Z, [info]: POST request at /login
+2024-03-05T21:59:17.124Z, [info]: POST request at /login
+2024-03-05T21:59:17.133Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T21:59:30.322Z, [info]: POST request at /login
+2024-03-05T21:59:30.324Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:01:22.973Z, [info]: POST request at /register
+2024-03-05T22:01:26.607Z, [info]: POST request at /login
+2024-03-05T22:01:26.610Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:02:08.330Z, [info]: POST request at /login
+2024-03-05T22:02:08.338Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:02:31.691Z, [info]: POST request at /login
+2024-03-05T22:02:31.700Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:02:35.139Z, [info]: POST request at /login
+2024-03-05T22:02:35.140Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:03:35.567Z, [info]: POST request at /login
+2024-03-05T22:03:35.576Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:03:58.359Z, [info]: POST request at /login
+2024-03-05T22:03:58.368Z, [error]: Cannot read properties of undefined (reading '0')
+2024-03-05T22:09:50.151Z, [info]: POST request at /login
+2024-03-05T22:10:08.096Z, [info]: POST request at /login
+2024-03-05T22:10:23.002Z, [info]: POST request at /login
+2024-03-05T22:11:10.478Z, [info]: POST request at /login
+2024-03-05T22:13:20.699Z, [info]: POST request at /login
+2024-03-05T22:14:23.594Z, [info]: POST request at /login
+2024-03-06T19:31:25.684Z, [info]: POST request at /users/register
+2024-03-06T19:32:45.187Z, [info]: POST request at /users/register
+2024-03-06T19:34:21.249Z, [info]: POST request at /users/register
+2024-03-06T19:35:47.140Z, [info]: POST request at /users/register
+2024-03-06T19:36:32.802Z, [info]: POST request at /users/register
+2024-03-06T19:38:50.986Z, [info]: POST request at /users/register
+2024-03-06T19:39:04.765Z, [info]: POST request at /users/register
+2024-03-06T19:40:55.057Z, [info]: POST request at /users/register
+2024-03-06T20:25:21.597Z, [info]: POST request at /users/register
+2024-03-06T21:08:17.393Z, [info]: POST request at /users/register
+2024-03-06T21:08:17.782Z, [error]: Uncaught Exception: Error: Error: data and salt arguments required
+2024-03-06T21:10:25.219Z, [info]: POST request at /users/register
+2024-03-06T21:11:28.641Z, [info]: POST request at /users/register
+2024-03-06T21:13:07.892Z, [info]: POST request at /users/register
+2024-03-06T21:13:56.773Z, [info]: POST request at /users/register
