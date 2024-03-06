@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const logger = require('./util/logger');
 const userService = require('./service/userService');
+const profileRouter = require('./routes/profileRoutes');
 
 const app = express();
 const PORT = 3001;
@@ -12,6 +13,7 @@ app.use((req, res, next) => {
     logger.info(`${req.method} request at ${req.url}`);
     next();
 });
+app.use('/profiles', profileRouter);
 
 app.post('/register', async (req, res) => {
     const username = req.body.username;
