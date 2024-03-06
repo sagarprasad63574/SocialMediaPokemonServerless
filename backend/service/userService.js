@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const { BCRYPT_WORK_FACTOR } = require('../config');
 const jsonschema = require('jsonschema');
 const userRegisterSchema = require('../schemas/userRegisterSchema.json');
+const userLoginSchema = require('../schemas/userLoginSchema.json');
 dotenv.config();
 
 
@@ -75,10 +76,15 @@ const loginUser = async receivedData => {
 
 };
 
+const validateLogin = receivedData => {
+
+}
+
 module.exports = {
     getAllUsers,
     getUser,
     getUserByUsername,
     registerUser,
+    loginUser,
     deleteUser
 };
