@@ -28,7 +28,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    
+
     //throw new BadRequestError(errs)
     if (!username || !password) return res.status(400).json({ message: "You must provide a username and password" });
     const token = await userService.loginUser(username, password);
@@ -36,7 +36,12 @@ app.post('/login', async (req, res) => {
     return res.status(200).json({ message: "User logged in successfully", token });
 });
 
-//throw new BadRequestError(errs);
+// const validator = jsonschema.validate(req.body, userRegisterSchema);
+// if (!validator.valid) {
+//     const errs = validator.errors.map(e => e.stack);
+//     throw new BadRequestError(errs);
+// }
+
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
