@@ -3,7 +3,7 @@ const { SECRET_KEY } = require("../config.js");
 
 function createToken(user) {
     let payload = {
-        id: user.employee_id,
+        id: user.user_id,
         username: user.username,
         role: user.role
     }
