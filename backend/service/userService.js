@@ -7,6 +7,7 @@ const { BCRYPT_WORK_FACTOR } = require('../config');
 const jsonschema = require('jsonschema');
 const userRegisterSchema = require('../schemas/userRegisterSchema.json');
 const userLoginSchema = require('../schemas/userLoginSchema.json');
+const { createToken } = require('../util/tokens');
 dotenv.config();
 
 
@@ -40,7 +41,6 @@ const deleteUser = async user_id => {
 
 const registerUser = async (receivedData) => {
     const validated = validateRegister(receivedData);
-    console.log(receivedData);
     if(!validated.response) return {response: false, errors: validated.errors};
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
     if(foundUser) return {response: false, errors: `User already exists with username ${receivedData.username}`};
@@ -73,12 +73,22 @@ const validateRegister = receivedData => {
 };
 
 const loginUser = async receivedData => {
-
+    const validated = validateLogin(receivedData);
+    if(!validated.response) return {response: false, errors: validated.errors};
+    const foundUser = await userDAO.getUserByUsername(receivedData.username);
+    if(!foundUser) return {response: false, errors: "User does not exist"};
+    if(!(await bcrypt.compare(receivedData.password, foundUser.password))) return {response: false, errors: "Incorrect password"};
+    const token = createToken(foundUser);
+    return {response: true, message: `User ${foundUser.username} logged in successfully`, token};
 };
 
 const validateLogin = receivedData => {
     const validator = jsonschema.validate(receivedData, userLoginSchema);
-    
+    if(!validator.valid){
+        const errs = validator.errors.map(e => e.stack);
+        return {response: false, errors: errs};
+    }
+    return {response: true};
 }
 
 module.exports = {
