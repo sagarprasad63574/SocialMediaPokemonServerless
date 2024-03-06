@@ -77,7 +77,8 @@ const loginUser = async receivedData => {
 };
 
 const validateLogin = receivedData => {
-
+    const validator = jsonschema.validate(receivedData, userLoginSchema);
+    
 }
 
 module.exports = {
