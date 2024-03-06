@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2024-03-05T21:50:08.185Z, [info]: POST request at /register
 2024-03-05T21:51:50.910Z, [info]: POST request at /register
 2024-03-05T21:52:18.074Z, [info]: POST request at /register
@@ -46,3 +47,10 @@
 2024-03-06T21:11:28.641Z, [info]: POST request at /users/register
 2024-03-06T21:13:07.892Z, [info]: POST request at /users/register
 2024-03-06T21:13:56.773Z, [info]: POST request at /users/register
+=======
+2024-03-06T20:09:22.859Z, [info]: POST request at /
+2024-03-06T20:09:56.884Z, [info]: POST request at /
+2024-03-06T20:10:06.064Z, [info]: POST request at /
+2024-03-06T20:10:19.150Z, [info]: POST request at /teams
+2024-03-06T20:12:41.935Z, [info]: POST request at /teams
+>>>>>>> 1d49895abcb095336ddc243c53bc7894872e6b66
