@@ -67,6 +67,10 @@ const deleteUser = async user_id => {
     return data;
 };
 
+const validateUser = (username, password) => {
+    
+}
+
 module.exports = {
     getAllUsers,
     getUser,
