@@ -4,7 +4,7 @@ const teamDAO = require('../repository/teamDAO');
 const teamAddSchema = require('../schemas/teamAddSchema.json');
 const logger = require('../util/logger');
 
-const addTeam = async (team_name) => {
+const addTeam = async (user_id, team_name) => {
 
     //let { response, errors } = validateTeam(team_id);
     //if (!response) return { response: false, errors: errors }
@@ -29,12 +29,11 @@ const addTeam = async (team_name) => {
         });
 
     if (data) {
-        // let index = data.length - 1;
-        // let ticket = data[index];
-        // if (index >= 0) ticket.index = index;
+        let index = data.length - 1;
+        let teams = data[index];
+        // if (index >= 0) team.index = index;
 
-        // return { response: true, ticket, user };
-        console.log(data);
+        return { response: true, teams };
     }
 
     return { response: false };

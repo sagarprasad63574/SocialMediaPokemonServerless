@@ -47,8 +47,7 @@ const createTeam = async (user_id, team) => {
 
     try {
         const data = await documentClient.send(command);
-        console.log(data)
-        return data;
+        return data.Attributes.teams;
     } catch (error) {
         logger.error(error);
         return null;
