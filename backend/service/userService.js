@@ -7,6 +7,7 @@ const { BCRYPT_WORK_FACTOR } = require('../config');
 const jsonschema = require('jsonschema');
 const userRegisterSchema = require('../schemas/userRegisterSchema.json');
 const userLoginSchema = require('../schemas/userLoginSchema.json');
+const userBioSchema = require('../schemas/userBioSchema.json');
 const { createToken } = require('../util/tokens');
 dotenv.config();
 
@@ -47,6 +48,7 @@ const registerUser = async (receivedData) => {
     const user_id = uuid.v4();
     const teams = [];
     const my_pokemons = [];
+    const bio = "";
     const enc_password = await bcrypt.hash(receivedData.password, BCRYPT_WORK_FACTOR);
     const newUser = {
         user_id,
@@ -56,7 +58,8 @@ const registerUser = async (receivedData) => {
         email: receivedData.email,
         role: receivedData.role ? receivedData.role : "user",
         teams,
-        my_pokemons
+        my_pokemons,
+        bio
     };
     const data = await userDAO.postUser(newUser);
     if(!data) return {response: false, errors: "Could not create user"};
@@ -84,6 +87,26 @@ const loginUser = async receivedData => {
 
 const validateLogin = receivedData => {
     const validator = jsonschema.validate(receivedData, userLoginSchema);
+    if(!validator.valid){
+        const errs = validator.errors.map(e => e.stack);
+        return {response: false, errors: errs};
+    }
+    return {response: true};
+}
+
+const addBio = async receivedData => {
+    const validated = validateBio(receivedData);
+    if(!validated.response) return {response: false, errors: validated.errors};
+    const foundUser = await userDAO.getUserByUsername(receivedData.username);
+    if(!foundUser) return {response: false, errors: "User does not exist"};
+    foundUser.biography = receivedData.biography;
+    const data = await userDAO.updateUser(foundUser.user_id, foundUser);
+    if(!data) return {response: false, message: "Couldn't update user bio"};
+    return {response: true, message: `User ${username} bio updated successfully`};
+};
+
+const validateBio = receivedData => {
+    const validator = jsonschema.validate(receivedData, userBioSchema);
     if(!validator.valid){
         const errs = validator.errors.map(e => e.stack);
         return {response: false, errors: errs};

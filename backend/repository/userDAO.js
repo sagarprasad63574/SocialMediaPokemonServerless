@@ -53,18 +53,18 @@ const updateUser = async (user_id, newUser) => {
         Key: {
             user_id
         },
-        UpdateExpression: "set #u = :u, #p = :p, #e = :e, #t = :t",
+        UpdateExpression: "set #u = :u, #p = :p, #e = :e, #b = :b",
         ExpressionAttributeNames: {
             "#u" : "username",
             "#p" : "password",
             "#e" : "email",
-            "#t" : "Teams"
+            "#b" : "biography"
         },
         ExpressionAttributeValues: {
             ":u" : newUser.username,
             ":p" : newUser.password,
             ":e" : newUser.email,
-            ":t" : newUser.teams
+            ":b" : newUser.biography
         }
     });
     try {
