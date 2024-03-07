@@ -102,7 +102,7 @@ const addBio = async receivedData => {
     foundUser.biography = receivedData.biography;
     const data = await userDAO.updateUser(foundUser.user_id, foundUser);
     if(!data) return {response: false, message: "Couldn't update user bio"};
-    return {response: true, message: `User ${username} bio updated successfully`};
+    return {response: true, message: `User ${receivedData.username} bio updated successfully`};
 };
 
 const validateBio = receivedData => {

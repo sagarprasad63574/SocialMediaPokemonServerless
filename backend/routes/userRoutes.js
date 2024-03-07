@@ -18,7 +18,8 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/bio', authenticateJWT, async (req, res) => {
-    const username = req.user.username;
+    const user = req.user;
+    const username = user.username;
     const biography = req.body.biography;
     const data = await userService.addBio({username, biography});
     if(!data.response) throw new BadRequestError(data.errors);
