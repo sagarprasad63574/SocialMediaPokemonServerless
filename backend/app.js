@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const logger = require('./util/logger');
 const userRouter = require('./routes/userRoutes');
-const profileRouter = require('./routes/profileRoutes');
 const teamRouter = require('./routes/teamRoutes');
+const commentRouter = require('./routes/commentRoutes');
 const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
@@ -17,9 +17,9 @@ app.use((req, res, next) => {
     logger.info(`${req.method} request at ${req.url}`);
     next();
 });
-app.use('/profiles', profileRouter);
 app.use('/users', userRouter);
-app.use('/teams', teamRouter)
+app.use('/teams', teamRouter);
+app.use('/comments', commentRouter);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;

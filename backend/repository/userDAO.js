@@ -67,7 +67,6 @@ const postUser = async User => {
     });
     try {
         const data = await documentClient.send(command);
-        console.log(data);
         return data;
     } catch (error) {
         logger.error(error);
