@@ -88,6 +88,9 @@ const addPokemonToTeam = async (user_id, receivedData) => {
     const team_index = findTeamIndexToAddPokemon(receivedData.team_name, teams);
     if (team_index < 0) return { response: false, message: "No team found with given name!" }
 
+    if(teams[team_index].pokemons.length >= 6)
+    return { response: false, message: "A team can only have 6 pokemon!" }
+
     //duplicate pokemon in the team list 
 
     let data = await teamDAO.addPokemonToTeam(team_index, user_id, {
