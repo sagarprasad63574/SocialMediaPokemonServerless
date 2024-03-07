@@ -19,6 +19,7 @@ router.put('/', async (req, res, next) => {
     try {
         const data = await userService.loginUser(req.body);
         if(!data.response) throw new BadRequestError(data.errors);
+        return res.status(200).json(data);
     } catch (error) {
         return next(error);
     }
