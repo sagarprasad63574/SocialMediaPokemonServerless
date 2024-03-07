@@ -17,8 +17,8 @@ router.post('/login', async (req, res) => {
     return res.status(200).json(data);
 });
 
-router.post('/bio', ensureLoggedIn, async (req, res) => {
-    const username = res.locals.user.username;
+router.post('/bio', authenticateJWT, async (req, res) => {
+    const username = req.user.username;
     const biography = req.body.biography;
     const data = await userService.addBio({username, biography});
     if(!data.response) throw new BadRequestError(data.errors);
