@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "properties": {
+        "team_name": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 30
+        },
+        "pokemon_id": {
+            "type": "string"
+        },
+        "pokemon_name": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "team_name",
+        "pokemon_id",
+        "pokemon_name"
+    ]
+}
