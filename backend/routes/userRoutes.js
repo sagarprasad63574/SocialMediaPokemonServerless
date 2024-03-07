@@ -1,29 +1,73 @@
 const express = require('express');
 const userService = require('../service/userService');
-const { BadRequestError } = require('../util/expressError');
-const { authenticateJWT, ensureLoggedIn } = require('../middleware/auth');
+const { BadRequestError, NotFoundError } = require('../util/expressError');
+const { ensureLoggedIn } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
-    const data = await userService.registerUser(req.body);
-    if(!data.response) throw new BadRequestError(data.errors);
-    return res.status(201).json(data);
+router.post('/', async (req, res, next) => {
+    try {
+        const data = await userService.registerUser(req.body);
+        if(!data.response) throw new BadRequestError(data.errors);
+        return res.status(201).json(data);
+    } catch (error) {
+        return next(error);
+    }
 });
 
-router.post('/login', async (req, res) => {
-    const data = await userService.loginUser(req.body);
-    if(!data.response) throw new BadRequestError(data.errors);
-    return res.status(200).json(data);
+router.put('/', async (req, res, next) => {
+    try {
+        const data = await userService.loginUser(req.body);
+        if(!data.response) throw new BadRequestError(data.errors);
+    } catch (error) {
+        return next(error);
+    }
 });
 
-router.post('/bio', authenticateJWT, async (req, res) => {
-    const user = req.user;
-    const username = user.username;
+router.get('/', async (req, res, next) => {
+    const usernameQuery = req.query.username;
+    const useridQuery = req.query.user_id;
+    try {
+        if(usernameQuery){
+            const data = await userService.getUserByUsername(usernameQuery);
+            if(!data.response) throw new NotFoundError(data.errors);
+            return res.status(200).json(data);
+        }
+        if(useridQuery){
+            const data = await userService.getUser(useridQuery);
+            if(!data.repsonse) throw new NotFoundError(data.errors);
+            return res.status(200).json(data);
+        }
+        const data = await userService.getAllUsers();
+        if(!data.repsonse) throw new NotFoundError(data.errors);
+        return res.status(200).json(data);
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.put('/biography', ensureLoggedIn, async (req, res, next) => {
+    const username = res.locals.user.username;
     const biography = req.body.biography;
-    const data = await userService.addBio({username, biography});
-    if(!data.response) throw new BadRequestError(data.errors);
-    return res.status(200).json(data);
+    try {
+        const data = await userService.addBio({username, biography});
+        if(!data.response) throw new BadRequestError(data.errors);
+        return res.status(200).json(data);   
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.delete('/', async (req, res, next) => {
+    const useridQuery = req.query.user_id;
+    try {
+        if(!useridQuery) throw new BadRequestError("User id not present");
+        const data = await userService.deleteUser(useridQuery);
+        if(!data.repsonse) throw new BadRequestError(data.errors);
+        return res.status(200).json(data);
+    } catch (error) {
+        return next(error);
+    }
 });
 
 module.exports = router;

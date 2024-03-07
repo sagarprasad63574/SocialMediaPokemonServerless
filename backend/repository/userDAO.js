@@ -1,9 +1,16 @@
 const {DynamoDBClient} = require('@aws-sdk/client-dynamodb');
-const {DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand} = require("@aws-sdk/lib-dynamodb");
+const {DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand, QueryCommand} = require("@aws-sdk/lib-dynamodb");
 const logger = require('../util/logger');
-const client = new DynamoDBClient({region: "us-west-1"});
-const documentClient = DynamoDBDocumentClient.from(client);
+require('dotenv').config;
 
+const dynamoDBClient = new DynamoDBClient({
+    region: process.env.AWS_DEFAULT_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
+});
+const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
 const getAllUsers = async () => {
@@ -15,6 +22,7 @@ const getAllUsers = async () => {
         return data.Items;
     } catch (error) {
         logger.error(error);
+        return null;
     }
 }
 const getUserById = async user_id => {
@@ -26,14 +34,31 @@ const getUserById = async user_id => {
     });
     try {
         const data = await documentClient.send(command);
-        return data;
+        return data.Item;
     } catch (error) {
         logger.error(error);
+        return null;
     }
 }
 const getUserByUsername = async username => {
-    const users = await getAllUsers();
-    return users.filter(user => {return user.username === username})[0];
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "username-index",
+        KeyConditionExpression: "#u = :u",
+        ExpressionAttributeNames: {
+            "#u" : "username"
+        },
+        ExpressionAttributeValues: {
+            ":u" : username
+        }
+    });
+    try {
+        const data = await documentClient.send(command);
+        return data.Items[0];
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 }
 const postUser = async User => {
     const command = new PutCommand({
@@ -42,9 +67,11 @@ const postUser = async User => {
     });
     try {
         const data = await documentClient.send(command);
+        console.log(data);
         return data;
     } catch (error) {
         logger.error(error);
+        return null;
     }
 }
 const updateUser = async (user_id, newUser) => {
@@ -53,16 +80,18 @@ const updateUser = async (user_id, newUser) => {
         Key: {
             user_id
         },
-        UpdateExpression: "set #u = :u, #p = :p, #e = :e, #b = :b",
+        UpdateExpression: "set #u = :u, #p = :p, #n = :n, #e = :e, #b = :b",
         ExpressionAttributeNames: {
             "#u" : "username",
             "#p" : "password",
+            "#n" : "name",
             "#e" : "email",
             "#b" : "biography"
         },
         ExpressionAttributeValues: {
             ":u" : newUser.username,
             ":p" : newUser.password,
+            ":n" : newUser.name,
             ":e" : newUser.email,
             ":b" : newUser.biography
         }
@@ -72,6 +101,7 @@ const updateUser = async (user_id, newUser) => {
         return data;
     } catch (error) {
         logger.error(error);
+        return null;
     }
 }
 const deleteUser = async user_id => {
@@ -86,6 +116,7 @@ const deleteUser = async user_id => {
         return data;
     } catch (error) {
         logger.error(error);
+        return null;
     }
 }
 

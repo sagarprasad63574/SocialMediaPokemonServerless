@@ -48,6 +48,7 @@ const registerUser = async (receivedData) => {
     const user_id = uuid.v4();
     const teams = [];
     const my_pokemons = [];
+    const comments = [];
     const biography = "";
     const enc_password = await bcrypt.hash(receivedData.password, BCRYPT_WORK_FACTOR);
     const newUser = {
@@ -59,7 +60,8 @@ const registerUser = async (receivedData) => {
         role: receivedData.role ? receivedData.role : "user",
         teams,
         my_pokemons,
-        biography
+        biography,
+        comments
     };
     const data = await userDAO.postUser(newUser);
     if(!data) return {response: false, errors: "Could not create user"};
