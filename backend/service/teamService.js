@@ -120,8 +120,19 @@ function validateAddPokemon(receivedData) {
     return { response: true }
 }
 
+const viewTeamById = async (user_id, team_id) => {
+    const {response, teams} = await viewMyTeams(user_id);
+    const team = teams[team_id];
+
+    if (response && team) {
+       return { response, team}
+    }
+    return { response: false, message: `No team found with id ${team_id}`}
+}
+
 module.exports = {
     addTeam,
     viewMyTeams,
+    viewTeamById,
     addPokemonToTeam
 }
