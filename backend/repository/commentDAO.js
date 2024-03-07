@@ -27,12 +27,16 @@ const getEveryComment = async () => {
     }
 };
 
-const getCommentByUser = async user_id => {
+const getCommentByUsername = async username => {
     const command = new QueryCommand({
         TableName,
-        KeyConditionExpression: "user_id = :id",
+        IndexName: "username-index",
+        KeyConditionExpression: "#u = :u",
+        ExpressionAttributeNames: {
+            "#u" : "username"
+        },
         ExpressionAttributeValues: {
-            ":id": user_id
+            ":u" : username
         },
         "ProjectionExpression": "comments"
     });
@@ -48,25 +52,89 @@ const getCommentByUser = async user_id => {
 
 const getCommentByTeam = async team_name => {
     const comments = await getEveryComment();
+    if(!comments) return null;
     const teamComments = comments.filter(comment => {return comment.team_name === team_name});
     return teamComments;
 };
 
 const postComment = async (user_id, Comment) => {
-
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: "set #c = list_append(#c, :vals)",
+        ExpressionAttributeNames: {
+            "#c" : "comments"
+        },
+        ExpressionAttributeValues: {
+            ":vals" : [
+                {
+                    "team_name": Comment.team_name,
+                    "comment": Comment.comment
+                }
+            ]
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+    try {
+        const data = await documentClient.send(command);
+        console.log(data);
+        return data;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 };
 
-const updateComment = async (user_id, newComment) => {
-
+const updateComment = async (user_id, comment_index, newComment) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `set comments[${comment_index}] = list_append(comments[${comment_index}], :vals)`,
+        ExpressionAttributeValues: {
+            ":vals" : [
+                {
+                    "team_name" : newComment.team_name,
+                    "comment" : newComment.comment
+                }
+            ]
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+    try {
+        const data = await documentClient.send(command);
+        console.log(data);
+        return data;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 };
 
 const deleteComment = async (user_id, comment_index) => {
-
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `remove comments[${comment_index}]`
+    });
+    try {
+        const data = await documentClient.send(command);
+        console.log(data);
+        return data;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 };
 
 module.exports = {
     getEveryComment,
-    getCommentByUser,
+    getCommentByUsername,
     getCommentByTeam,
     postComment,
     updateComment,
