@@ -26,7 +26,7 @@ function ensureLoggedIn(req, res, next) {
 
 function ensureAdmin(req, res, next) {
     try {
-        if (!res.locals.user || res.locals.user.role !== "manager") {
+        if (!res.locals.user || res.locals.user.role !== "admin") {
             throw new UnauthorizedError();
         }
         return next();

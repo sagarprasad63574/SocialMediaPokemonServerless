@@ -1,21 +1,68 @@
 const express = require('express');
 const router = express.Router();
+const { BadRequestError } = require('../util/expressError')
 
 const { ensureLoggedIn, ensureAdmin } = require('../middleware/auth');
 const teamService = require('../service/teamService');
 
-router.post('/', async (req, res, next) => {
-    const team_name = "team1";
-
+//teams //post a team for a user
+router.post('/', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id
     try {
-        const { response } = await teamService.addTeam(team_name);
+        const { response, errors, message, teams } = await teamService.addTeam(user_id, req.body);
 
         if (response) {
             return res.status(201).json({
-                message: "New team created"
+                message,
+                teams
             })
         } else {
-            return res.status(400).json({ message: "Team NOT created" })
+            throw new BadRequestError(errors);
+        }
+    } catch (err) {
+        return next(err);
+    }
+});
+
+//teams get all teams for a user
+router.get('/', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id
+    try {
+        const { response, message, teams } = await teamService.viewMyTeams(user_id);
+
+        if (response) {
+            return res.status(200).json({
+                message,
+                teams
+            })
+        } else {
+            return res.status(200).json({
+                message
+            })
+        }
+    } catch (err) {
+        return next(err);
+    }
+});
+
+//teams/addPokemon
+//res.locals.user.id
+// data {team_name: team1, pokemon: {}}
+router.post('/addPokemon', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id
+
+    try {
+        const { response, errors, message, pokemon } = await teamService.addPokemonToTeam(user_id, req.body);
+        if (response) {
+            return res.status(201).json({
+                message,
+                pokemon
+            })
+        } else {
+            res.status(400).json({
+                message,
+                errors
+            })
         }
     } catch (err) {
         return next(err);
