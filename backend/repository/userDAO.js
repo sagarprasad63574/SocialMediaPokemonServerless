@@ -1,7 +1,7 @@
 const {DynamoDBClient} = require('@aws-sdk/client-dynamodb');
 const {DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand, QueryCommand} = require("@aws-sdk/lib-dynamodb");
 const logger = require('../util/logger');
-require('dotenv').config;
+require('dotenv').config();
 
 const dynamoDBClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
@@ -67,7 +67,7 @@ const postUser = async User => {
     });
     try {
         const data = await documentClient.send(command);
-        console.log(data);
+        console.log("Hello", data);
         return data;
     } catch (error) {
         logger.error(error);
