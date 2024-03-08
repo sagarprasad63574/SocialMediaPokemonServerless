@@ -54,6 +54,35 @@ const createTeam = async (user_id, team) => {
     }
 }
 
+const editTeam = async (user_id, team) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `SET teams[${team_index}].pokemons = list_append(teams[${team_index}].pokemons, :vals)`,
+        ExpressionAttributeValues: {
+
+            ":vals": [
+                {
+                    "pokemon_id": pokemon.pokemon_id,
+                    "pokemon_name": pokemon.pokemon_name
+                }
+            ]
+
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data.Attributes.teams;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 const ViewUsersTeams = async (user_id) => {
     const command = new QueryCommand({
         TableName,
@@ -105,6 +134,7 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
 
 module.exports = {
     createTeam,
+    editTeam,
     ViewUsersTeams,
     addPokemonToTeam
 }

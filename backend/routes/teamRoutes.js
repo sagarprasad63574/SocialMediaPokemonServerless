@@ -67,6 +67,29 @@ router.get('/:id', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
+//edit a team name by team_id
+router.put('/:id', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id
+    const team_id = res.params.id;
+
+    try {
+        const { response, message, team } = await teamService.editTeam(user_id, team_id, req.body);
+
+        if (response) {
+            return res.status(200).json({
+                message,
+                team
+            })
+        } else {
+            return res.status(200).json({
+                message
+            })
+        }
+    } catch (err) {
+        return next(err);
+    }
+});
+
 //Add a pokemon to a team 
 router.post('/addPokemon', ensureLoggedIn, async (req, res, next) => {
     const user_id = res.locals.user.id

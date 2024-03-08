@@ -2,6 +2,7 @@ const jsonschema = require('jsonschema');
 const uuid = require('uuid');
 const teamDAO = require('../repository/teamDAO');
 const teamAddSchema = require('../schemas/teamAddSchema.json');
+const teamEditSchema = require('../schemas/teamEditSchema.json');
 const pokemonAddSchema = require('../schemas/pokemonAddSchema.json');
 const logger = require('../util/logger');
 
@@ -86,6 +87,48 @@ const viewTeamById = async (user_id, team_id) => {
     }
     return { response: false, message: `No team found with id ${team_id}`}
 }
+
+const editTeam = async (user_id, team_id, receivedData) => {
+
+    let { response, errors } = validateEditTeam(receivedData);
+    if (!response) return { response: false, errors: errors }
+
+    //check for duplicated team_name
+    const duplicateTeamName = await checkDuplicatedTeamName(user_id, receivedData.team_name); 
+    if (duplicateTeamName.response) return { response: false, errors: duplicateTeamName.message};
+
+    const getTeam = await viewMyTeams(user_id, team_id);
+    if (!getTeam.response) return { message: getTeam.message };
+    console.log(getTeam);
+
+    // let data = await teamDAO.editTeam(
+    //     user_id,
+    //     {
+    //         team_name: receivedData.team_name,
+    //     });
+
+    // if (data) {
+    //     let index = data.length - 1;
+    //     let teams = data[index];
+    //     if (index >= 0) teams.index = index;
+
+    //     return { response: true, message: `Team name edited ${team_name}`, teams };
+    // }
+
+    return { response: false };
+
+}
+
+function validateEditTeam(receivedData) {
+    const validator = jsonschema.validate(receivedData, teamEditSchema);
+    if (!validator.valid) {
+        const errs = validator.errors.map(e => e.stack);
+        logger.error(errs);
+        return { reponse: false, errors: errs }
+    }
+    return { response: true }
+}
+
 const addPokemonToTeam = async (user_id, receivedData) => {
 
     let validate = validateAddPokemon(receivedData);
@@ -136,5 +179,6 @@ module.exports = {
     addTeam,
     viewMyTeams,
     viewTeamById,
+    editTeam, 
     addPokemonToTeam
 }
