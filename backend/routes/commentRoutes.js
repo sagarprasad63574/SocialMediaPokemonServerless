@@ -18,6 +18,7 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
 router.get('/', async (req, res, next) => {
     const username = req.query.username;
     const team_name = req.query.team_name;
+    const role = req.query.role;
     try {
         if(username){
             const data = await commentService.getCommentsByUsername(username);

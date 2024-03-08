@@ -12,16 +12,23 @@ const getEveryComment = async () => {
 
 const getCommentsByUsername = async username => {
     if(!username) return {response: false, errors: "No username provided"};
-    const comments = await commentDAO.getCommentByUsername(username);
+    const comments = await commentDAO.getCommentsByUsername(username);
     if(!comments) return {response: false, errors: "No comments"};
     return {response: true, message: `Got comments from user ${username}`, comments};
 };
 
-const getCommentByTeam = async team_name => {
+const getCommentsByTeam = async team_name => {
     if(!team_name) return {response: false, errors: "No team name provided"};
-    const comments = await commentDAO.getCommentByTeam(team_name);
+    const comments = await commentDAO.getCommentsByTeam(team_name);
     if(!comments) return {response: false, errors: "No comments"};
     return {response: true, message: `Got comments for team ${team_name}`, comments};
+}
+
+const getCommentsByRole = async role => {
+    if(!role) return {response: false, errors: "No role provided"};
+    const comments = await commentDAO.getCommentsByRole(role);
+    if(!comments) return {response: false, errors: "No comments"};
+    return {response: true, message: `Got comments from role ${role}`, comments};
 }
 
 const postComment = async receivedData => {
@@ -84,7 +91,8 @@ const deleteComment = async (username, comment_index) => {
 module.exports = {
     getEveryComment,
     getCommentsByUsername,
-    getCommentByTeam,
+    getCommentsByTeam,
+    getCommentsByRole,
     postComment,
     updateComment,
     deleteComment

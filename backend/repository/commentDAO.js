@@ -32,7 +32,7 @@ const getEveryComment = async () => {
     }
 };
 
-const getCommentByUsername = async username => {
+const getCommentsByUsername = async username => {
     const command = new QueryCommand({
         TableName,
         IndexName: "username-index",
@@ -55,7 +55,7 @@ const getCommentByUsername = async username => {
     }
 };
 
-const getCommentByTeam = async team_name => {
+const getCommentsByTeam = async team_name => {
     const allComments = await getEveryComment();
     if(!allComments) return null;
     let comments = [];
@@ -69,6 +69,28 @@ const getCommentByTeam = async team_name => {
         comments.push(reducedUser);
     }
     return comments;
+};
+
+const getCommentByRole = async role => {
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "role-index",
+        KeyConditionExpression: "#r = :r",
+        ExpressionAttributeNames: {
+            "#r" : "role"
+        },
+        ExpressionAttributeValues: {
+            ":r" : role
+        }
+    });
+    try {
+        const data = await documentClient.send(command);
+        console.log(data);
+        return data;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 };
 
 const postComment = async (user_id, Comment) => {
@@ -149,8 +171,8 @@ const deleteComment = async (user_id, comment_index) => {
 
 module.exports = {
     getEveryComment,
-    getCommentByUsername,
-    getCommentByTeam,
+    getCommentsByUsername,
+    getCommentsByTeam,
     postComment,
     updateComment,
     deleteComment
