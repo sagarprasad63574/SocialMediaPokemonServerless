@@ -45,9 +45,10 @@ describe('Team Test', () => {
             pokemon_id: "0",
             pokemon_name: "charizard"
         };
-        const teams = new List([team]);
-        teamDAO.ViewUsersTeams.mockResolvedValueOnce({teams, length: 1,user_id: "1"});
-        teamDAO.addPokemonToTeam.mockResolvedValueOnce(0,1,pokemon);
+        //const teams = new List([team]);
+        const teams = [team];
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team]);
+        teamDAO.addPokemonToTeam.mockResolvedValueOnce(1);
         const data = await teamService.addPokemonToTeam(1,pokemon);
         expect(data.response).toBeTruthy();
     });
