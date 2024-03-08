@@ -28,6 +28,7 @@ router.put('/', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
     const usernameQuery = req.query.username;
     const useridQuery = req.query.user_id;
+    const roleQuery = req.query.role;
     try {
         if(usernameQuery){
             const data = await userService.getUserByUsername(usernameQuery);
@@ -36,11 +37,16 @@ router.get('/', async (req, res, next) => {
         }
         if(useridQuery){
             const data = await userService.getUser(useridQuery);
-            if(!data.repsonse) throw new NotFoundError(data.errors);
+            if(!data.response) throw new NotFoundError(data.errors);
+            return res.status(200).json(data);
+        }
+        if(roleQuery){
+            const data = await userService.getUsersByRole(roleQuery)
+            if(!data.response) throw new NotFoundError(data.errors);
             return res.status(200).json(data);
         }
         const data = await userService.getAllUsers();
-        if(!data.repsonse) throw new NotFoundError(data.errors);
+        if(!data.response) throw new NotFoundError(data.errors);
         return res.status(200).json(data);
     } catch (error) {
         return next(error);

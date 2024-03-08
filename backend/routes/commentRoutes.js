@@ -26,7 +26,12 @@ router.get('/', async (req, res, next) => {
             return res.status(200).json(data);
         }
         if(team_name){
-            const data = await commentService.getCommentByTeam(team_name);
+            const data = await commentService.getCommentsByTeam(team_name);
+            if(!data.response) throw new NotFoundError(data.errors);
+            return res.status(200).json(data);
+        }
+        if(role){
+            const data = await commentService.getCommentsByRole(role);
             if(!data.response) throw new NotFoundError(data.errors);
             return res.status(200).json(data);
         }

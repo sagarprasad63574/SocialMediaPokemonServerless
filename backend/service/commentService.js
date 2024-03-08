@@ -6,28 +6,28 @@ const commentUpdateSchema = require('../schemas/commentUpdateSchema.json');
 
 const getEveryComment = async () => {
     const comments = await commentDAO.getEveryComment();
-    if(!comments) return {response: false, errors: "No comments"};
+    if(!comments || !comments.length) return {response: false, errors: "No comments"};
     return {response: true, message: "Got all comments", comments};
 };
 
 const getCommentsByUsername = async username => {
     if(!username) return {response: false, errors: "No username provided"};
     const comments = await commentDAO.getCommentsByUsername(username);
-    if(!comments) return {response: false, errors: "No comments"};
+    if(!comments || !comments.length) return {response: false, errors: "No comments"};
     return {response: true, message: `Got comments from user ${username}`, comments};
 };
 
 const getCommentsByTeam = async team_name => {
     if(!team_name) return {response: false, errors: "No team name provided"};
     const comments = await commentDAO.getCommentsByTeam(team_name);
-    if(!comments) return {response: false, errors: "No comments"};
+    if(!comments || !comments.length) return {response: false, errors: "No comments"};
     return {response: true, message: `Got comments for team ${team_name}`, comments};
 }
 
 const getCommentsByRole = async role => {
     if(!role) return {response: false, errors: "No role provided"};
     const comments = await commentDAO.getCommentsByRole(role);
-    if(!comments) return {response: false, errors: "No comments"};
+    if(!comments || !comments.length) return {response: false, errors: "No comments"};
     return {response: true, message: `Got comments from role ${role}`, comments};
 }
 

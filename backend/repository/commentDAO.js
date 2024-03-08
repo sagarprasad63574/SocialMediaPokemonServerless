@@ -1,7 +1,7 @@
 const {DynamoDBClient} = require('@aws-sdk/client-dynamodb');
 const {DynamoDBDocumentClient, ScanCommand, QueryCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand} = require("@aws-sdk/lib-dynamodb");
 const logger = require('../util/logger');
-require('dotenv').config;
+require('dotenv').config();
 
 const dynamoDBClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
@@ -29,6 +29,7 @@ const getEveryComment = async () => {
         return commObjs;
     } catch (error) {
         logger.error(error);
+        return null;
     }
 };
 
@@ -43,10 +44,11 @@ const getCommentsByUsername = async username => {
         ExpressionAttributeValues: {
             ":u" : username
         },
-        "ProjectionExpression": "comments"
+        ProjectionExpression: "comments"
     });
     try {
         const data = await documentClient.send(command);
+        if(!data.Items[0]) return null;
         const comments = data.Items[0].comments;
         return comments;
     } catch (error) {
@@ -62,6 +64,7 @@ const getCommentsByTeam = async team_name => {
     for(let i=0; i<allComments.length; i++){
         let currentUser = allComments[i];
         let reducedComments = currentUser.comments.filter(comment => {return comment.team_name === team_name});
+        if(!reducedComments || !reducedComments.length) continue;
         let reducedUser = {
             username: currentUser.username,
             comments: reducedComments
@@ -71,7 +74,7 @@ const getCommentsByTeam = async team_name => {
     return comments;
 };
 
-const getCommentByRole = async role => {
+const getCommentsByRole = async role => {
     const command = new QueryCommand({
         TableName,
         IndexName: "role-index",
@@ -81,12 +84,18 @@ const getCommentByRole = async role => {
         },
         ExpressionAttributeValues: {
             ":r" : role
-        }
+        },
+        ProjectionExpression: "username, comments"
     });
     try {
         const data = await documentClient.send(command);
-        console.log(data);
-        return data;
+        const objs = data.Items;
+        let commObjs = [];
+        for(let i=0; i<objs.length; i++){
+            if(!objs[i].comments || !objs[i].comments.length) continue;
+            commObjs.push(objs[i]);
+        }
+        return commObjs;
     } catch (error) {
         logger.error(error);
         return null;
@@ -123,9 +132,6 @@ const postComment = async (user_id, Comment) => {
 };
 
 const updateComment = async (user_id, comment_index, newComment) => {
-    console.log(user_id);
-    console.log(comment_index);
-    console.log(newComment);
     const command = new UpdateCommand({
         TableName,
         Key: {
@@ -173,6 +179,7 @@ module.exports = {
     getEveryComment,
     getCommentsByUsername,
     getCommentsByTeam,
+    getCommentsByRole,
     postComment,
     updateComment,
     deleteComment

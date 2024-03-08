@@ -14,7 +14,7 @@ dotenv.config();
 
 const getAllUsers = async () => {
     const users = await userDAO.getAllUsers();
-    if(!users) return {response: false, errors: "No users"};
+    if(!users || !users.length) return {response: false, errors: "No users"};
     return {response: true, message: "Got all users", users};
 };
 
@@ -32,6 +32,12 @@ const getUserByUsername = async username => {
     return {response: true, message: `Got user with username ${username}`, user};
 };
 
+const getUsersByRole = async role => {
+    if(!role) return {response: false, errors: "No role provided"};
+    const users = await userDAO.getUsersByRole(role);
+    if(!users || !users.length) return {response: false, errors: `No users found with role ${role}`};
+    return {response: true, message: `Got users with role ${role}`, users};
+}
 
 const deleteUser = async user_id => {
     if(!user_id) return {repsonse: false, errors: "No user id provided"};
@@ -87,7 +93,8 @@ const loginUser = async receivedData => {
     const user = {
         user_id: foundUser.user_id,
         username: foundUser.username,
-        name: foundUser.name
+        name: foundUser.name,
+        role: foundUser.role
     };
     return {response: true, message: `User ${foundUser.username} logged in successfully`, token, user};
 };
@@ -125,6 +132,7 @@ module.exports = {
     getAllUsers,
     getUser,
     getUserByUsername,
+    getUsersByRole,
     registerUser,
     loginUser,
     addBio,

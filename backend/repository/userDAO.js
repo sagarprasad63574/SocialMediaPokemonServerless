@@ -59,6 +59,27 @@ const getUserByUsername = async username => {
         logger.error(error);
         return null;
     }
+};
+
+const getUsersByRole = async role => {
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "role-index",
+        KeyConditionExpression: "#r = :r",
+        ExpressionAttributeNames: {
+            "#r" : "role"
+        },
+        ExpressionAttributeValues: {
+            ":r" : role
+        }
+    });
+    try {
+        const data = await documentClient.send(command);
+        return data.Items;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 }
 const postUser = async User => {
     const command = new PutCommand({
@@ -123,6 +144,7 @@ module.exports = {
     getAllUsers,
     getUserById,
     getUserByUsername,
+    getUsersByRole,
     postUser,
     updateUser,
     deleteUser
