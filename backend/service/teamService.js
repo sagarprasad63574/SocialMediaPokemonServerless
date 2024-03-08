@@ -77,6 +77,15 @@ const viewMyTeams = async (user_id) => {
 
 }
 
+const viewTeamById = async (user_id, team_id) => {
+    const {response, teams} = await viewMyTeams(user_id);
+    const team = teams[team_id];
+
+    if (response && team) {
+       return { response, team}
+    }
+    return { response: false, message: `No team found with id ${team_id}`}
+}
 const addPokemonToTeam = async (user_id, receivedData) => {
 
     let validate = validateAddPokemon(receivedData);
@@ -121,16 +130,6 @@ function validateAddPokemon(receivedData) {
         return { reponse: false, errors: errs }
     }
     return { response: true }
-}
-
-const viewTeamById = async (user_id, team_id) => {
-    const {response, teams} = await viewMyTeams(user_id);
-    const team = teams[team_id];
-
-    if (response && team) {
-       return { response, team}
-    }
-    return { response: false, message: `No team found with id ${team_id}`}
 }
 
 module.exports = {

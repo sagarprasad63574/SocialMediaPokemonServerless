@@ -14,7 +14,7 @@ const getCommentsByUsername = async username => {
     if(!username) return {response: false, errors: "No username provided"};
     const comments = await commentDAO.getCommentByUsername(username);
     if(!comments) return {response: false, errors: "No comments"};
-    return {response: true, message: `Got comments from user ${username}`};
+    return {response: true, message: `Got comments from user ${username}`, comments};
 };
 
 const getCommentByTeam = async team_name => {
@@ -49,14 +49,15 @@ const validateCommentPost = receivedData => {
 
 const updateComment = async receivedData => {
     const validated = validateCommentUpdate(receivedData);
-    if(validated.response) return {response: false, errors: validated.errors};
+    if(!validated.response) return {response: false, errors: validated.errors};
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
+    if(!foundUser) return {response: false, errors: "User doesn't exist"};
     const comment_index = receivedData.comment_index;
     const updatedComment = {
         team_name: receivedData.team_name,
         comment: receivedData.comment
     };
-    const data = await commentDAO.updateComment(foundUser.user_id, comment_index, updateComment);
+    const data = await commentDAO.updateComment(foundUser.user_id, comment_index, updatedComment);
     if(!data) return {response: false, errors: "Could not update comment"};
     return {response: true, message: "Updated comment successfully"};
 };
@@ -70,10 +71,12 @@ const validateCommentUpdate = receivedData => {
     return {response: true};
 };
 
-const deleteComment = async (user_id, comment_index) => {
-    if(!user_id) return {response: false, errors: "No user id provided"};
+const deleteComment = async (username, comment_index) => {
+    if(!username) return {response: false, errors: "No username provided"};
     if(comment_index === null || isNaN(comment_index)) return {response: false, errors: "Invalid comment index"};
-    const data = await commentDAO.deleteComment(user_id, comment_index);
+    const foundUser = await userDAO.getUserByUsername(username);
+    if(!foundUser) return {response: false, errors: "User doesn't exist"};
+    const data = await commentDAO.deleteComment(foundUser.user_id, comment_index);
     if(!data) return {reponse: false, errors: "Could not delete comment"};
     return {response: true, message: "Deleted comment successfully"};
 }
