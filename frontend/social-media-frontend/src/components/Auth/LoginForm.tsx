@@ -1,30 +1,24 @@
 import React, { useState } from "react";
+import Alert from "../common/Alert";
 
 function LoginForm(props: any) {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
     });
-    // const [username, setUsername] = useState("");
-    // const [password, setPassword] = useState("");
-
-    // function handleSubmit(event: any) {
-    //     event.preventDefault();
-    //     // alert(username + password);
-    //     props.updateUser({ username, password });
-    // }
+    const [formErrors, setFormErrors] = useState([]);
 
     async function handleSubmit(event: any) {
         event.preventDefault();
         let result = await props.login(formData);
+        console.log(result.success);
+        if (!result.success) setFormErrors(result.errors);
     }
-
 
     function handleChange(event: any) {
         const { name, value } = event.target;
         setFormData(data => ({ ...data, [name]: value }));
     }
-
 
     return (
         <form onSubmit={handleSubmit}>
@@ -49,6 +43,9 @@ function LoginForm(props: any) {
             />
             <button type="submit">Submit</button>
             <button type="reset">Reset</button>
+            {formErrors.length 
+                ? <Alert type="danger" messages={formErrors} />
+                : null}
         </form>
     );
 }
