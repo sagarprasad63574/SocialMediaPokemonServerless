@@ -8,17 +8,20 @@ export const authApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl ,
         prepareHeaders: (headers, { getState }: any) => {
-            const token = getState().auth.userToken
+            const token = getState().auth.userToken;
+            console.log(token);
             if (token) {
-                headers.set('authorization', `Bearer ${token}`)
+                headers.set('Authorization', `Bearer ${token}`)
                 return headers
+            } else {
+                console.log("No token found")
             }
         },
     }),
     endpoints: (build) => ({
         getUserDetails: build.query({
             query: () => ({
-                url: '/users',
+                url: 'users/token',
                 method: 'GET',
             }),
         }),

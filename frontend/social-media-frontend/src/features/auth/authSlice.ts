@@ -26,6 +26,7 @@ const authSlice = createSlice({
             state.error = null
         },
         setCredentials: (state, { payload }) => {
+            console.log("payload",  payload);
             state.userInfo = payload
         },
     },

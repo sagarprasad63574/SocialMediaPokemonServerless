@@ -12,9 +12,11 @@ import Header from './components/headers/Header'
 import LoginContainer from './components/Auth/LoginContainer';
 import TestComponent from './components/TestComponent/TestComponent';
 import RegisterContainer from './components/Auth/RegisterContainer';
-import TeamsContainer from './components/Teams/TeamsContainer';
+import TeamsContainer from './components/teams/TeamsContainer';
 import LoginScreen from './components/user/LoginScreen';
 import ProtectedRoute from './components/routing/ProtectedRoutes';
+import ProfileScreen from './components/user/ProfileScreen';
+import TeamsScreen from './components/teams/TeamsScreen';
 
 function App() {
   return (
@@ -34,12 +36,9 @@ function App() {
           <Route path='/login' element={<LoginScreen />} />
           <Route element={<ProtectedRoute />}>
             <Route path='/' element={<TestComponent />} />
+            <Route path='/profile' element={<ProfileScreen />} />
+            <Route path='/teams' element={<TeamsScreen />} />
           </Route>
-          {/* <Route path='/register' element={<RegisterScreen />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path='/user-profile' element={<ProfileScreen />} />
-          </Route>
-          <Route path='*' element={<Navigate to='/' replace />} /> */}
         </Routes>
       </main>
     </Router>

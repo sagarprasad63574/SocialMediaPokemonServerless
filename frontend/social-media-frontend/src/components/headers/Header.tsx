@@ -8,7 +8,7 @@ import { logout, setCredentials } from '../../features/auth/authSlice'
 const Header = () => {
     const { userInfo } = useSelector((state: any) => state.auth)
     const dispatch = useDispatch()
-
+    console.log("At headers", userInfo)
     // automatically authenticate user if token is found
     const { data, isFetching } = useGetUserDetailsQuery('userDetails', {
         pollingInterval: 900000, // 15mins
@@ -44,7 +44,7 @@ const Header = () => {
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/login'>Login</NavLink>
                 <NavLink to='/register'>Register</NavLink>
-                <NavLink to='/user-profile'>Profile</NavLink>
+                <NavLink to='/profile'>Profile</NavLink>
             </nav>
         </header>
     )

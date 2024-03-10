@@ -25,8 +25,8 @@ export const userLogin: any = createAsyncThunk(
 
             return data
         } catch (error: any) {
-            if (error.status && error.message) {
-                return rejectWithValue(error.message)
+            if (error.response.data.error) {
+                return rejectWithValue(error.response.data.error.message)
             } else {
                 return rejectWithValue(error.message)
             }
