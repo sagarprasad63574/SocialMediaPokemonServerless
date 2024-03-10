@@ -1,6 +1,6 @@
 const express = require('express');
 const userService = require('../service/userService');
-const { BadRequestError, NotFoundError } = require('../util/expressError');
+const { BadRequestError, NotFoundError, UnauthorizedError } = require('../util/expressError');
 const { ensureLoggedIn } = require('../middleware/auth');
 
 const router = express.Router();
@@ -52,6 +52,15 @@ router.get('/', async (req, res, next) => {
         return next(error);
     }
 });
+
+router.get('/token', ensureLoggedIn, async (req, res, next) => {
+    const user = res.locals.user
+    if (user) {
+        return res.status(200).json(user);
+    }
+    throw new UnauthorizedError;
+});
+
 
 router.put('/biography', ensureLoggedIn, async (req, res, next) => {
     const username = res.locals.user.username;
