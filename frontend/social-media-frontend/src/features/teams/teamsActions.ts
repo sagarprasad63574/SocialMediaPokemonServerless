@@ -17,7 +17,7 @@ const getTeams = async (userToken: any) => {
             config
         )
 
-        console.log(data);
+            console.log("IAM HERE", data);
         return data; 
     } catch(error) {
         console.log(error);

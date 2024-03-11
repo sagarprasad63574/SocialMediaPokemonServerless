@@ -34,6 +34,7 @@ function App() {
         <Routes>
           {/* <Route path='/' element={<TestComponent />} /> */}
           <Route path='/login' element={<LoginScreen />} />
+          
           <Route element={<ProtectedRoute />}>
             <Route path='/' element={<TestComponent />} />
             <Route path='/profile' element={<ProfileScreen />} />

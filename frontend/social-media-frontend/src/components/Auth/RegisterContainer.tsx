@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import RegisterForm from "./RegisterForm";
-import SocialMediaPokemonAPI from "../../database/database";
+//import SocialMediaPokemonAPI from "../../database/database";
 
 function RegisterContainer() {
 
     async function register(registerData: any) {
         try {
-            let data = await SocialMediaPokemonAPI.register(registerData);
-            console.log(data);
-            return { success: data.response, data: data };
+            // let data = await SocialMediaPokemonAPI.register(registerData);
+            // console.log(data);
+            // return { success: data.response, data: data };
         } catch (errors) {
             return { success: false, errors };
         }
