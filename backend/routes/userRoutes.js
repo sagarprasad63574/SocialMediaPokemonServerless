@@ -1,6 +1,6 @@
 const express = require('express');
 const userService = require('../service/userService');
-const { BadRequestError, NotFoundError } = require('../util/expressError');
+const { BadRequestError, NotFoundError, UnauthorizedError } = require('../util/expressError');
 const { ensureLoggedIn } = require('../middleware/auth');
 
 const router = express.Router();

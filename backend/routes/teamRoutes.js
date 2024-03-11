@@ -70,7 +70,7 @@ router.get('/:id', ensureLoggedIn, async (req, res, next) => {
 //edit a team name by team_id
 router.put('/:id', ensureLoggedIn, async (req, res, next) => {
     const user_id = res.locals.user.id
-    const team_id = res.params.id;
+    const team_id = req.params.id;
 
     try {
         const { response, message, team } = await teamService.editTeam(user_id, team_id, req.body);
@@ -81,7 +81,30 @@ router.put('/:id', ensureLoggedIn, async (req, res, next) => {
                 team
             })
         } else {
+            return res.status(400).json({
+                message
+            })
+        }
+    } catch (err) {
+        return next(err);
+    }
+});
+
+//delete a team name by team_id
+router.delete('/:id', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id
+    const team_id = req.params.id;
+
+    try {
+        const { response, message, team } = await teamService.deleteTeam(user_id, team_id);
+
+        if (response) {
             return res.status(200).json({
+                message,
+                team
+            })
+        } else {
+            return res.status(400).json({
                 message
             })
         }

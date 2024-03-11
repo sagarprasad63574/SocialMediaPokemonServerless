@@ -12,8 +12,8 @@ const addTeam = async (user_id, receivedData) => {
     if (!response) return { response: false, errors: errors }
 
     //check for duplicated team_name
-    const duplicateTeamName = await checkDuplicatedTeamName(user_id, receivedData.team_name); 
-    if (duplicateTeamName.response) return { response: false, errors: duplicateTeamName.message}
+    const duplicateTeamName = await checkDuplicatedTeamName(user_id, receivedData.team_name);
+    if (duplicateTeamName.response) return { response: false, errors: duplicateTeamName.message }
 
     const team_id = uuid.v4();
     const win = 0;
@@ -57,35 +57,37 @@ function validateTeam(receivedData) {
 }
 
 async function checkDuplicatedTeamName(user_id, team_name) {
-    const { response, message, teams } = await viewMyTeams(user_id); 
-    if (!response) return { response: false, message: "No teams found!"};
-    
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response: false, message: "No teams found!" };
+
     const findIndex = findTeamIndexToAddPokemon(team_name, teams);
 
-    if (findIndex >= 0) return { response: true, message: "Duplicated team name"}
+    if (findIndex >= 0) return { response: true, message: "Duplicated team name" }
 
-    return { response: false}
+    return { response: false }
 }
 
 const viewMyTeams = async (user_id) => {
 
     let teams = await teamDAO.ViewUsersTeams(user_id);
-
-    if (teams.length) {
-        return { response: true, message: "My teams", teams };
+    if (teams.length == 0) {
+        return { response: false, message: "No teams found!" };
     }
-    return { response: false, message: "No teams found!" };
-
+    return { response: true, message: "My teams", teams };
 }
 
 const viewTeamById = async (user_id, team_id) => {
-    const {response, teams} = await viewMyTeams(user_id);
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response, message }
+
     const team = teams[team_id];
 
     if (response && team) {
-       return { response, team}
+        return { response, team }
     }
-    return { response: false, message: `No team found with id ${team_id}`}
+
+    return { response: false, message: `No team found with id ${team_id}` }
+
 }
 
 const editTeam = async (user_id, team_id, receivedData) => {
@@ -93,27 +95,42 @@ const editTeam = async (user_id, team_id, receivedData) => {
     let { response, errors } = validateEditTeam(receivedData);
     if (!response) return { response: false, errors: errors }
 
-    //check for duplicated team_name
-    const duplicateTeamName = await checkDuplicatedTeamName(user_id, receivedData.team_name); 
-    if (duplicateTeamName.response) return { response: false, errors: duplicateTeamName.message};
+    const getTeam = await viewTeamById(user_id, team_id);
+    if (!getTeam.response) return { response: getTeam.response, message: getTeam.message };
 
-    const getTeam = await viewMyTeams(user_id, team_id);
-    if (!getTeam.response) return { message: getTeam.message };
-    console.log(getTeam);
+    const duplicateTeamName = await checkDuplicatedTeamName(user_id, receivedData.team_name);
+    if (duplicateTeamName.response) return { response: false, message: duplicateTeamName.message };
 
-    // let data = await teamDAO.editTeam(
-    //     user_id,
-    //     {
-    //         team_name: receivedData.team_name,
-    //     });
 
-    // if (data) {
-    //     let index = data.length - 1;
-    //     let teams = data[index];
-    //     if (index >= 0) teams.index = index;
+    let data = await teamDAO.editTeam(
+        user_id,
+        team_id,
+        {
+            team_name: receivedData.team_name,
+        });
 
-    //     return { response: true, message: `Team name edited ${team_name}`, teams };
-    // }
+    if (data) {
+
+        return { response: true, message: `Team edited!,  Name: ${data.team_name}` };
+    }
+
+    return { response: false };
+
+}
+
+const deleteTeam = async (user_id, team_id) => {
+
+    const getTeam = await viewTeamById(user_id, team_id);
+    if (!getTeam.response) return { response: getTeam.response, message: getTeam.message };
+
+    let data = await teamDAO.deleteTeam(
+        user_id,
+        team_id
+    );
+
+    if (data) {
+        return { response: true, message: `Deleted team with team_id: ${team_id}, team_name: ${getTeam.team.team_name}` };
+    }
 
     return { response: false };
 
@@ -140,8 +157,8 @@ const addPokemonToTeam = async (user_id, receivedData) => {
     const team_index = findTeamIndexToAddPokemon(receivedData.team_name, teams);
     if (team_index < 0) return { response: false, message: "No team found with given name!" }
 
-    if(teams[team_index].pokemons.length >= 6)
-    return { response: false, message: "A team can only have 6 pokemon!" }
+    if (teams[team_index].pokemons.length >= 6)
+        return { response: false, message: "A team can only have 6 pokemon!" }
 
     //duplicate pokemon in the team list 
 
@@ -179,6 +196,7 @@ module.exports = {
     addTeam,
     viewMyTeams,
     viewTeamById,
-    editTeam, 
+    editTeam,
+    deleteTeam,
     addPokemonToTeam
 }

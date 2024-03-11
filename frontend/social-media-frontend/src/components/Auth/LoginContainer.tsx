@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import LoginForm from "./LoginForm";
-import SocialMediaPokemonAPI from "../../database/database";
+//import SocialMediaPokemonAPI from "../../database/database";
 
 function LoginContainer() {
 
     async function login(loginData: any) {
         try {
-            let data = await SocialMediaPokemonAPI.login(loginData);
-            console.log(data);
-            return { success: data.response, token: data.token };
+            //let data = await SocialMediaPokemonAPI.login(loginData);
+            // console.log(data);
+            // return { success: data.response, token: data.token };
         } catch (errors) {
             return { success: false, errors };
         }
