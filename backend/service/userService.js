@@ -7,7 +7,7 @@ const { BCRYPT_WORK_FACTOR } = require('../config');
 const jsonschema = require('jsonschema');
 const userRegisterSchema = require('../schemas/userRegisterSchema.json');
 const userLoginSchema = require('../schemas/userLoginSchema.json');
-const userBioSchema = require('../schemas/userBioSchema.json');
+const userProfileSchema = require('../schemas/userProfileSchema.json');
 const { createToken } = require('../util/tokens');
 dotenv.config();
 
@@ -40,7 +40,7 @@ const getUsersByRole = async role => {
 }
 
 const deleteUser = async user_id => {
-    if(!user_id) return {repsonse: false, errors: "No user id provided"};
+    if(!user_id) return {response: false, errors: "No user id provided"};
     const data = await userDAO.deleteUser(user_id);
     if(!data) return {response: false, errors: `Could not delete user with id ${user_id}`};
     return {response: true, message: `Deleted user with id ${user_id}`};
@@ -108,19 +108,21 @@ const validateLogin = receivedData => {
     return {response: true};
 }
 
-const addBio = async receivedData => {
-    const validated = validateBio(receivedData);
+const editProfile = async receivedData => {
+    const validated = validateProfile(receivedData);
     if(!validated.response) return {response: false, errors: validated.errors};
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
     if(!foundUser) return {response: false, errors: "User does not exist"};
     foundUser.biography = receivedData.biography;
+    foundUser.name = receivedData.name;
+    foundUser.email = receivedData.email;
     const data = await userDAO.updateUser(foundUser.user_id, foundUser);
-    if(!data) return {response: false, message: "Couldn't update user bio"};
-    return {response: true, message: `User ${receivedData.username} bio updated successfully`};
-};
+    if(!data) return {response: false, errors: "Could not update user profile"};
+    return {response: true, message: `User ${receivedData.username} profile updated successfully`};
+}
 
-const validateBio = receivedData => {
-    const validator = jsonschema.validate(receivedData, userBioSchema);
+const validateProfile = receivedData => {
+    const validator = jsonschema.validate(receivedData, userProfileSchema);
     if(!validator.valid){
         const errs = validator.errors.map(e => e.stack);
         return {response: false, errors: errs};
@@ -135,6 +137,6 @@ module.exports = {
     getUsersByRole,
     registerUser,
     loginUser,
-    addBio,
+    editProfile,
     deleteUser
 };

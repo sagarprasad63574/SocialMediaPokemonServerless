@@ -25,7 +25,7 @@ router.put('/', async (req, res, next) => {
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/', ensureLoggedIn, async (req, res, next) => {
     const usernameQuery = req.query.username;
     const useridQuery = req.query.user_id;
     const roleQuery = req.query.role;
@@ -53,24 +53,12 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.put('/biography', ensureLoggedIn, async (req, res, next) => {
-    const username = res.locals.user.username;
-    const biography = req.body.biography;
-    try {
-        const data = await userService.addBio({username, biography});
-        if(!data.response) throw new BadRequestError(data.errors);
-        return res.status(200).json(data);   
-    } catch (error) {
-        return next(error);
-    }
-});
-
 router.delete('/', async (req, res, next) => {
     const useridQuery = req.query.user_id;
     try {
         if(!useridQuery) throw new BadRequestError("User id not present");
         const data = await userService.deleteUser(useridQuery);
-        if(!data.repsonse) throw new BadRequestError(data.errors);
+        if(!data.response) throw new BadRequestError(data.errors);
         return res.status(200).json(data);
     } catch (error) {
         return next(error);

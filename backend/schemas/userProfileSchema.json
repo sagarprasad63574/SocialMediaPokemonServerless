@@ -11,11 +11,24 @@
         "biography": {
             "type": "string",
             "minLength": 1
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30
+        },
+        "email": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 30,
+            "format": "email"
         }
     },
     "additionalProperties": false,
     "required": [
         "username",
-        "biography"
+        "biography",
+        "name",
+        "email"
     ]
 }

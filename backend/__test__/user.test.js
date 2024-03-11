@@ -122,31 +122,32 @@ describe('Login Test', () => {
     });
 });
 
-describe('Biography Test', () => {
-    test('Empty data, should return false', async () => {
-        const data = await userService.addBio({});
-        expect(data.response).toBeFalsy();
-    });
-    test('Incomplete data, should return false', async () => {
-        const incomplete = {
+describe('Profile Test', () => {
+    test('Setting profile with incomplete data, should return false', async () => {
+        const profile = {
+            username: "testusr",
             biography: "testbio"
         };
-        const data = await userService.addBio(incomplete);
+        const data = await userService.editProfile(profile);
         expect(data.response).toBeFalsy();
     });
-    test('Complete data but user does not exist, should return false', async () => {
-        const complete = {
+    test('Setting profile but user does not exist, should return false', async () => {
+        const profile = {
             username: "testuser",
-            biography: "testbio"
+            biography: "testbio",
+            name: "test user",
+            email: "test@example.com"
         };
         userDAO.getUserByUsername.mockResolvedValueOnce(null);
-        const data = await userService.addBio(complete);
+        const data = await userService.editProfile(profile);
         expect(data.response).toBeFalsy();
     });
-    test('Complete data and user exists, should return true', async () => {
-        const complete = {
+    test('Setting profile and user exists, should return true', async () => {
+        const profile = {
             username: "testuser",
-            biography: "testbio"
+            biography: "testbio",
+            name: "test user",
+            email: "test@example.com"
         };
         const user = {
             username: "testuser",
@@ -156,7 +157,7 @@ describe('Biography Test', () => {
         };
         userDAO.getUserByUsername.mockResolvedValueOnce(user);
         userDAO.updateUser.mockResolvedValueOnce(true);
-        const data = await userService.addBio(complete);
+        const data = await userService.editProfile(profile);
         expect(data.response).toBeTruthy();
     });
 });

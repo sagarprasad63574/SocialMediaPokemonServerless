@@ -33,9 +33,9 @@ const getCommentsByRole = async role => {
 
 const postComment = async receivedData => {
     const validated = validateCommentPost(receivedData);
-    if(!validated.response) return {reponse: false, errors: validated.errors};
+    if(!validated.response) return {response: false, errors: validated.errors};
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
-    if(!foundUser) return {reponse: false, errors: "User not found"};
+    if(!foundUser) return {response: false, errors: "User not found"};
     const newComment = {
         team_name: receivedData.team_name,
         comment: receivedData.comment
@@ -84,7 +84,7 @@ const deleteComment = async (username, comment_index) => {
     const foundUser = await userDAO.getUserByUsername(username);
     if(!foundUser) return {response: false, errors: "User doesn't exist"};
     const data = await commentDAO.deleteComment(foundUser.user_id, comment_index);
-    if(!data) return {reponse: false, errors: "Could not delete comment"};
+    if(!data) return {response: false, errors: "Could not delete comment"};
     return {response: true, message: "Deleted comment successfully"};
 }
 
