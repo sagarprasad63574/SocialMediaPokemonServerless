@@ -162,10 +162,9 @@ const addPokemonToTeam = async (user_id, receivedData) => {
 
     //duplicate pokemon in the team list 
 
-    let data = await teamDAO.addPokemonToTeam(team_index, user_id, {
-        pokemon_id: receivedData.pokemon_id,
-        pokemon_name: receivedData.pokemon_name
-    });
+    const pokeman = await teamDAO.addPokemon(receivedData.pokemon_name)
+
+    let data = await teamDAO.addPokemonToTeam(team_index, user_id, pokeman);
 
     if (data) {
         let index = data.length - 1;

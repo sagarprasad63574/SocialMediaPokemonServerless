@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 
 const ProfileScreen = () => {
     const { userInfo } = useSelector((state: any) => state.auth)
-    console.log(userInfo);
     return (
         <div>
             <figure>{userInfo?.username.toUpperCase()}</figure>

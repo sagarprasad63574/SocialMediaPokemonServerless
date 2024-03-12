@@ -19,9 +19,7 @@ export const userLogin: any = createAsyncThunk(
                 config
             )
 
-            console.log(data.token);
-
-            localStorage.setItem('userToken', data.token)
+            localStorage.setItem('userToken', data.userToken)
 
             return data
         } catch (error: any) {
@@ -34,7 +32,7 @@ export const userLogin: any = createAsyncThunk(
     }
 )
 
-export const registerUser = createAsyncThunk(
+export const registerUser: any = createAsyncThunk(
     'auth/register',
     async ({ name, username, password, email }: any, { rejectWithValue }) => {
         try {
@@ -50,8 +48,8 @@ export const registerUser = createAsyncThunk(
                 config
             )
         } catch (error: any) {
-            if (error.status && error.message) {
-                return rejectWithValue(error.message)
+            if (error.response.data.error) {
+                return rejectWithValue(error.response.data.error.message)
             } else {
                 return rejectWithValue(error.message)
             }

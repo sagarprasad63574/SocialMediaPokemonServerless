@@ -89,14 +89,14 @@ const loginUser = async receivedData => {
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
     if(!foundUser) return {response: false, errors: "User does not exist"};
     if(!(await bcrypt.compare(receivedData.password, foundUser.password))) return {response: false, errors: "Incorrect password"};
-    const token = createToken(foundUser);
+    const userToken = createToken(foundUser);
     const user = {
         user_id: foundUser.user_id,
         username: foundUser.username,
         name: foundUser.name,
         role: foundUser.role
     };
-    return {response: true, message: `User ${foundUser.username} logged in successfully`, token, user};
+    return {response: true, message: `User ${foundUser.username} logged in successfully`, userToken, ...user};
 };
 
 const validateLogin = receivedData => {

@@ -3,7 +3,6 @@ import { NavLink, Outlet } from 'react-router-dom'
 
 const ProtectedRoute = () => {
     const { userInfo } = useSelector((state: any) => state.auth)
-    console.log("Current userInfo", userInfo)
 
     // show unauthorized screen if no user is found in redux store
     if (!userInfo) {

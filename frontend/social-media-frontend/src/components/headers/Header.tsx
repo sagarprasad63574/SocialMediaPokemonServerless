@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { useGetUserDetailsQuery } from '../../services/auth/authService'
-import { logout, setCredentials } from '../../features/auth/authSlice'
+import { useGetUserDetailsQuery } from '../../store/middleware/authService'
+import { logout, setCredentials } from '../../store/slices/authSlice'
 //import '../styles/header.css'
 
 const Header = () => {
@@ -25,7 +25,7 @@ const Header = () => {
                     {isFetching
                         ? `Fetching your profile...`
                         : userInfo !== null
-                            ? `Logged in as ${userInfo.email}`
+                            ? `Logged in as ${userInfo.username}`
                             : "You're not logged in"}
                 </span>
                 <div className='cta'>
@@ -45,6 +45,8 @@ const Header = () => {
                 <NavLink to='/login'>Login</NavLink>
                 <NavLink to='/register'>Register</NavLink>
                 <NavLink to='/profile'>Profile</NavLink>
+                <NavLink to='/teams'>Teams</NavLink>
+                <NavLink to='/teams/add'>AddTeam</NavLink>
             </nav>
         </header>
     )
