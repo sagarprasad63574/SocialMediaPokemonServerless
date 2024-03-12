@@ -9,14 +9,13 @@ import {
 } from 'react-router-dom'
 import Header from './components/headers/Header'
 
-import LoginContainer from './components/Auth/LoginContainer';
 import TestComponent from './components/TestComponent/TestComponent';
-import RegisterContainer from './components/Auth/RegisterContainer';
 import LoginScreen from './components/user/LoginScreen';
 import ProtectedRoute from './components/routing/ProtectedRoutes';
 import ProfileScreen from './components/user/ProfileScreen';
 import TeamsScreen from './components/teams/MyTeamsContainer';
 import RegisterScreen from './components/user/RegisterScreen';
+import AddTeamContainer from './components/teams/AddTeamContainer';
 
 function App() {
   return (
@@ -31,6 +30,7 @@ function App() {
             <Route path='/' element={<TestComponent />} />
             <Route path='/profile' element={<ProfileScreen />} />
             <Route path='/teams' element={<TeamsScreen />} />
+            <Route path='/teams/add' element={<AddTeamContainer />} />
           </Route>
         </Routes>
       </main>

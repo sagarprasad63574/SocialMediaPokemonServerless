@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import getTeams from '../../features/teams/teamsActions'
+import {getTeams} from '../../api/teams/teamAPI'
 import ViewMyTeams from './ViewMyTeams';
 import Error from '../common/Error';
 

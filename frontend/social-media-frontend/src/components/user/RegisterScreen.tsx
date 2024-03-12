@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Error from '../common/Error'
 import Spinner from '../common/Spinner'
-import { registerUser } from '../../features/auth/authActions'
+import { registerUser } from '../../store/actions/authActions'
 
 const RegisterScreen = () => {
     const [customError, setCustomError] = useState("")
