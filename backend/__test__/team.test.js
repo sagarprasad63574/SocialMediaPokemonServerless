@@ -1,6 +1,6 @@
-import * as teamService from '../service/teamService';
-import * as teamDAO from '../repository/teamDAO';
-import uuid from 'uuid';
+const teamService = require('../service/teamService');
+const teamDAO = require('../repository/teamDAO');
+const uuid = require('uuid');
 
 jest.mock('../repository/teamDAO');
 jest.mock('uuid');
