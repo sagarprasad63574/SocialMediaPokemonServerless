@@ -118,7 +118,7 @@ describe('Login Test', () => {
         tokens.createToken.mockReturnValueOnce("ljkfdsnbveoug43bgpone34klbwnuotr");
         const data = await userService.loginUser(complete);
         expect(data.response).toBeTruthy();
-        expect(data.user.username).toStrictEqual(complete.username);
+        expect(data.username).toStrictEqual(complete.username);
     });
 });
 
