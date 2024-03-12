@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config');
-const { UnauthorizedError } = require("../util/expressError");
+import jwt from 'jsonwebtoken';
+import { SECRET_KEY } from '../config.js';
+import { UnauthorizedError } from "../util/expressError.js";
 
 function authenticateJWT(req, res, next) {
     try {
@@ -47,4 +47,9 @@ function ensureCorrectUserOrAdmin(req, res, next) {
     }
 }
 
-module.exports = { authenticateJWT, ensureLoggedIn, ensureAdmin, ensureCorrectUserOrAdmin };
+export {
+    authenticateJWT,
+    ensureLoggedIn,
+    ensureAdmin,
+    ensureCorrectUserOrAdmin
+}

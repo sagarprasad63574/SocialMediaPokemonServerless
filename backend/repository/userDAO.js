@@ -1,7 +1,16 @@
-const {DynamoDBClient} = require('@aws-sdk/client-dynamodb');
-const {DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand, QueryCommand} = require("@aws-sdk/lib-dynamodb");
-const logger = require('../util/logger');
-require('dotenv').config();
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+    DynamoDBDocumentClient,
+    ScanCommand,
+    GetCommand,
+    PutCommand,
+    UpdateCommand,
+    DeleteCommand,
+    QueryCommand
+} from "@aws-sdk/lib-dynamodb";
+import logger from '../util/logger.js';
+import dotenv from 'dotenv'
+dotenv.config();
 
 const dynamoDBClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
@@ -21,7 +30,7 @@ const getAllUsers = async () => {
         const data = await documentClient.send(command);
         return data.Items;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 }
@@ -36,7 +45,7 @@ const getUserById = async user_id => {
         const data = await documentClient.send(command);
         return data.Item;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 }
@@ -46,17 +55,17 @@ const getUserByUsername = async username => {
         IndexName: "username-index",
         KeyConditionExpression: "#u = :u",
         ExpressionAttributeNames: {
-            "#u" : "username"
+            "#u": "username"
         },
         ExpressionAttributeValues: {
-            ":u" : username
+            ":u": username
         }
     });
     try {
         const data = await documentClient.send(command);
         return data.Items[0];
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
@@ -67,17 +76,17 @@ const getUsersByRole = async role => {
         IndexName: "role-index",
         KeyConditionExpression: "#r = :r",
         ExpressionAttributeNames: {
-            "#r" : "role"
+            "#r": "role"
         },
         ExpressionAttributeValues: {
-            ":r" : role
+            ":r": role
         }
     });
     try {
         const data = await documentClient.send(command);
         return data.Items;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 }
@@ -90,7 +99,7 @@ const postUser = async User => {
         const data = await documentClient.send(command);
         return data;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 }
@@ -102,25 +111,25 @@ const updateUser = async (user_id, newUser) => {
         },
         UpdateExpression: "set #u = :u, #p = :p, #n = :n, #e = :e, #b = :b",
         ExpressionAttributeNames: {
-            "#u" : "username",
-            "#p" : "password",
-            "#n" : "name",
-            "#e" : "email",
-            "#b" : "biography"
+            "#u": "username",
+            "#p": "password",
+            "#n": "name",
+            "#e": "email",
+            "#b": "biography"
         },
         ExpressionAttributeValues: {
-            ":u" : newUser.username,
-            ":p" : newUser.password,
-            ":n" : newUser.name,
-            ":e" : newUser.email,
-            ":b" : newUser.biography
+            ":u": newUser.username,
+            ":p": newUser.password,
+            ":n": newUser.name,
+            ":e": newUser.email,
+            ":b": newUser.biography
         }
     });
     try {
         const data = await documentClient.send(command);
         return data;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 }
@@ -135,12 +144,12 @@ const deleteUser = async user_id => {
         const data = await documentClient.send(command);
         return data;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 }
 
-module.exports = {
+export {
     getAllUsers,
     getUserById,
     getUserByUsername,

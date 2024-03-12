@@ -1,7 +1,16 @@
-const {DynamoDBClient} = require('@aws-sdk/client-dynamodb');
-const {DynamoDBDocumentClient, ScanCommand, QueryCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand} = require("@aws-sdk/lib-dynamodb");
-const logger = require('../util/logger');
-require('dotenv').config();
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+    DynamoDBDocumentClient,
+    ScanCommand,
+    QueryCommand,
+    GetCommand,
+    PutCommand,
+    UpdateCommand,
+    DeleteCommand
+} from "@aws-sdk/lib-dynamodb";
+import logger from '../util/logger.js';
+import dotenv from 'dotenv'
+dotenv.config();
 
 const dynamoDBClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
@@ -22,13 +31,13 @@ const getEveryComment = async () => {
         const data = await documentClient.send(command);
         const objs = data.Items;
         let commObjs = [];
-        for(let i=0; i<objs.length; i++){
-            if(!objs[i].comments || !objs[i].comments.length) continue;
+        for (let i = 0; i < objs.length; i++) {
+            if (!objs[i].comments || !objs[i].comments.length) continue;
             commObjs.push(objs[i]);
         }
         return commObjs;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
@@ -39,32 +48,32 @@ const getCommentsByUsername = async username => {
         IndexName: "username-index",
         KeyConditionExpression: "#u = :u",
         ExpressionAttributeNames: {
-            "#u" : "username"
+            "#u": "username"
         },
         ExpressionAttributeValues: {
-            ":u" : username
+            ":u": username
         },
         ProjectionExpression: "comments"
     });
     try {
         const data = await documentClient.send(command);
-        if(!data.Items[0]) return null;
+        if (!data.Items[0]) return null;
         const comments = data.Items[0].comments;
         return comments;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
 
 const getCommentsByTeam = async team_name => {
     const allComments = await getEveryComment();
-    if(!allComments) return null;
+    if (!allComments) return null;
     let comments = [];
-    for(let i=0; i<allComments.length; i++){
+    for (let i = 0; i < allComments.length; i++) {
         let currentUser = allComments[i];
-        let reducedComments = currentUser.comments.filter(comment => {return comment.team_name === team_name});
-        if(!reducedComments || !reducedComments.length) continue;
+        let reducedComments = currentUser.comments.filter(comment => { return comment.team_name === team_name });
+        if (!reducedComments || !reducedComments.length) continue;
         let reducedUser = {
             username: currentUser.username,
             comments: reducedComments
@@ -80,10 +89,10 @@ const getCommentsByRole = async role => {
         IndexName: "role-index",
         KeyConditionExpression: "#r = :r",
         ExpressionAttributeNames: {
-            "#r" : "role"
+            "#r": "role"
         },
         ExpressionAttributeValues: {
-            ":r" : role
+            ":r": role
         },
         ProjectionExpression: "username, comments"
     });
@@ -91,13 +100,13 @@ const getCommentsByRole = async role => {
         const data = await documentClient.send(command);
         const objs = data.Items;
         let commObjs = [];
-        for(let i=0; i<objs.length; i++){
-            if(!objs[i].comments || !objs[i].comments.length) continue;
+        for (let i = 0; i < objs.length; i++) {
+            if (!objs[i].comments || !objs[i].comments.length) continue;
             commObjs.push(objs[i]);
         }
         return commObjs;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
@@ -110,10 +119,10 @@ const postComment = async (user_id, Comment) => {
         },
         UpdateExpression: "set #c = list_append(#c, :vals)",
         ExpressionAttributeNames: {
-            "#c" : "comments"
+            "#c": "comments"
         },
         ExpressionAttributeValues: {
-            ":vals" : [
+            ":vals": [
                 {
                     "team_name": Comment.team_name,
                     "comment": Comment.comment
@@ -126,7 +135,7 @@ const postComment = async (user_id, Comment) => {
         const data = await documentClient.send(command);
         return data;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
@@ -140,8 +149,8 @@ const updateComment = async (user_id, comment_index, newComment) => {
         UpdateExpression: `set comments[${comment_index}] = :c`,
         ExpressionAttributeValues: {
             ":c": {
-                team_name : newComment.team_name,
-                comment : newComment.comment
+                team_name: newComment.team_name,
+                comment: newComment.comment
             }
         },
         ReturnValues: "UPDATED_NEW"
@@ -150,7 +159,7 @@ const updateComment = async (user_id, comment_index, newComment) => {
         const data = await documentClient.send(command);
         return data;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
@@ -170,12 +179,12 @@ const deleteComment = async (user_id, comment_index) => {
         console.log(data);
         return data;
     } catch (error) {
-        logger.error(error);
+        logger.info(error);
         return null;
     }
 };
 
-module.exports = {
+export {
     getEveryComment,
     getCommentsByUsername,
     getCommentsByTeam,

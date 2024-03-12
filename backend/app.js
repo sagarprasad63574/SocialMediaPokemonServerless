@@ -1,19 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const logger = require('./util/logger');
-const userRouter = require('./routes/userRoutes');
-const teamRouter = require('./routes/teamRoutes');
-const commentRouter = require('./routes/commentRoutes');
-const profileRouter = require('./routes/profileRoutes');
-const tokenRouter = require('./routes/tokenRoute')
-const { authenticateJWT } = require("./middleware/auth");
+import express, { json, urlencoded } from 'express';
+import cors from 'cors';
+import logger from './util/logger.js';
+import userRouter from './routes/userRoutes.js';
+import teamRouter from './routes/teamRoutes.js';
+import commentRouter from './routes/commentRoutes.js';
+import profileRouter from './routes/profileRoutes.js';
+import tokenRouter from './routes/tokenRoute.js';
+import { authenticateJWT } from "./middleware/auth.js";
 
 const app = express();
 const PORT = 3001;
 
-app.use(express.json());
+app.use(json());
 app.use(cors());
-app.use(express.urlencoded());
+app.use(urlencoded());
 app.use(authenticateJWT);
 app.use((req, res, next) => {
     logger.info(`${req.method} request at ${req.url}`);

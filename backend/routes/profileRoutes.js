@@ -1,14 +1,14 @@
-const express = require('express');
-const userService = require('../service/userService');
-const { ensureLoggedIn } = require('../middleware/auth');
-const { BadRequestError, NotFoundError } = require('../util/expressError');
+import { Router } from 'express';
+import { editProfile, getUser } from '../service/userService.js';
+import { ensureLoggedIn } from '../middleware/auth.js';
+import { BadRequestError, NotFoundError } from '../util/expressError.js';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/', ensureLoggedIn, async (req, res, next) => {
     const username = res.locals.username;
     try {
-        const data = await userService.editProfile({username, ...req.body});
+        const data = await editProfile({username, ...req.body});
         if(!data.response) throw new BadRequestError(data.errors);
         return res.status(200).json(data);
     } catch (error) {
@@ -19,7 +19,7 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
 router.get('/', ensureLoggedIn, async (req, res, next) => {
     const user_id = res.locals.id;
     try {
-        const data = await userService.getUser(user_id);
+        const data = await getUser(user_id);
         if(!data.response) throw new NotFoundError(data.errors);
         return res.status(200).json(data);     
     } catch (error) {
@@ -27,4 +27,4 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router;

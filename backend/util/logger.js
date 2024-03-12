@@ -1,15 +1,15 @@
-const {createLogger, format, transports} = require('winston');
-const logger = createLogger({
+import winston from 'winston';
+const logger = winston.createLogger({
     level: "info", 
-    format: format.combine(
-        format.timestamp(),
-        format.printf(({timestamp, level, message}) => {
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.printf(({timestamp, level, message}) => {
             return `${timestamp}, [${level}]: ${message}`;
         })
     ),
     transports: [
-        new transports.File({filename: "app.log"}),
-        new transports.Console()
+        new winston.transports.File({filename: "app.log"}),
+        new winston.transports.Console()
     ]
 });
 
@@ -25,4 +25,4 @@ process.on("uncaughtException", err => {
     }
 });
 
-module.exports = logger;
+export default logger;
