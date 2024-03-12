@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import { SECRET_KEY } from "../config.js";
+const jwt = require("jsonwebtoken");
+const { SECRET_KEY } = require("../config.js");
 
 function createToken(user) {
     let payload = {
@@ -11,4 +11,4 @@ function createToken(user) {
     return jwt.sign(payload, SECRET_KEY, { expiresIn: "60m" });
 }
 
-export { createToken } 
+module.exports = { createToken } 

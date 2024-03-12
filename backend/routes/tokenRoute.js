@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { ensureLoggedIn } from '../middleware/auth.js';
+const express = require('express');
+const { ensureLoggedIn } = require('../middleware/auth');
 
-const router = Router();
+const router = express.Router();
 
 router.get('/', ensureLoggedIn, async (req, res, next) => {
     const user = res.locals.user
@@ -11,4 +11,4 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
     throw new UnauthorizedError;
 });
 
-export default router;
+module.exports = router;

@@ -1,13 +1,13 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const {
     DynamoDBDocumentClient,
     UpdateCommand,
     QueryCommand,
     DeleteCommand
-} from '@aws-sdk/lib-dynamodb';
-import logger from '../util/logger.js';
-import dotenv from 'dotenv'
-dotenv.config();
+} = require('@aws-sdk/lib-dynamodb');
+const logger = require('../util/logger');
+
+require('dotenv').config();
 
 const dynamoDBClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
@@ -20,44 +20,28 @@ const dynamoDBClient = new DynamoDBClient({
 const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
-import Pokedex from 'pokedex-promise-v2';
-const P = new Pokedex();
+const Pokedex = require("pokeapi-js-wrapper");
+
+const P = new Pokedex.Pokedex();
+
+require('dotenv').config();
 
 const addPokemon = async (pokiemon) => {
     try {
-       /* {
-            height: 17,
-            id: 6,
-            name: 'charizard',
-            },
-            stats: [
-              { base_stat: 78, effort: 0, stat: [Object] },
-              { base_stat: 84, effort: 0, stat: [Object] },
-              { base_stat: 78, effort: 0, stat: [Object] },
-              { base_stat: 109, effort: 3, stat: [Object] },
-              { base_stat: 85, effort: 0, stat: [Object] },
-              { base_stat: 100, effort: 0, stat: [Object] }
-            ],
-            types: [ { slot: 1, type: [Object] }, { slot: 2, type: [Object] } ],
-            weight: 905
-          }
-        */
         const pokemon = await P.getPokemonByName(pokiemon);
-        //console.log(pokemon);
-        const poke = {
-            id: pokemon.id,
-            pokemon_name: pokemon.name,
-            hp:pokemon.stats[0].base_stat, 
-            attack:pokemon.stats[1].base_stat, 
-            defense:pokemon.stats[2].base_stat, 
-            specialattack:pokemon.stats[3].base_stat,
-            specialdefense:pokemon.stats[4].base_stat, 
-            speed:pokemon.stats[5].base_stat, 
-            type:pokemon.types
+        poke = {
+          pokemon_name:pokiemon,
+          hp:pokemon.stats[0].base_stat, 
+          attack:pokemon.stats[1].base_stat, 
+          defense:pokemon.stats[2].base_stat, 
+          specialattack:pokemon.stats[3].base_stat,
+          specialdefense:pokemon.stats[4].base_stat, 
+          speed:pokemon.stats[5].base_stat, 
+          type:pokemon.types
         };
         return poke;
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         return null;
     }
 }
@@ -92,7 +76,7 @@ const createTeam = async (user_id, team) => {
         const data = await documentClient.send(command);
         return data.Attributes.teams;
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         return null;
     }
 }
@@ -116,7 +100,7 @@ const editTeam = async (user_id, team_index, team) => {
         const data = await documentClient.send(command);
         return data.Attributes.teams[0];
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         return null;
     }
 }
@@ -136,7 +120,7 @@ const deleteTeam = async (user_id, team_index) => {
         const data = await documentClient.send(command);
         return data;
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         return null;
     }
 }
@@ -157,7 +141,7 @@ const ViewUsersTeams = async (user_id) => {
         const data = await documentClient.send(command);
         return data.Items[0].teams;
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         return null;
     }
 }
@@ -192,12 +176,12 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
         const data = await documentClient.send(command);
         return data.Attributes.teams[0].pokemons;
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         return null;
     }
 }
 
-export {
+module.exports = {
     createTeam,
     editTeam,
     deleteTeam,

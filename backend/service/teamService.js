@@ -1,17 +1,10 @@
-import { validate as _validate } from 'jsonschema';
-import { v4 } from 'uuid';
-import {
-    createTeam,
-    ViewUsersTeams,
-    addPokemon,
-    editTeam as _editTeam,
-    deleteTeam as _deleteTeam,
-    addPokemonToTeam as _addPokemonToTeam
-} from '../repository/teamDAO.js';
-import teamAddSchema from '../schemas/teamAddSchema.json'assert { type: "json" };
-import teamEditSchema from '../schemas/teamEditSchema.json'assert { type: "json" };
-import pokemonAddSchema from '../schemas/pokemonAddSchema.json'assert { type: "json" };
-import logger from '../util/logger.js';
+const jsonschema = require('jsonschema');
+const uuid = require('uuid');
+const teamDAO = require('../repository/teamDAO');
+const teamAddSchema = require('../schemas/teamAddSchema.json');
+const teamEditSchema = require('../schemas/teamEditSchema.json');
+const pokemonAddSchema = require('../schemas/pokemonAddSchema.json');
+const logger = require('../util/logger');
 
 const addTeam = async (user_id, receivedData) => {
 
@@ -22,14 +15,14 @@ const addTeam = async (user_id, receivedData) => {
     const duplicateTeamName = await checkDuplicatedTeamName(user_id, receivedData.team_name);
     if (duplicateTeamName.response) return { response: false, errors: duplicateTeamName.message }
 
-    const team_id = v4();
+    const team_id = uuid.v4();
     const win = 0;
     const loss = 0;
     const points = 0;
     const pokemons = [];
     const battlelog = [];
 
-    let data = await createTeam(
+    let data = await teamDAO.createTeam(
         user_id,
         {
             team_id,
@@ -54,7 +47,7 @@ const addTeam = async (user_id, receivedData) => {
 }
 
 function validateTeam(receivedData) {
-    const validator = _validate(receivedData, teamAddSchema);
+    const validator = jsonschema.validate(receivedData, teamAddSchema);
     if (!validator.valid) {
         const errs = validator.errors.map(e => e.stack);
         logger.error(errs);
@@ -76,7 +69,7 @@ async function checkDuplicatedTeamName(user_id, team_name) {
 
 const viewMyTeams = async (user_id) => {
 
-    let teams = await ViewUsersTeams(user_id);
+    let teams = await teamDAO.ViewUsersTeams(user_id);
     if (teams.length == 0) {
         return { response: false, message: "No teams found!" };
     }
@@ -109,7 +102,7 @@ const editTeam = async (user_id, team_id, receivedData) => {
     if (duplicateTeamName.response) return { response: false, message: duplicateTeamName.message };
 
 
-    let data = await _editTeam(
+    let data = await teamDAO.editTeam(
         user_id,
         team_id,
         {
@@ -130,7 +123,7 @@ const deleteTeam = async (user_id, team_id) => {
     const getTeam = await viewTeamById(user_id, team_id);
     if (!getTeam.response) return { response: getTeam.response, message: getTeam.message };
 
-    let data = await _deleteTeam(
+    let data = await teamDAO.deleteTeam(
         user_id,
         team_id
     );
@@ -144,7 +137,7 @@ const deleteTeam = async (user_id, team_id) => {
 }
 
 function validateEditTeam(receivedData) {
-    const validator = _validate(receivedData, teamEditSchema);
+    const validator = jsonschema.validate(receivedData, teamEditSchema);
     if (!validator.valid) {
         const errs = validator.errors.map(e => e.stack);
         logger.error(errs);
@@ -169,10 +162,10 @@ const addPokemonToTeam = async (user_id, receivedData) => {
 
     //duplicate pokemon in the team list 
 
-    const pokeman = await addPokemon(receivedData.pokemon_name)
-    console.log(pokeman);
-    let data = await _addPokemonToTeam(team_index, user_id, pokeman);
-    
+    const pokeman = await teamDAO.addPokemon(receivedData.pokemon_name)
+
+    let data = await teamDAO.addPokemonToTeam(team_index, user_id, pokeman);
+
     if (data) {
         let index = data.length - 1;
         let pokemon = data[index];
@@ -189,7 +182,7 @@ function findTeamIndexToAddPokemon(team_name, teams) {
 }
 
 function validateAddPokemon(receivedData) {
-    const validator = _validate(receivedData, pokemonAddSchema);
+    const validator = jsonschema.validate(receivedData, pokemonAddSchema);
     if (!validator.valid) {
         const errs = validator.errors.map(e => e.stack);
         logger.error(errs);
@@ -198,7 +191,7 @@ function validateAddPokemon(receivedData) {
     return { response: true }
 }
 
-export {
+module.exports = {
     addTeam,
     viewMyTeams,
     viewTeamById,
