@@ -1,7 +1,9 @@
 const commentService = require('../service/commentService');
 const commentDAO = require('../repository/commentDAO');
+const userDAO = require('../repository/userDAO');
 
 jest.mock('../repository/commentDAO');
+jest.mock('../repository/userDAO');
 
 describe('Getting comments', () => {
     test('Getting all comments but empty, should return false', async () => {
@@ -193,5 +195,108 @@ describe('Getting comments', () => {
     });
 });
 describe('Posting comments', () => {
-    
+    test('Posting comment but no data, should return false', async () => {
+        const data = await commentService.postComment({});
+        expect(data.response).toBeFalsy();
+    });
+    test('Posting comment but incomplete data, should return false', async () => {
+        const comment = {
+            username: "testuser",
+            comment: "test comment"
+        };
+        const data = await commentService.postComment(comment);
+        expect(data.response).toBeFalsy();
+    });
+    test('Posting comment with complete data but user does not exist, should return false', async () => {
+        const comment = {
+            username: "testuser",
+            team_name: "team1",
+            comment: "test comment"
+        };
+        userDAO.getUserByUsername.mockResolvedValueOnce(null);
+        const data = await commentService.postComment(comment);
+        expect(data.response).toBeFalsy();
+    });
+    test('Posting comment and user exists, should return true', async () => {
+        const comment = {
+            username: "testuser",
+            team_name: "team1",
+            comment: "test comment"
+        };
+        const user = {
+            username: "testuser",
+            password: "ebnsa5or",
+            name: "Test User",
+            email: "test@example.com",
+            role: "user"
+        };
+        userDAO.getUserByUsername.mockResolvedValueOnce(user);
+        commentDAO.postComment.mockResolvedValueOnce(true);
+        const data = await commentService.postComment(comment);
+        expect(data.response).toBeTruthy();
+    });
+});
+describe('Updating Comments', () => {
+    test('Empty data, should return false', async () => {
+        const data = await commentService.updateComment({});
+        expect(data.response).toBeFalsy();        
+    });
+    test('Comment data present but incomplete, should return false', async () => {
+        const newComment = {
+            username: "testuser",
+            team_name: "team1",
+            comment: "this is a new comment"
+        };
+        const data = await commentService.updateComment(newComment);
+        expect(data.response).toBeFalsy();
+    });
+    test('Comment data complete but user does not exist, should return false', async () => {
+        const newComment = {
+            username: "testuser",
+            team_name: "team1",
+            comment: "this is a new comment",
+            comment_index: 0
+        };
+        userDAO.getUserByUsername.mockResolvedValueOnce(null);
+        const data = await commentService.updateComment(newComment);
+        expect(data.response).toBeFalsy();
+    });
+    test('Comment data complete and user exists but index out of range, should return false', async () => {
+        const newComment = {
+            username: "testuser",
+            team_name: "team1",
+            comment: "this is a new comment",
+            comment_index: 0
+        };
+        const user = {
+            username: "testuser",
+            password: "ebnsa5or",
+            name: "Test User",
+            email: "test@example.com",
+            role: "user"
+        };
+        userDAO.getUserByUsername.mockResolvedValueOnce(user);
+        commentDAO.updateComment.mockResolvedValueOnce(null);
+        const data = await commentService.updateComment(newComment);
+        expect(data.response).toBeFalsy();
+    });
+    test('Comment data complete and index in range, should return true', async () => {
+        const newComment = {
+            username: "testuser",
+            team_name: "team1",
+            comment: "this is a new comment",
+            comment_index: 0
+        };
+        const user = {
+            username: "testuser",
+            password: "ebnsa5or",
+            name: "Test User",
+            email: "test@example.com",
+            role: "user"
+        };
+        userDAO.getUserByUsername.mockResolvedValueOnce(user);
+        commentDAO.updateComment.mockResolvedValueOnce(true);
+        const data = await commentService.updateComment(newComment);
+        expect(data.response).toBeTruthy();
+    });
 });
