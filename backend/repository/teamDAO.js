@@ -20,6 +20,32 @@ const dynamoDBClient = new DynamoDBClient({
 const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
+const Pokedex = require("pokeapi-js-wrapper");
+
+const P = new Pokedex.Pokedex();
+
+require('dotenv').config();
+
+const addPokemon = async (pokiemon) => {
+    try {
+        const pokemon = await P.getPokemonByName(pokiemon);
+        poke = {
+          pokemon_name:pokiemon,
+          hp:pokemon.stats[0].base_stat, 
+          attack:pokemon.stats[1].base_stat, 
+          defense:pokemon.stats[2].base_stat, 
+          specialattack:pokemon.stats[3].base_stat,
+          specialdefense:pokemon.stats[4].base_stat, 
+          speed:pokemon.stats[5].base_stat, 
+          type:pokemon.types
+        };
+        return poke;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 const createTeam = async (user_id, team) => {
     const command = new UpdateCommand({
         TableName,
@@ -131,8 +157,14 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
 
             ":vals": [
                 {
-                    "pokemon_id": pokemon.pokemon_id,
-                    "pokemon_name": pokemon.pokemon_name
+                    "pokemon_name": pokemon.pokemon_name,
+                    "hp": pokemon.hp,
+                    "attack": pokemon.attack,
+                    "defense": pokemon.defense,
+                    "specialattack":pokemon.specialattack,
+                    "specialdefense":pokemon.specialdefense, 
+                    "speed":pokemon.speed, 
+                    "type":pokemon.type
                 }
             ]
 
@@ -154,5 +186,6 @@ module.exports = {
     editTeam,
     deleteTeam,
     ViewUsersTeams,
-    addPokemonToTeam
+    addPokemonToTeam,
+    addPokemon
 }

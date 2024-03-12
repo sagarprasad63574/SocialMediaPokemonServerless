@@ -15,7 +15,14 @@ const logger = createLogger({
 
 process.on("uncaughtException", err => {
     logger.error(`Uncaught Exception: ${err}`);
-    process.exit(1);
+    if(err == "Error: No available storage method found.")
+    {
+
+    }
+    else
+    {
+        process.exit(1);
+    }
 });
 
 module.exports = logger;
