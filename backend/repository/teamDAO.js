@@ -186,5 +186,6 @@ module.exports = {
     editTeam,
     deleteTeam,
     ViewUsersTeams,
-    addPokemonToTeam
+    addPokemonToTeam,
+    addPokemon
 }
