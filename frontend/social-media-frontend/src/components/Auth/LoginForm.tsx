@@ -11,7 +11,6 @@ function LoginForm(props: any) {
     async function handleSubmit(event: any) {
         event.preventDefault();
         let result = await props.login(formData);
-        console.log(result.success);
         if (!result.success) setFormErrors(result.errors);
     }
 

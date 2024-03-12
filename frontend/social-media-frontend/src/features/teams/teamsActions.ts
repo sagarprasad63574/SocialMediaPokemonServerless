@@ -1,8 +1,6 @@
 import axios from 'axios'
-//import { createAsyncThunk } from '@reduxjs/toolkit'
-import { useSelector } from 'react-redux';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = "http://localhost:3001";
 
 const getTeams = async (userToken: any) => {
     try {
@@ -17,10 +15,11 @@ const getTeams = async (userToken: any) => {
             config
         )
 
-            console.log("IAM HERE", data);
+        console.log("GETTING DATA FROM API", data);
         return data; 
-    } catch(error) {
+    } catch(error: any) {
         console.log(error);
+        return error;
     }
 }
 

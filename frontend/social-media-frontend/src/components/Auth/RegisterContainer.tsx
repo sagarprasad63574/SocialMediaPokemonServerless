@@ -7,7 +7,6 @@ function RegisterContainer() {
     async function register(registerData: any) {
         try {
             // let data = await SocialMediaPokemonAPI.register(registerData);
-            // console.log(data);
             // return { success: data.response, data: data };
         } catch (errors) {
             return { success: false, errors };
