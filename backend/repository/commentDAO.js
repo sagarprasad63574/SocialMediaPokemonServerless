@@ -116,7 +116,8 @@ const postComment = async (user_id, Comment) => {
             ":vals" : [
                 {
                     "team_name": Comment.team_name,
-                    "comment": Comment.comment
+                    "comment": Comment.comment,
+                    "rating": Comment.rating
                 }
             ]
         },
@@ -141,7 +142,8 @@ const updateComment = async (user_id, comment_index, newComment) => {
         ExpressionAttributeValues: {
             ":c": {
                 team_name : newComment.team_name,
-                comment : newComment.comment
+                comment : newComment.comment,
+                rating: newComment.rating
             }
         },
         ReturnValues: "UPDATED_NEW"

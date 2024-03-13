@@ -17,11 +17,15 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 140
+        },
+        "rating": {
+            "type": "number"
         }
     },
     "required": [
         "username",
         "team_name",
-        "comment"
+        "comment",
+        "rating"
     ]
 }
