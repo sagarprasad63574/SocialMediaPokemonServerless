@@ -113,27 +113,4 @@ router.delete('/:id', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
-//Add a pokemon to a team 
-router.post('/addPokemon', ensureLoggedIn, async (req, res, next) => {
-    const user_id = res.locals.user.id
-
-    try {
-        const { response, errors, message, pokemon } = await teamService.addPokemonToTeam(user_id, req.body);
-        if (response) {
-            return res.status(201).json({
-                message,
-                pokemon
-            })
-        } else {
-            res.status(400).json({
-                message,
-                errors
-            })
-        }
-    } catch (err) {
-        return next(err);
-    }
-});
-
-
 module.exports = router; 

@@ -162,9 +162,20 @@ const addPokemonToTeam = async (user_id, receivedData) => {
 
     //duplicate pokemon in the team list 
 
-    const pokeman = await teamDAO.addPokemon(receivedData.pokemon_name)
+    const pokemon = await teamDAO.pokedata(receivedData.pokemon_name);
 
-    let data = await teamDAO.addPokemonToTeam(team_index, user_id, pokeman);
+    const poke = {
+        pokemon_name:receivedData.pokemon_name,
+        hp:pokemon.data.stats[0].base_stat, 
+        attack:pokemon.data.stats[1].base_stat, 
+        defense:pokemon.data.stats[2].base_stat, 
+        specialattack:pokemon.data.stats[3].base_stat,
+        specialdefense:pokemon.data.stats[4].base_stat, 
+        speed:pokemon.data.stats[5].base_stat, 
+        type:pokemon.data.types
+    };
+
+    let data = await teamDAO.addPokemonToTeam(team_index, user_id, poke);
 
     if (data) {
         let index = data.length - 1;
@@ -172,6 +183,22 @@ const addPokemonToTeam = async (user_id, receivedData) => {
         if (index >= 0) pokemon.index = index;
 
         return { response: true, message: "New pokemon added", pokemon };
+    }
+
+    return { response: false };
+}
+
+const deletePokemonFromTeam = async (user_id, team_id, pokemon_id) => {
+
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response: false, message: "No team found!" }
+
+    //duplicate pokemon in the team list 
+
+    let data = await teamDAO.deletePokemonFromTeam(user_id, team_id, pokemon_id);
+
+    if (data) {
+        return { response: true, message: "deleted pokemon" };
     }
 
     return { response: false };
@@ -197,5 +224,6 @@ module.exports = {
     viewTeamById,
     editTeam,
     deleteTeam,
-    addPokemonToTeam
+    addPokemonToTeam,
+    deletePokemonFromTeam
 }

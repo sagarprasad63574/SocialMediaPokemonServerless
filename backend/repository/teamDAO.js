@@ -9,6 +9,8 @@ const logger = require('../util/logger');
 
 require('dotenv').config();
 
+const axios = require('axios');
+
 const dynamoDBClient = new DynamoDBClient({
     region: process.env.AWS_DEFAULT_REGION,
     credentials: {
@@ -26,21 +28,14 @@ const P = new Pokedex.Pokedex();
 
 require('dotenv').config();
 
-const addPokemon = async (pokiemon) => {
-    try {
-        const pokemon = await P.getPokemonByName(pokiemon);
-        poke = {
-          pokemon_name:pokiemon,
-          hp:pokemon.stats[0].base_stat, 
-          attack:pokemon.stats[1].base_stat, 
-          defense:pokemon.stats[2].base_stat, 
-          specialattack:pokemon.stats[3].base_stat,
-          specialdefense:pokemon.stats[4].base_stat, 
-          speed:pokemon.stats[5].base_stat, 
-          type:pokemon.types
-        };
-        return poke;
-    } catch (error) {
+const pokedata = async (pokiemon) => {
+    try
+    {
+        const url = `https://pokeapi.co/api/v2/pokemon/${pokiemon}/`;
+        const pokemon = await axios.get(url);
+        return pokemon;
+    }
+    catch (error) {
         logger.error(error);
         return null;
     }
@@ -181,11 +176,31 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
     }
 }
 
+const deletePokemonFromTeam = async (user_id, team_id, pokemon_id) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `REMOVE teams[${team_id}].pokemons[${pokemon_id}]`,
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 module.exports = {
     createTeam,
     editTeam,
     deleteTeam,
     ViewUsersTeams,
     addPokemonToTeam,
-    addPokemon
+    deletePokemonFromTeam,
+    pokedata
 }
