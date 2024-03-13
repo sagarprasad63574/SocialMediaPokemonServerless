@@ -22,9 +22,6 @@ const dynamoDBClient = new DynamoDBClient({
 const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
-const Pokedex = require("pokeapi-js-wrapper");
-
-const P = new Pokedex.Pokedex();
 
 require('dotenv').config();
 
