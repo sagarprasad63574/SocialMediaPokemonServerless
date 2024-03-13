@@ -1,6 +1,6 @@
-import * as commentService from "../service/commentService.js";
-import * as commentDAO from '../repository/commentDAO.js';
-import * as userDAO from '../repository/userDAO.js';
+const commentService = require('../service/commentService');
+const commentDAO = require('../repository/commentDAO');
+const userDAO = require('../repository/userDAO');
 
 jest.mock('../repository/commentDAO');
 jest.mock('../repository/userDAO');

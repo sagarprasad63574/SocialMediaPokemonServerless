@@ -1,8 +1,8 @@
-import * as userService from '../service/userService.js';
-import * as userDAO from '../repository/userDAO.js';
-import tokens from '../util/tokens.js';
-import bcrypt from 'bcrypt';
-import uuid from 'uuid';
+const userService = require('../service/userService');
+const userDAO = require('../repository/userDAO');
+const tokens = require('../util/tokens');
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
 
 jest.mock('../repository/userDAO');
 jest.mock('bcrypt');
@@ -118,7 +118,7 @@ describe('Login Test', () => {
         tokens.createToken.mockReturnValueOnce("ljkfdsnbveoug43bgpone34klbwnuotr");
         const data = await userService.loginUser(complete);
         expect(data.response).toBeTruthy();
-        expect(data.user.username).toStrictEqual(complete.username);
+        expect(data.username).toStrictEqual(complete.username);
     });
 });
 

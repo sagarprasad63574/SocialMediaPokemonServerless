@@ -38,7 +38,8 @@ const postComment = async receivedData => {
     if(!foundUser) return {response: false, errors: "User not found"};
     const newComment = {
         team_name: receivedData.team_name,
-        comment: receivedData.comment
+        comment: receivedData.comment,
+        rating: receivedData.rating
     };
     const data = await commentDAO.postComment(foundUser.user_id, newComment);
     if(!data) return {response: false, errors: "Could not create comment"};
@@ -62,7 +63,8 @@ const updateComment = async receivedData => {
     const comment_index = receivedData.comment_index;
     const updatedComment = {
         team_name: receivedData.team_name,
-        comment: receivedData.comment
+        comment: receivedData.comment,
+        rating: receivedData.rating
     };
     const data = await commentDAO.updateComment(foundUser.user_id, comment_index, updatedComment);
     if(!data) return {response: false, errors: "Could not update comment"};

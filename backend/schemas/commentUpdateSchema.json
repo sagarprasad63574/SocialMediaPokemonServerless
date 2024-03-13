@@ -18,6 +18,9 @@
             "minLength": 1,
             "maxLength": 140
         },
+        "rating": {
+            "type": "number"
+        },
         "comment_index": {
             "type": "number"
         }
@@ -26,6 +29,7 @@
         "username",
         "team_name",
         "comment",
+        "rating",
         "comment_index"
     ]
 }

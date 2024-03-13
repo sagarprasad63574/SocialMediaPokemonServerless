@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "properties": {
+        "pokemon_name": {
+            "type": "string"
+        },
+        "attack": {
+            "type": "number"
+        },
+        "defense": {
+            "type": "number"
+        },
+        "specialattack": {
+            "type": "number"
+        },
+        "specialdefense": {
+            "type": "number"
+        },
+        "speed": {
+            "type": "number"
+        },
+        "hp": {
+            "type": "number"
+        },
+        "types": {
+            "type": "array"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "pokemon_name",
+        "attack",
+        "defense",
+        "specialattack",
+        "specialdefense",
+        "speed",
+        "hp"
+    ]
+}
