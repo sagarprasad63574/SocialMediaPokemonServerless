@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { useGetUserDetailsQuery } from '../../store/middleware/authService'
 import { logout, setCredentials } from '../../store/slices/authSlice'
+import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 //import '../styles/header.css'
 
 const Header = () => {
@@ -34,20 +35,29 @@ const Header = () => {
                             Logout
                         </button>
                     ) : (
-                        <NavLink className='button' to='/login'>
+                        <Nav.Link className='button' href='/login'>
                             Login
-                        </NavLink>
+                        </Nav.Link>
                     )}
                 </div>
             </div>
-            <nav className='container navigation'>
-                <NavLink to='/'>Home</NavLink>
-                <NavLink to='/login'>Login</NavLink>
-                <NavLink to='/register'>Register</NavLink>
-                <NavLink to='/profile'>Profile</NavLink>
-                <NavLink to='/teams'>Teams</NavLink>
-                <NavLink to='/teams/add'>AddTeam</NavLink>
-            </nav>
+
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand href="/">Social Media Pokemon</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/">Home</Nav.Link>
+                            <Nav.Link href="/login">Login</Nav.Link>
+                            <Nav.Link href='/register'>Register</Nav.Link>
+                            <Nav.Link href='/profile'>Profile</Nav.Link>
+                            <Nav.Link href='/teams'>Teams</Nav.Link>
+                            <Nav.Link href='/teams/add'>AddTeam</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
         </header>
     )
 }
