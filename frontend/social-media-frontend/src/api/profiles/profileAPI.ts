@@ -32,7 +32,7 @@ export const editProfile = async (userToken: any, { biography, name, email }: an
             }
         }
         const { data } = await axios.post(
-            `${BASE_URL}/teams`,
+            `${BASE_URL}/profiles`,
             { biography, name, email },
             config
         )

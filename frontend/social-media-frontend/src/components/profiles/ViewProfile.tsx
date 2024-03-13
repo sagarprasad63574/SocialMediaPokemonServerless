@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ViewProfile = (props: any) => {
-    const {visible, setVisible, profile} = props;
+    const {profile, visible, setVisible} = props;
     const handleEdit = (event: any) => {
         setVisible(!visible);
     };

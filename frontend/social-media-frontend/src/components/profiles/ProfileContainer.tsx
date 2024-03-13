@@ -30,7 +30,7 @@ const ProfileContainer = () => {
         <div>
             {error && <Error>{error}</Error>}
             {showForm ? (
-                <ProfileEditForm visible={showForm} setVisible={setShowForm}/>
+                <ProfileEditForm profile={profile} setProfile={setProfile} visible={showForm} setVisible={setShowForm}/>
             ) : (
                 <ViewProfile profile={profile} visible={showForm} setVisible={setShowForm}/>
             )}
