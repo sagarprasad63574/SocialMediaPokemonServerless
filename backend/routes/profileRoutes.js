@@ -6,7 +6,7 @@ const { BadRequestError, NotFoundError } = require('../util/expressError');
 const router = express.Router();
 
 router.post('/', ensureLoggedIn, async (req, res, next) => {
-    const username = res.locals.username;
+    const username = res.locals.user.username;
     try {
         const data = await userService.editProfile({username, ...req.body});
         if(!data.response) throw new BadRequestError(data.errors);
@@ -17,7 +17,7 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
 });
 
 router.get('/', ensureLoggedIn, async (req, res, next) => {
-    const user_id = res.locals.id;
+    const user_id = res.locals.user.id;
     try {
         const data = await userService.getUser(user_id);
         if(!data.response) throw new NotFoundError(data.errors);

@@ -12,7 +12,7 @@ import Header from './components/headers/Header'
 import TestComponent from './components/TestComponent/TestComponent';
 import LoginScreen from './components/user/LoginScreen';
 import ProtectedRoute from './components/routing/ProtectedRoutes';
-import ProfileScreen from './components/user/ProfileScreen';
+import ProfileScreen from './components/profiles/ProfileScreen';
 import TeamsScreen from './components/teams/MyTeamsContainer';
 import RegisterScreen from './components/user/RegisterScreen';
 import AddTeamContainer from './components/teams/AddTeamContainer';
