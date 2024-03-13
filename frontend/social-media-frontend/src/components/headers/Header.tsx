@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useGetUserDetailsQuery } from '../../store/middleware/authService'
 import { logout, setCredentials } from '../../store/slices/authSlice'
-import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
+import { Button, Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 //import '../styles/header.css'
 
 const Header = () => {
@@ -21,41 +21,42 @@ const Header = () => {
 
     return (
         <header>
-            <div className='header-status'>
-                <span>
-                    {isFetching
-                        ? `Fetching your profile...`
-                        : userInfo !== null
-                            ? `Logged in as ${userInfo.username}`
-                            : "You're not logged in"}
-                </span>
-                <div className='cta'>
-                    {userInfo ? (
-                        <button className='button' onClick={() => dispatch(logout())}>
-                            Logout
-                        </button>
-                    ) : (
-                        <Nav.Link className='button' href='/login'>
-                            Login
-                        </Nav.Link>
-                    )}
-                </div>
-            </div>
-
-            <Navbar expand="lg" className="bg-body-tertiary">
+            <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
                 <Container>
-                    <Navbar.Brand href="/">Social Media Pokemon</Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/">Social Media Pokemon</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/login">Login</Nav.Link>
-                            <Nav.Link href='/register'>Register</Nav.Link>
-                            <Nav.Link href='/profile'>Profile</Nav.Link>
-                            <Nav.Link href='/teams'>Teams</Nav.Link>
-                            <Nav.Link href='/teams/add'>AddTeam</Nav.Link>
+                            <Nav.Link as={Link} to="/">Home</Nav.Link>
+                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                            <Nav.Link as={Link} to='/register'>Register</Nav.Link>
+                            <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
+                            <Nav.Link as={Link} to='/teams'>Teams</Nav.Link>
+                            <Nav.Link as={Link} to='/teams/add'>AddTeam</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
+                    <div className='header-status'>
+                        <span>
+                            {isFetching
+                                ? `Fetching your profile...`
+                                : userInfo !== null
+                                    ? <p style={{color: "white"}}>{`Logged in as ${userInfo.username}`}</p>
+                                    : <p style={{color: "white"}}>You're not logged in</p>}
+                        </span>
+                        <div className='cta'>
+                            {userInfo ? (
+                                <Button variant="outline-light" size="sm" onClick={() => dispatch(logout())}>
+                                    Logout
+                                </Button>
+                            ) : (
+                                <Link to="/login">
+                                    <Button variant="outline-light" size="sm">
+                                        Login
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
+                    </div>
                 </Container>
             </Navbar>
         </header>
