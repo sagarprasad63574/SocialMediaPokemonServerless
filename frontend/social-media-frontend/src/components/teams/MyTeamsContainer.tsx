@@ -5,7 +5,7 @@ import ViewMyTeams from './ViewMyTeams';
 import Error from '../common/Error';
 
 const TeamScreen = () => {
-  const { userToken, error } = useSelector((state: any) => state.auth);
+  const { userToken, error } = useSelector((state: any) => state.auth); //redux state
   console.log("Hello Team Screen: TOKEN", userToken);
 
   const [message, setMessage]: any = useState("");
@@ -16,7 +16,7 @@ const TeamScreen = () => {
       try {
         let teams = await getTeams(userToken);
         setMessage(teams.message);
-        if(teams.teams) setTeams(teams.teams);
+        if(teams.teams) setTeams(teams.teams); //[]
       } catch (error) {
         console.log(error);
       }
