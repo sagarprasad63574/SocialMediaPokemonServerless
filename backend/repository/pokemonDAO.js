@@ -22,7 +22,6 @@ const dynamoDBClient = new DynamoDBClient({
 const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
-
 require('dotenv').config();
 
 const pokedata = async (pokiemon) => {
@@ -33,106 +32,6 @@ const pokedata = async (pokiemon) => {
         return pokemon;
     }
     catch (error) {
-        logger.error(error);
-        return null;
-    }
-}
-
-const createTeam = async (user_id, team) => {
-    const command = new UpdateCommand({
-        TableName,
-        Key: {
-            user_id
-        },
-        UpdateExpression: "SET #t = list_append(#t, :vals)",
-        ExpressionAttributeNames: {
-            "#t": "teams"
-        },
-        ExpressionAttributeValues: {
-            ":vals": [
-                {
-                    "team_id": team.team_id,
-                    "team_name": team.team_name,
-                    "win": team.win,
-                    "loss": team.loss,
-                    "points": team.points,
-                    "pokemons": team.pokemons,
-                    "battlelog": team.battlelog
-                }
-            ]
-        },
-        ReturnValues: "UPDATED_NEW"
-    });
-
-    try {
-        const data = await documentClient.send(command);
-        return data.Attributes.teams;
-    } catch (error) {
-        logger.error(error);
-        return null;
-    }
-}
-
-const editTeam = async (user_id, team_index, team) => {
-    const command = new UpdateCommand({
-        TableName,
-        Key: {
-            user_id
-        },
-        UpdateExpression: `SET teams[${team_index}].team_name = :vals`,
-        ExpressionAttributeValues: {
-
-            ":vals": team.team_name,
-
-        },
-        ReturnValues: "UPDATED_NEW"
-    });
-
-    try {
-        const data = await documentClient.send(command);
-        return data.Attributes.teams[0];
-    } catch (error) {
-        logger.error(error);
-        return null;
-    }
-}
-
-
-const deleteTeam = async (user_id, team_index) => {
-    const command = new UpdateCommand({
-        TableName,
-        Key: {
-            user_id
-        },
-        UpdateExpression: `REMOVE teams[${team_index}]`,
-        ReturnValues: "UPDATED_NEW"
-    });
-
-    try {
-        const data = await documentClient.send(command);
-        return data;
-    } catch (error) {
-        logger.error(error);
-        return null;
-    }
-}
-
-
-const ViewUsersTeams = async (user_id) => {
-    const command = new QueryCommand({
-        TableName,
-        KeyConditionExpression:
-            "user_id = :user_id",
-        ExpressionAttributeValues: {
-            ":user_id": user_id,
-        },
-        ConsistentRead: true,
-    });
-
-    try {
-        const data = await documentClient.send(command);
-        return data.Items[0].teams;
-    } catch (error) {
         logger.error(error);
         return null;
     }
@@ -193,10 +92,6 @@ const deletePokemonFromTeam = async (user_id, team_id, pokemon_id) => {
 }
 
 module.exports = {
-    createTeam,
-    editTeam,
-    deleteTeam,
-    ViewUsersTeams,
     addPokemonToTeam,
     deletePokemonFromTeam,
     pokedata

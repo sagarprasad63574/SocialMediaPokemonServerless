@@ -6,8 +6,13 @@ const teamRouter = require('./routes/teamRoutes');
 const commentRouter = require('./routes/commentRoutes');
 const profileRouter = require('./routes/profileRoutes');
 const tokenRouter = require('./routes/tokenRoute');
+<<<<<<< HEAD
 const pokemonRouter = require('./routes/myPokemonRoutes');
 const postRouter = require('./routes/postRoutes');
+=======
+const pokemonRouter = require('./routes/pokemonRoute');
+const myPokemonRouter = require('./routes/myPokemonRoutes');
+>>>>>>> 0061f14e7ca1feebd258e3d86a2044e42fa80357
 const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
@@ -26,8 +31,14 @@ app.use('/teams', teamRouter);
 app.use('/comments', commentRouter);
 app.use('/profiles', profileRouter);
 app.use('/token', tokenRouter);
+<<<<<<< HEAD
 app.use('/posts', postRouter); 
 app.use('/myPokemon', pokemonRouter); 
+=======
+app.use('/pokemon', pokemonRouter);
+app.use('/token', tokenRouter)
+app.use('/myPokemon', myPokemonRouter); 
+>>>>>>> 0061f14e7ca1feebd258e3d86a2044e42fa80357
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
