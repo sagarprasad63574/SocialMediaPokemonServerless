@@ -51,7 +51,7 @@ function validateTeam(receivedData) {
     if (!validator.valid) {
         const errs = validator.errors.map(e => e.stack);
         logger.error(errs);
-        return { reponse: false, errors: errs }
+        return { response: false, errors: errs }
     }
     return { response: true }
 }
@@ -141,7 +141,7 @@ function validateEditTeam(receivedData) {
     if (!validator.valid) {
         const errs = validator.errors.map(e => e.stack);
         logger.error(errs);
-        return { reponse: false, errors: errs }
+        return { response: false, errors: errs }
     }
     return { response: true }
 }
@@ -186,7 +186,7 @@ function validateAddPokemon(receivedData) {
     if (!validator.valid) {
         const errs = validator.errors.map(e => e.stack);
         logger.error(errs);
-        return { reponse: false, errors: errs }
+        return { response: false, errors: errs }
     }
     return { response: true }
 }
