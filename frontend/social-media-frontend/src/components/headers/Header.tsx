@@ -33,6 +33,7 @@ const Header = () => {
                             <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
                             <Nav.Link as={Link} to='/teams'>Teams</Nav.Link>
                             <Nav.Link as={Link} to='/teams/add'>AddTeam</Nav.Link>
+                            <Nav.Link as={Link} to='/comments'>Comments</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                     <div className='header-status'>

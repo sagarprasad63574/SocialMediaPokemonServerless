@@ -16,6 +16,7 @@ import ProfileScreen from './components/profiles/ProfileScreen';
 import TeamsScreen from './components/teams/MyTeamsContainer';
 import RegisterScreen from './components/user/RegisterScreen';
 import AddTeamContainer from './components/teams/AddTeamContainer';
+import CommentsContainer from './components/comments/CommentsContainer';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path='/profile' element={<ProfileScreen />} />
             <Route path='/teams' element={<TeamsScreen />} />
             <Route path='/teams/add' element={<AddTeamContainer />} />
+            <Route path='/comments' element={<CommentsContainer />} />
           </Route>
         </Routes>
       </main>
