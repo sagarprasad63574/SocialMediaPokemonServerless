@@ -17,11 +17,11 @@ const getCommentsByUsername = async username => {
     return {response: true, message: `Got comments from user ${username}`, comments};
 };
 
-const getCommentsByTeam = async team_name => {
+const getCommentsByTeam = async team_id => {
     if(!team_id) return {response: false, errors: "No team id provided"};
     const comments = await commentDAO.getCommentsByTeam(team_id);
     if(!comments || !comments.length) return {response: false, errors: "No comments"};
-    return {response: true, message: `Got comments for team ${team_name}`, comments};
+    return {response: true, message: `Got comments for team ${team_id}`, comments};
 }
 
 const getCommentsByRole = async role => {
@@ -66,7 +66,6 @@ const updateComment = async receivedData => {
     if(!foundUser) return {response: false, errors: "User doesn't exist"};
     const foundTeam = await commentDAO.getTeamById(receivedData.team_id);
     if(!foundTeam) return {response: false, errors: "Team does not exist"};
-    console.log(foundTeam);
     if(!foundTeam.post) return {response: false, errors: "Team has not been posted yet"};
     const comment_index = receivedData.comment_index;
     const updatedComment = {
