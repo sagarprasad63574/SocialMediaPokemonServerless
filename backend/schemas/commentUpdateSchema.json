@@ -8,10 +8,10 @@
             "minLength": 5,
             "maxLength": 30
         },
-        "team_name": {
+        "team_id": {
             "type": "string",
             "minLength": 5,
-            "maxLength": 30
+            "maxLength": 40
         },
         "comment": {
             "type": "string",
@@ -27,7 +27,7 @@
     },
     "required": [
         "username",
-        "team_name",
+        "team_id",
         "comment",
         "rating",
         "comment_index"
