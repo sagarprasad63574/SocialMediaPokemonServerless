@@ -1,55 +1,55 @@
-import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { userLogin } from '../../store/actions/authActions'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Error from '../common/Error'
-import Spinner from '../common/Spinner'
+import Form from 'react-bootstrap/esm/Form'
+import Button from 'react-bootstrap/esm/Button'
+import Container from 'react-bootstrap/esm/Container'
 
 const LoginScreen = () => {
-    const { loading, userInfo, error } = useSelector((state: any) => state.auth)
+    const { userInfo, error } = useSelector((state: any) => state.auth)
     const dispatch = useDispatch()
 
-    const { register, handleSubmit } = useForm()
+    const [data, setData] = useState({
+        username: "",
+        password: ""
+    });
 
     const navigate = useNavigate()
 
-    // redirect authenticated user to profile screen
     useEffect(() => {
         if (userInfo) {
             navigate('/')
         }
     }, [navigate, userInfo])
 
-    const submitForm = (data: any) => {
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
         dispatch(userLogin(data))
     }
 
     return (
-        <form onSubmit={handleSubmit(submitForm)}>
-            {error && <Error>{error}</Error>}
-            <div className='form-group'>
-                <label htmlFor='username'>Username</label>
-                <input
-                    type='text'
-                    className='form-input'
-                    {...register('username')}
-                    required
-                />
-            </div>
-            <div className='form-group'>
-                <label htmlFor='password'>Password</label>
-                <input
-                    type='password'
-                    className='form-input'
-                    {...register('password')}
-                    required
-                />
-            </div>
-            <button type='submit' className='button' disabled={loading}>
-                {loading ? <Spinner /> : 'Login'}
-            </button>
-        </form>
+        <Container className="d-grid justify-content-center">
+            <h1>WELCOME LOGIN</h1>
+            <Form onSubmit={handleSubmit}>
+                {error && <Error>{error}</Error>}
+                <Form.Group className="mb-3" controlId="formBasicUsername">
+                    <Form.Label>username</Form.Label>
+                    <Form.Control type="text" placeholder="Enter username" required
+                        onChange={(event) => setData({ ...data, username: event.target.value })} />
+                </Form.Group>
+
+                <Form.Group className="center mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" required
+                        onChange={(event) => setData({ ...data, password: event.target.value })} />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
+        </Container>
     )
 }
 
