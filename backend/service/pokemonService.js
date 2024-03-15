@@ -55,7 +55,8 @@ const addPokemonToTeam = async (user_id, receivedData) => {
         specialattack:pokemon.data.stats[3].base_stat,
         specialdefense:pokemon.data.stats[4].base_stat, 
         speed:pokemon.data.stats[5].base_stat, 
-        type:pokemon.data.types
+        type:pokemon.data.types,
+        moves:[]
     };
 
     let data = await pokemonDAO.addPokemonToTeam(team_index, user_id, poke);
@@ -87,6 +88,56 @@ const deletePokemonFromTeam = async (user_id, team_id, pokemon_id) => {
     return { response: false };
 }
 
+const editPokemonFromTeam = async (user_id, team_id, pokemon_id, receivedData) => {
+
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response: false, message: "No team found!" }
+
+    const pokemon = {
+        pokemon_name: receivedData.pokemon_name,
+        attack: receivedData.attack,
+        defense: receivedData.defense,
+        specialattack: receivedData.specialattack,
+        specialdefense: receivedData.specialdefense,
+        speed: receivedData.speed,
+        hp: receivedData.hp
+    };
+
+    let data = await pokemonDAO.editPokemonFromTeam(user_id, team_id, pokemon_id, pokemon);
+
+    if (data) {
+        return { response: true, message: "Failed to edit pokemon" };
+    }
+
+    return { response: false };
+}
+
+const addMoveToPokemon = async (user_id, team_id, pokemon_id, receivedData) => {
+
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response: false, message: "No team found!" }
+
+    const pokemove = await pokemonDAO.pokemove(receivedData.move_name);
+
+    const pokemonMove = 
+    {
+        name:receivedData.move_name,
+        accuracy:pokemove.data.accuracy,
+        power:pokemove.data.power,
+        type:pokemove.data.type.name,
+        info:pokemove.data.meta
+    }
+
+    const data = await pokemonDAO.addMoveToPokemon(user_id, team_id, pokemon_id, pokemonMove);
+
+    if (data) {
+        return { response: true, message: "added move" };
+    }
+
+    return { response: false };
+}
+
+
 function findTeamIndex(team_name, teams) {
     return teams.findIndex((team) => team.team_name === team_name);
 }
@@ -105,5 +156,7 @@ module.exports = {
     viewMyTeams,
     getPokemon,
     addPokemonToTeam,
-    deletePokemonFromTeam
+    deletePokemonFromTeam,
+    editPokemonFromTeam,
+    addMoveToPokemon
 }

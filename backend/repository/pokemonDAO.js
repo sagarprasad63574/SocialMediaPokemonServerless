@@ -37,6 +37,19 @@ const pokedata = async (pokiemon) => {
     }
 }
 
+const pokemove = async (move) => {
+    try
+    {
+        const url = `https://pokeapi.co/api/v2/move/${move}/`;
+        const move2 = await axios.get(url);
+        return move2;
+    }
+    catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 const addPokemonToTeam = async (team_index, user_id, pokemon) => {
     const command = new UpdateCommand({
         TableName,
@@ -55,7 +68,8 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
                     "specialattack":pokemon.specialattack,
                     "specialdefense":pokemon.specialdefense, 
                     "speed":pokemon.speed, 
-                    "type":pokemon.type
+                    "type":pokemon.type,
+                    "moves":pokemon.moves
                 }
             ]
 
@@ -91,8 +105,78 @@ const deletePokemonFromTeam = async (user_id, team_id, pokemon_id) => {
     }
 }
 
+const editPokemonFromTeam = async (user_id, team_index, pokemon_index, pokemon) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `SET teams[${team_index}].pokemons[${pokemon_index}] = :vals`,
+        ExpressionAttributeValues: {
+
+            ":vals": {
+                "pokemon_id": pokemon.pokemon_id,
+                "pokemon_name": pokemon.pokemon_name,
+                "hp": pokemon.hp,
+                "attack": pokemon.attack,
+                "defense": pokemon.defense,
+                "specialattack": pokemon.specialattack,
+                "specialdefense": pokemon.specialdefense,
+                "speed": pokemon.speed,
+                "types": pokemon.types
+            }
+
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data.Attributes.my_pokemons[0];
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
+const addMoveToPokemon = async (user_id, team_index, pokemon_index, pokemon) => {
+    console.log(user_id, team_index, pokemon_index, pokemon);
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `SET teams[${team_index}].pokemons[${pokemon_index}].moves = list_append(teams[${team_index}].pokemons[${pokemon_index}].moves, :vals)`,
+        ExpressionAttributeValues: {
+
+            ":vals": [
+                {
+                    "move_name": pokemon.name,
+                    "accuracy": pokemon.accuracy,
+                    "type": pokemon.type,
+                    "power": pokemon.power,
+                    "info": pokemon.info
+                }
+            ]
+
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data.Attributes.teams[0].pokemons;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 module.exports = {
     addPokemonToTeam,
     deletePokemonFromTeam,
-    pokedata
+    pokedata,
+    editPokemonFromTeam,
+    pokemove,
+    addMoveToPokemon
 }
