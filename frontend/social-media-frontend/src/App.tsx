@@ -17,6 +17,7 @@ import TeamsScreen from './components/teams/MyTeamsContainer';
 import RegisterScreen from './components/user/RegisterScreen';
 import AddTeamContainer from './components/teams/AddTeamContainer';
 import CommentsContainer from './components/comments/CommentsContainer';
+import HomePageController from './components/homepage/HomePageController';
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
           <Route path='/login' element={<LoginScreen />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path='/' element={<TestComponent />} />
+            <Route path='/' element={<HomePageController />} />
             <Route path='/profile' element={<ProfileScreen />} />
             <Route path='/teams' element={<TeamsScreen />} />
             <Route path='/teams/add' element={<AddTeamContainer />} />
