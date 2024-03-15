@@ -17,11 +17,11 @@ const getCommentsByUsername = async username => {
     return {response: true, message: `Got comments from user ${username}`, comments};
 };
 
-const getCommentsByTeam = async team_name => {
-    if(!team_name) return {response: false, errors: "No team name provided"};
-    const comments = await commentDAO.getCommentsByTeam(team_name);
+const getCommentsByTeam = async team_id => {
+    if(!team_id) return {response: false, errors: "No team id provided"};
+    const comments = await commentDAO.getCommentsByTeam(team_id);
     if(!comments || !comments.length) return {response: false, errors: "No comments"};
-    return {response: true, message: `Got comments for team ${team_name}`, comments};
+    return {response: true, message: `Got comments for team ${team_id}`, comments};
 }
 
 const getCommentsByRole = async role => {
@@ -36,10 +36,14 @@ const postComment = async receivedData => {
     if(!validated.response) return {response: false, errors: validated.errors};
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
     if(!foundUser) return {response: false, errors: "User not found"};
+    const foundTeam = await commentDAO.getTeamById(receivedData.team_id);
+    if(!foundTeam) return {response: false, errors: "Team does not exist"};
+    if(!foundTeam.post) return {response: false, errors: "Team has not been posted yet"};
     const newComment = {
-        team_name: receivedData.team_name,
+        team_id: receivedData.team_id,
         comment: receivedData.comment,
-        rating: receivedData.rating
+        rating: receivedData.rating,
+        timestamp: new Date().toISOString()
     };
     const data = await commentDAO.postComment(foundUser.user_id, newComment);
     if(!data) return {response: false, errors: "Could not create comment"};
@@ -60,11 +64,15 @@ const updateComment = async receivedData => {
     if(!validated.response) return {response: false, errors: validated.errors};
     const foundUser = await userDAO.getUserByUsername(receivedData.username);
     if(!foundUser) return {response: false, errors: "User doesn't exist"};
+    const foundTeam = await commentDAO.getTeamById(receivedData.team_id);
+    if(!foundTeam) return {response: false, errors: "Team does not exist"};
+    if(!foundTeam.post) return {response: false, errors: "Team has not been posted yet"};
     const comment_index = receivedData.comment_index;
     const updatedComment = {
-        team_name: receivedData.team_name,
+        team_id: receivedData.team_id,
         comment: receivedData.comment,
-        rating: receivedData.rating
+        rating: receivedData.rating,
+        timestamp: new Date().toISOString()
     };
     const data = await commentDAO.updateComment(foundUser.user_id, comment_index, updatedComment);
     if(!data) return {response: false, errors: "Could not update comment"};

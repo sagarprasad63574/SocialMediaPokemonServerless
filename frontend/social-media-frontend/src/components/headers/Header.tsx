@@ -33,6 +33,7 @@ const Header = () => {
                             <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
                             <Nav.Link as={Link} to='/teams'>Teams</Nav.Link>
                             <Nav.Link as={Link} to='/teams/add'>AddTeam</Nav.Link>
+                            <Nav.Link as={Link} to='/comments'>Comments</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                     <div className='header-status'>
@@ -40,22 +41,28 @@ const Header = () => {
                             {isFetching
                                 ? `Fetching your profile...`
                                 : userInfo !== null
-                                    ? <p style={{color: "white"}}>{`Logged in as ${userInfo.username}`}</p>
-                                    : <p style={{color: "white"}}>You're not logged in</p>}
-                        </span>
-                        <div className='cta'>
+                                    ? <span style={{ color: "white" }}>{` Logged in as ${userInfo.username} `}</span>
+                                    : <span style={{ color: "white" }}> You're not logged in </span>}
                             {userInfo ? (
                                 <Button variant="outline-light" size="sm" onClick={() => dispatch(logout())}>
                                     Logout
                                 </Button>
                             ) : (
-                                <Link to="/login">
-                                    <Button variant="outline-light" size="sm">
-                                        Login
-                                    </Button>
-                                </Link>
+                                <span>
+                                    <Link to="/login">
+                                        <Button variant="outline-light" size="sm" className='mr-5'>
+                                            Login
+                                        </Button>
+                                    </Link>
+                                    <Link to="/register">
+                                        <Button variant="outline-light" size="sm">
+                                            Register
+                                        </Button>
+                                    </Link>
+                                </span>
                             )}
-                        </div>
+                        </span>
+
                     </div>
                 </Container>
             </Navbar>

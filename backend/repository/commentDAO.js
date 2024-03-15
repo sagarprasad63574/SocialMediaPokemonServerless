@@ -57,13 +57,13 @@ const getCommentsByUsername = async username => {
     }
 };
 
-const getCommentsByTeam = async team_name => {
+const getCommentsByTeam = async team_id => {
     const allComments = await getEveryComment();
     if(!allComments) return null;
     let comments = [];
     for(let i=0; i<allComments.length; i++){
         let currentUser = allComments[i];
-        let reducedComments = currentUser.comments.filter(comment => {return comment.team_name === team_name});
+        let reducedComments = currentUser.comments.filter(comment => {return comment.team_id === team_id});
         if(!reducedComments || !reducedComments.length) continue;
         let reducedUser = {
             username: currentUser.username,
@@ -72,6 +72,37 @@ const getCommentsByTeam = async team_name => {
         comments.push(reducedUser);
     }
     return comments;
+};
+
+const getTeamById = async team_id => {
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "role-index",
+        KeyConditionExpression: "#r = :r",
+        ExpressionAttributeNames: {
+            "#r" : "role"
+        },
+        ExpressionAttributeValues: {
+            ":r" : "user"
+        },
+        ProjectionExpression: "teams"
+    });
+    try {
+        const data = await documentClient.send(command);
+        const objs = data.Items;
+        let teamObjs = [];
+        for(let i=0; i<objs.length; i++){
+            if(!objs[i].teams || !objs[i].teams.length) continue;
+            objs[i].teams.forEach(team => {
+                teamObjs.push(team);
+            });
+        }
+        let foundTeams = teamObjs.filter(team => {return team.team_id === team_id});
+        return foundTeams[0];
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
 };
 
 const getCommentsByRole = async role => {
@@ -108,16 +139,17 @@ const postComment = async (user_id, Comment) => {
         Key: {
             user_id
         },
-        UpdateExpression: "set #c = list_append(#c, :vals)",
+        UpdateExpression: "set #c = list_append(#c, :val)",
         ExpressionAttributeNames: {
             "#c" : "comments"
         },
         ExpressionAttributeValues: {
-            ":vals" : [
+            ":val": [
                 {
-                    "team_name": Comment.team_name,
-                    "comment": Comment.comment,
-                    "rating": Comment.rating
+                    team_id : Comment.team_id,
+                    comment : Comment.comment,
+                    rating : Comment.rating,
+                    timestamp : Comment.timestamp
                 }
             ]
         },
@@ -141,9 +173,10 @@ const updateComment = async (user_id, comment_index, newComment) => {
         UpdateExpression: `set comments[${comment_index}] = :c`,
         ExpressionAttributeValues: {
             ":c": {
-                team_name : newComment.team_name,
+                team_id : newComment.team_id,
                 comment : newComment.comment,
-                rating: newComment.rating
+                rating: newComment.rating,
+                timestamp: newComment.timestamp
             }
         },
         ReturnValues: "UPDATED_NEW"
@@ -184,5 +217,6 @@ module.exports = {
     getCommentsByRole,
     postComment,
     updateComment,
-    deleteComment
+    deleteComment,
+    getTeamById
 };
