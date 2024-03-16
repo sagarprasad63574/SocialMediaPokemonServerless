@@ -1,6 +1,6 @@
 import React from 'react';
 import { convertTimestampToUTC } from '../../api/comments/commentAPI';
-import { ListGroup } from 'react-bootstrap';
+import { Button, ListGroup } from 'react-bootstrap';
 
 const ViewComments = (props: any) => {
     const {comments} = props;
@@ -11,7 +11,7 @@ const ViewComments = (props: any) => {
                     TeamID: {comment.team_id}<br/>
                     Rating: {comment.rating}<br/>
                     Message: {comment.comment}<br/>
-                    Posted on: {convertTimestampToUTC(comment.timestamp)}
+                    Posted on: {convertTimestampToUTC(comment.timestamp)}<br/>
                 </ListGroup.Item>
             ))}
         </ListGroup>
