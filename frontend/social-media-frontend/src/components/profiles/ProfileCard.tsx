@@ -1,6 +1,8 @@
 import React from 'react'
 import Button from 'react-bootstrap/esm/Button'
 import Card from 'react-bootstrap/esm/Card'
+import Nav from 'react-bootstrap/esm/Nav'
+import { Link } from 'react-router-dom'
 
 const ProfileCard = ({ user }: any) => {
     return (
@@ -12,7 +14,9 @@ const ProfileCard = ({ user }: any) => {
                 <Card.Text>
                     Please look below to view all the teams!
                 </Card.Text>
-                <Button href="/profile" variant="primary">Click to View Your Profile</Button>
+                <Nav.Link as={Link} to='/profile'>
+                    <Button variant="primary">Click to View Your Profile</Button>
+                </Nav.Link>
             </Card.Body>
         </Card>
     )

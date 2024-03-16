@@ -1,33 +1,28 @@
 import React from 'react'
+import Accordion from 'react-bootstrap/esm/Accordion';
+import ViewPokemon from '../homepage/ViewPokemon';
+import ViewUsersTeams from '../homepage/ViewUsersTeams';
 
-function ViewMyTeams({ teams }: any) {
-    const listItems = teams.map((team: any) =>
-      <li key={team.team_id}>
-        {team.team_name}
-        <p>
-          <br />
-          LOSS: {team.loss} <br />
-          WIN: {team.win} <br />
-          POINTS: {team.points}
-        </p>
-      </li>
-    );
-    
-    return (
+const ViewMyTeams = ({ userTeams }: any) => {
+  const listUserTeams = userTeams.map((teams: any, index: any) =>
+    <Accordion.Item eventKey={`${index}`}>
+      <Accordion.Header >{teams.team_name}</Accordion.Header>
+      <Accordion.Body >
+        <ViewUsersTeams userTeams={[teams]} />
+        
+      </Accordion.Body>
+    </Accordion.Item>
+  );
 
-        <div>
-            {
-                teams.length ? (
-                    <div>
-                        {/* <h1>{teams.message}</h1> */}
-                        <ul>{listItems}</ul>
-                    </div>
-                ) : (
-                  <div> Please Create A Team  </div>
-                )
-            }
-        </div>
-    )
+  //   battlelog
+  // : 
+  // []
+
+  return (
+    <Accordion defaultActiveKey="0">
+      {listUserTeams}
+    </Accordion>
+  )
 }
 
 export default ViewMyTeams

@@ -36,11 +36,10 @@ export const AddTeam = async (userToken: any, { team_name }: any) => {
             { team_name },
             config
         )
-
+        
         console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
-        console.log(error);
         return (error.response.data.error) ? error.response.data.error: error.message;
     }
 }
