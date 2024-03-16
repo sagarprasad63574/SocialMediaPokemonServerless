@@ -202,7 +202,6 @@ const deleteComment = async (user_id, comment_index) => {
     });
     try {
         const data = await documentClient.send(command);
-        console.log(data);
         return data;
     } catch (error) {
         logger.error(error);
