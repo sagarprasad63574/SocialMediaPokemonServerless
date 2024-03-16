@@ -1,6 +1,6 @@
 import React from 'react'
 import Accordion from 'react-bootstrap/esm/Accordion';
-import ViewUsersTeam from './ViewUsersTeam';
+import ViewUsersTeam from './ViewUsersTeams';
 
 const ViewAllPostedTeams = ({ postedTeams }: any) => {
     console.log(postedTeams);

@@ -44,7 +44,6 @@ function ViewPokemon({ pokemons }: any) {
                 HP: {pokemon.hp}<br/>
                 Special Attack: {pokemon.specialattack}<br/>
                 Special Defense: {pokemon.specialdefense}<br/>
-                Type: {pokemon.type}
                 Speed: {pokemon.speed}<br/>
             </Card.Text>
 
@@ -54,7 +53,7 @@ function ViewPokemon({ pokemons }: any) {
 
 
     return (
-        <Card style={{ width: '100%' }}>
+        <Card >
             <div className="d-flex p-2 bd-highlight">{userPokemons}</div>
         </Card >
     )

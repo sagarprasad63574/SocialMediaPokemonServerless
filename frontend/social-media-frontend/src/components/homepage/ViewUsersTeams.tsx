@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/esm/Card'
 import ViewPokemon from './ViewPokemon'
 
 
-const ViewUsersTeam = ({ userTeams, index }: any) => {
+const ViewUsersTeams = ({ userTeams, index }: any) => {
     const userTeam = userTeams.map((team: any, index: number) => (
         <Card style={{ width: '100%' }} key={team.team_id}>
             <Card.Body>
@@ -24,4 +24,4 @@ const ViewUsersTeam = ({ userTeams, index }: any) => {
     )
 }
 
-export default ViewUsersTeam
+export default ViewUsersTeams

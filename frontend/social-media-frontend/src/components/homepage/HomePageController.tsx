@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { getAllPostedTeams } from '../../api/postedTeams/postedTeamsAPI';
 import ViewAllPostedTeams from './ViewAllPostedTeams';
+import ProfileCard from '../profiles/ProfileCard';
 
 const HomePageController = () => {
-    const { userToken } = useSelector((state: any) => state.auth);
+    const { userToken, userInfo } = useSelector((state: any) => state.auth);
     const [postedTeams, setPostedTeams] = useState([]);
     useEffect(() => {
         async function allPostedTeams() {
@@ -17,10 +18,15 @@ const HomePageController = () => {
         }
         allPostedTeams();
     }, [userToken]);
-    
+
     return (
         <div>
-            <ViewAllPostedTeams postedTeams={postedTeams}/>
+            <h1 className="display-2">WELCOME TO SOCIAL MEDIA POKEMON!</h1>
+            <div className="my-4"> <ProfileCard user={userInfo} /> </div>
+            {postedTeams.length ?
+                <ViewAllPostedTeams postedTeams={postedTeams} /> :
+                <div>No Posted Teams</div>
+            }
         </div>
     )
 }
