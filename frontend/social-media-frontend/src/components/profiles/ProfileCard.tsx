@@ -12,7 +12,7 @@ const ProfileCard = ({ user }: any) => {
                 <Card.Text>
                     Please look below to view all the teams!
                 </Card.Text>
-                <Button variant="primary">Profile</Button>
+                <Button href="/profile" variant="primary">Click to View Your Profile</Button>
             </Card.Body>
         </Card>
     )

@@ -11,6 +11,7 @@ const HomePageController = () => {
         async function allPostedTeams() {
             try {
                 let posts = await getAllPostedTeams(userToken);
+                console.log(posts);
                 setPostedTeams(posts.teams);
             } catch (error) {
                 console.log(error);

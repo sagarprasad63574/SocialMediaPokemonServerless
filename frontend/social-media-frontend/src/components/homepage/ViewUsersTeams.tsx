@@ -14,8 +14,7 @@ const ViewUsersTeams = ({ userTeams, index }: any) => {
                     Points: {team.points}
                 </Card.Text>
                 <ViewPokemon pokemons={team.pokemons} />
-                <Card.Link href="#">Card Link</Card.Link>
-                <Card.Link href="#">Another Link</Card.Link>
+                <Card.Link href={`/teams/${team.team_id}`}>View Team In Detail</Card.Link>
             </Card.Body>
         </Card>
     ))

@@ -33,6 +33,16 @@ import Stack from 'react-bootstrap/esm/Stack'
 // }
 
 function ViewPokemon({ pokemons }: any) {
+
+    const getTypesString = (typeArr:any[]) => {
+        console.log(typeArr.length);
+        let tString = `[${typeArr[0].type.name}`;
+        for(let i=1; i<typeArr.length; i++){
+            tString += `, ${typeArr[i].type.name}`;
+        }
+        tString += `]`;
+        return tString;
+    }
     const userPokemons = pokemons.map((pokemon: any, index: number) => (
         <Card.Body>
             <Card.Img variant="top" width="200px" height="400px" src="https://fastly.picsum.photos/id/508/200/200.jpg?hmac=K4JUehX1v2yEPLUOyJDAmRhZu8PgMu4vv6ypO-CA5nw" />
@@ -45,6 +55,7 @@ function ViewPokemon({ pokemons }: any) {
                 Special Attack: {pokemon.specialattack}<br/>
                 Special Defense: {pokemon.specialdefense}<br/>
                 Speed: {pokemon.speed}<br/>
+                Types: <strong>{getTypesString(pokemon.type)}</strong>
             </Card.Text>
 
         </Card.Body>
