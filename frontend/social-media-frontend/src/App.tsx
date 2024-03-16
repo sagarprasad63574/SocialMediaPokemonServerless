@@ -9,7 +9,6 @@ import {
 } from 'react-router-dom'
 import Header from './components/headers/Header'
 
-import TestComponent from './components/TestComponent/TestComponent';
 import LoginScreen from './components/user/LoginScreen';
 import ProtectedRoute from './components/routing/ProtectedRoutes';
 import ProfileScreen from './components/profiles/ProfileScreen';
@@ -18,6 +17,7 @@ import RegisterScreen from './components/user/RegisterScreen';
 import AddTeamContainer from './components/teams/AddTeamContainer';
 import CommentsContainer from './components/comments/CommentsContainer';
 import HomePageController from './components/homepage/HomePageController';
+import PostedTeamContainer from './components/postedTeam/PostedTeamContainer';
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
             <Route path='/teams' element={<TeamsScreen />} />
             <Route path='/teams/add' element={<AddTeamContainer />} />
             <Route path='/comments' element={<CommentsContainer />} />
+            <Route path='/teams/:teamID' element={<PostedTeamContainer/>}/>
           </Route>
         </Routes>
       </main>

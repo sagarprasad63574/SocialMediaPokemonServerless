@@ -3,7 +3,6 @@ import Accordion from 'react-bootstrap/esm/Accordion';
 import ViewUsersTeam from './ViewUsersTeams';
 
 const ViewAllPostedTeams = ({ postedTeams }: any) => {
-    console.log(postedTeams);
     const teams = postedTeams.map((teams: any, index: number) => (
         <Accordion.Item key={teams.team_id} eventKey={`${index}`}>
             <Accordion.Header key={teams.team_id} >{teams.username}</Accordion.Header>

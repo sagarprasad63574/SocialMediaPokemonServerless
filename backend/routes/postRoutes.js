@@ -25,6 +25,27 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
+router.get('/:id', ensureLoggedIn, async (req, res, next) => {
+    const team_id = req.params.id;
+    try {
+        const {response, message, foundTeam} = await postService.viewTeamByIdFromAll(team_id);
+        if(response){
+            return res.status(200).json({
+                response,
+                message,
+                foundTeam
+            });
+        } else {
+            return res.status(200).json({
+                response,
+                message
+            });
+        };
+    } catch (error) {
+        return next(error);
+    }
+});
+
 //posts/:id post a team to homepage
 router.post('/:id', ensureLoggedIn, async (req, res, next) => {
     const user_id = res.locals.user.id
