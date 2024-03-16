@@ -22,8 +22,9 @@ const HomePageController = () => {
 
     return (
         <div>
-            <h1 className="display-2">WELCOME TO SOCIAL MEDIA POKEMON!</h1>
+            <h1 className="display-2 text-center">Welcome To Social Media Pokemon!</h1>
             <div className="my-4"> <ProfileCard user={userInfo} /> </div>
+            <p>Below are a list of posted teams!</p>
             {postedTeams.length ?
                 <ViewAllPostedTeams postedTeams={postedTeams} /> :
                 <div>No Posted Teams</div>
