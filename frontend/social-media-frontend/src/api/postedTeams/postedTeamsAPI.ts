@@ -22,3 +22,24 @@ export const getAllPostedTeams = async (userToken: any) => {
         return error;
     }
 }
+
+export const getPostedTeamWithId = async (userToken: any, team_id: any) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+        const { data } = await axios.get(
+            `${BASE_URL}/posts/${team_id}`,
+            config
+        )
+
+        console.log("GETTING DATA FROM API", data);
+        return data;
+    } catch (error: any) {
+        console.log(error);
+        return error;
+    }
+}
