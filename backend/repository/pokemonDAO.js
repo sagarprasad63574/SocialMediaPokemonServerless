@@ -60,7 +60,8 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
         ExpressionAttributeValues: {
 
             ":vals": [
-                {
+                {   
+                    "pokemon_id": pokemon.pokemon_id, 
                     "pokemon_name": pokemon.pokemon_name,
                     "hp": pokemon.hp,
                     "attack": pokemon.attack,

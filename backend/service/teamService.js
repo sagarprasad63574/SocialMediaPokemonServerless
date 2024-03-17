@@ -19,6 +19,7 @@ const addTeam = async (user_id, receivedData) => {
     const win = 0;
     const loss = 0;
     const points = 0;
+    const post = false; 
     const pokemons = [];
     const battlelog = [];
 
@@ -30,6 +31,7 @@ const addTeam = async (user_id, receivedData) => {
             win,
             loss,
             points,
+            post, 
             pokemons,
             battlelog
         });
