@@ -13,12 +13,13 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(201).json({
+                response,
                 message,
                 teams
             })
         } else {
             throw new BadRequestError(errors);
-        }
+        }   
     } catch (err) {
         return next(err);
     }
@@ -77,11 +78,13 @@ router.put('/:id', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
@@ -100,11 +103,13 @@ router.delete('/:id', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
