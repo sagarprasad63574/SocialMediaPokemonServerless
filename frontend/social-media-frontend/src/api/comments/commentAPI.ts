@@ -68,3 +68,44 @@ export const postComment = async (userToken: any, {team_id, comment, rating}: an
         return error;
     }
 };
+
+export const updateComment = async (userToken: any, {team_id, comment, rating}: any, comment_index: any) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        };
+        const {data} = await axios.put(
+            `${BASE_URL}/comments?comment_index=${comment_index}`,
+            {team_id, comment, rating},
+            config
+        );
+        console.log("GETTING DATA FROM API", data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
+
+export const deleteComment = async (userToken: any, comment_index: any) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        };
+        const {data} = await axios.delete(
+            `${BASE_URL}/comments?comment_index=${comment_index}`,
+            config
+        );
+        console.log("GETTING DATA FROM API", data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
