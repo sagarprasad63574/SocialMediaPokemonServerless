@@ -10,18 +10,13 @@ import Form from 'react-bootstrap/esm/Form';
 import Button from 'react-bootstrap/esm/Button';
 import MyTeamsContainer from './MyTeamsContainer';
 
-const TeamScreen = () => {
+const TeamScreen = ({userTeams, setTeams}: any) => {
     const [message, setMessage] = useState("");
     const [teamName, setTeamName] = useState({
         team_name: ""
     })
-    const [teams, setTeams] = useState();
-    const { loading, userInfo, userToken, error, success } = useSelector(
-        (state: any) => state.auth
-    )
+    const { userToken } = useSelector((state: any) => state.auth)
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
     // const { register, handleSubmit } = useForm()
 
     const handleSubmit = async (event: any) => {
@@ -31,9 +26,7 @@ const TeamScreen = () => {
             const newTeam = await AddTeam(userToken, teamName);
             console.log(newTeam);
             setMessage(newTeam.message);
-            if (newTeam.teams) {
-                return navigate('/teams')
-            };
+            if (newTeam.response) setTeams([...userTeams, newTeam.teams]);
 
         } catch (error: any) {
             console.log("error: ", error);

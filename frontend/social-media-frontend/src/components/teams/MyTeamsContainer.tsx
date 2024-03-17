@@ -9,14 +9,14 @@ import Nav from 'react-bootstrap/esm/Nav';
 import Button from 'react-bootstrap/esm/Button';
 import { Link } from 'react-router-dom';
 import AddTeamContainer from './AddTeamContainer';
-import DeleteTeamContainer from './DeleteTeamContainer';
+import DeleteTeamContainer from './DeleteTeamView';
 
 const TeamScreen = () => {
   const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
   console.log("Hello Team Screen: TOKEN", userToken);
 
-  const [message, setMessage]: any = useState("");
-  const [teams, setTeams]: any = useState([]);
+  const [message, setMessage] = useState("");
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     async function myTeams() {
@@ -31,20 +31,19 @@ const TeamScreen = () => {
     }
     myTeams();
 
-  }, [userToken]);
+  }, [userToken])
 
   return (
     <div>
       {error && <Error>{error}</Error>}
-      {message && <h1 className="text-center p-4">{message}</h1>}
       <div className="my-4"> <ProfileCard user={userInfo} /> </div>
       <h1>
-        <AddTeamContainer />
-        <DeleteTeamContainer />
+        <AddTeamContainer userTeams={teams} setTeams={setTeams}/>
       </h1>
-      {teams.length ?
-        <ViewMyTeams userTeams={teams} /> :
-        <div> Please Create A Team  </div>
+      {message && <h1 className="text-center p-4">{message}</h1>}
+      {teams ?
+        <ViewMyTeams userTeams={teams} setTeams={setTeams}/> :
+        <div> Use the form above to add a team </div>
       }
     </div>
   );

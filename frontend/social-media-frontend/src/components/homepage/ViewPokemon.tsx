@@ -58,18 +58,6 @@ function ViewPokemon({ pokemons }: any) {
                     Speed: {pokemon.speed}<br />
                     Types: <strong>{getTypesString(pokemon.type)}</strong>
                 </Card.Text>
-
-                <Card.Title>{pokemon.pokemon_name}</Card.Title>
-                <Card.Text>
-                    Defense: {pokemon.defense}<br />
-                    Attack: {pokemon.attack}<br />
-                    HP: {pokemon.hp}<br />
-                    Special Attack: {pokemon.specialattack}<br />
-                    Special Defense: {pokemon.specialdefense}<br />
-                    Speed: {pokemon.speed}<br />
-                    Types: <strong>{getTypesString(pokemon.type)}</strong>
-                </Card.Text>
-
             </Card.Body>
         </Card>
     ))
