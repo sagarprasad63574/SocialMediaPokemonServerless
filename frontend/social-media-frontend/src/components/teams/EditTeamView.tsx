@@ -21,7 +21,6 @@ const EditTeamView = ({team_index, userTeams, setTeams}: any) => {
         event.preventDefault();
         try {
             const newTeam = await EditTeam(userToken, team_index, data);
-            console.log(newTeam);
             setMessage(newTeam.message);
             if (newTeam.response) setTeams([...userTeams], userTeams[team_index].team_name = data.team_name);
 

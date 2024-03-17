@@ -8,8 +8,8 @@ import BattleLogView from '../battlelog/BattleLogView'
 
 const ViewUsersTeams = ({ userTeams, index }: any) => {
     const userTeam = userTeams.map((team: any, index: number) => (
-        <div>
-            <Card className="my-4" style={{ width: '100%' }} key={team.team_id}>
+        <div key={team.team_id}>
+            <Card className="my-4" style={{ width: '100%' }}>
                 <Card.Body >
                     <Card.Title>{team.team_name}</Card.Title>
                     <Card.Text>

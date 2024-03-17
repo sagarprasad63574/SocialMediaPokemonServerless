@@ -13,8 +13,6 @@ import DeleteTeamContainer from './DeleteTeamView';
 
 const TeamScreen = () => {
   const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
-  console.log("Hello Team Screen: TOKEN", userToken);
-
   const [message, setMessage] = useState("");
   const [teams, setTeams] = useState([]);
 
@@ -24,7 +22,6 @@ const TeamScreen = () => {
         let userTeams = await getTeams(userToken);
         setMessage(userTeams.message);
         setTeams(userTeams.teams);
-        console.log(userTeams.teams)
       } catch (error) {
         console.log(error);
       }
