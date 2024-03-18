@@ -113,7 +113,7 @@ router.post('/add/:id', ensureLoggedIn, async (req, res, next) => {
                 pokemon: data
             })
         } else {
-            res.status(400).json({
+            return res.status(400).json({
                 response,
                 message
             })

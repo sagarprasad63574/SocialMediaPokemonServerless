@@ -157,7 +157,6 @@ const addPokemonToTeam = async (user_id, pokemon_id, receivedData) => {
 
     const pokemon = await viewMyPokemonsById(user_id, pokemon_id);
     if (!pokemon.response) return { response: false, message: pokemon.message};
-    console.log(pokemon)
 
     const findTeam = await viewTeamByName(user_id, receivedData.team_name);
     if (!findTeam.response) return { response: false, message: findTeam.message}
@@ -183,7 +182,8 @@ const addPokemonToTeam = async (user_id, pokemon_id, receivedData) => {
 
     let data = await pokemonDAO.addPokemonToTeam(user_id, team_index, poke);
 
-    if (data) { return { response: true, message: "New pokemon added to team", data } }
+    console.log(findTeam)
+    if (data) { return { response: true, message: `New pokemon added to team: ${findTeam.team[0].team_name}`, data } }
 
     return { response: false, message: "Cannot add to team" };
 }
