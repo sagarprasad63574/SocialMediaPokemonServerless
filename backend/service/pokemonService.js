@@ -59,6 +59,7 @@ const addPokemonToTeam = async (user_id, receivedData) => {
         specialdefense:pokemon.data.stats[4].base_stat, 
         speed:pokemon.data.stats[5].base_stat, 
         type:pokemon.data.types,
+        sprite:pokemon.data.sprites.front_default,
         moves:[]
     };
 
