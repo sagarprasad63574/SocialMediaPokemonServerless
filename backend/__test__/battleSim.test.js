@@ -1,4 +1,9 @@
 const battle = require('../service/battleSim');
+const teamDAO = require('../repository/teamDAO');
+const battleDAO = require('../repository/battleSimDAO');
+
+jest.mock('../repository/teamDAO');
+jest.mock('../repository/battleSimDAO');
 
 describe('basic simulation between 2 pokemon', () => {
 
@@ -235,26 +240,128 @@ describe('basic simulation between 2 pokemon', () => {
         ]
     }
 
+    const nomove = {    
+        attack: 82,
+        defense: 83,
+        hp: 80,
+        moves: [
+        ],
+        pokemon_name: "venusaur",
+        specialattack: 100,
+        specialdefense: 100,
+        speed: 80,
+        type: [
+            {
+                type: {
+                    name: "grass",
+                    url: "https://pokeapi.co/api/v2/type/12/"
+                },
+                slot: 1
+            },
+            {
+                type: {
+                    name: "poison",
+                    url: "https://pokeapi.co/api/v2/type/4/"
+                },
+                slot: 2
+            }
+        ]
+    }
+
+    let team1 = {
+        "team_id": "1",
+        "team_name": "team",
+        "win": 0,
+        "loss": 0,
+        "points": 0,
+        "pokemons": [charizard],
+        "battlelog": []
+    };
+
+    let team2 = {
+        "team_id": "1",
+        "team_name": "team",
+        "win": 0,
+        "loss": 0,
+        "points": 0,
+        "pokemons": [blastoise],
+        "battlelog": []
+    };
+
+    const recieved = {
+        "user_team_name": "team",
+        "opponent_id": "1",
+        "opponent_team_name": "team"
+    }
     test('Charizard VS Blastoise', async () => {
-        const result = battle.battleSim([charizard],[blastoise]);
-        //resetting hp bc i dont want to make another object
-        charizard.hp = 78;
-        blastoise.hp = 79;
-        expect(result).toBe(2);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team1]);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team2]);
+        battleDAO.addBattleReport.mockResolvedValueOnce([team1]);
+        battleDAO.addBattleReport.mockResolvedValueOnce([team2]);
+        const result = await battle.battleSim(0,recieved);
+        expect(result).toBeTruthy();
     });
+
+    let team3 = {
+        "team_id": "1",
+        "team_name": "team",
+        "win": 0,
+        "loss": 0,
+        "points": 0,
+        "pokemons": [blastoise],
+        "battlelog": []
+    };
+
+    let team4 = {
+        "team_id": "1",
+        "team_name": "team",
+        "win": 0,
+        "loss": 0,
+        "points": 0,
+        "pokemons": [charizard],
+        "battlelog": []
+    };
 
     test('Blastoise VS Charizard', async () => {
-        const result = battle.battleSim([blastoise],[charizard]);
-        charizard.hp = 78;
-        blastoise.hp = 79;
-        expect(result).toBe(1);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team3]);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team4]);
+        battleDAO.addBattleReport.mockResolvedValueOnce([team3]);
+        battleDAO.addBattleReport.mockResolvedValueOnce([team4]);
+        const result = await battle.battleSim(0,recieved);
+        expect(result).toBeTruthy();
     });
 
-    test('Blastoise VS Charizard, Charizard', async () => {
-        const result = battle.battleSim([blastoise],[charizard, venusaur]);
-        charizard.hp = 78;
-        blastoise.hp = 79;
-        venusaur.hp = 80;
-        expect(result).toBe(2);
+    let team5 = {
+        "team_id": "1",
+        "team_name": "team",
+        "win": 0,
+        "loss": 0,
+        "points": 0,
+        "pokemons": [nomove],
+        "battlelog": []
+    };
+
+    let team6 = {
+        "team_id": "1",
+        "team_name": "team",
+        "win": 0,
+        "loss": 0,
+        "points": 0,
+        "pokemons": [charizard],
+        "battlelog": []
+    };
+
+    test('pokemon without moves on team one', async () => {
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team5]);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team6]);
+        const result = await battle.battleSim(0,recieved);
+        expect(result.response).toBeFalsy();
+    });
+
+    test('pokemon without moves on team one', async () => {
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team6]);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team5]);
+        const result = await battle.battleSim(0,recieved);
+        expect(result.response).toBeFalsy();
     });
 });
