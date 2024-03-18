@@ -31,16 +31,19 @@ const ViewMyTeams = ({ userTeams, setTeams }: any) => {
       <Accordion.Body >
         <div className="float-end mb-3">
           <Button onClick={toggleEditTeam} className='pull-right mx-2'>Edit Team</Button>
-          <Button onClick={() => setShow(true)}>Delete Team</Button>;
-          {editTeamName && <EditTeamView team_index={index} userTeams={userTeams} setTeams={setTeams} />}
+          <Button onClick={() => setShow(true)}>Delete Team</Button>
+          {editTeamName && <EditTeamView
+              team_index={index}
+              userTeams={userTeams}
+              setTeams={setTeams} />}
           {show && <DeleteTeamView
             team={teams}
             team_index={index}
             userTeams={userTeams}
             setTeams={setTeams}
-            show = {show}
-            setShow = {setShow}
-          /> }
+            show={show}
+            setShow={setShow}
+          />}
         </div>
         <ViewUsersTeams userTeams={[teams]} team_index={index} setTeams={setTeams} />
       </Accordion.Body>

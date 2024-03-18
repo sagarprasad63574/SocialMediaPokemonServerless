@@ -26,7 +26,8 @@ const EditPokemonContainer = ({pokemon_index, createdPokemons, setCreatedPokemon
         try {
             const newPokemon = await EditCreatedPokemon(userToken, pokemon_index, data);
             setMessage(newPokemon.message);
-            if (newPokemon.response) setCreatedPokemons([...createdPokemons], 
+            if (newPokemon.response) {
+                setCreatedPokemons([...createdPokemons], 
                             createdPokemons[pokemon_index].pokemon_name = data.pokemon_name,
                             createdPokemons[pokemon_index].attack = data.attack,
                             createdPokemons[pokemon_index].defense = data.defense,
@@ -35,8 +36,8 @@ const EditPokemonContainer = ({pokemon_index, createdPokemons, setCreatedPokemon
                             createdPokemons[pokemon_index].speed = data.speed,
                             createdPokemons[pokemon_index].hp = data.hp,
                 );
-
-                togglePokemon()
+                togglePokemon();
+            }
         } catch (error: any) {
             console.log("HEllo I am here: ", error);
         }
