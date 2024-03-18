@@ -78,6 +78,7 @@ const ViewMyPokemons = async (user_id, pokemon_name) => {
 }
 
 const editMyPokemon = async (user_id, pokemon_index, pokemon) => {
+    console.log(pokemon);
     const command = new UpdateCommand({
         TableName,
         Key: {
@@ -87,15 +88,13 @@ const editMyPokemon = async (user_id, pokemon_index, pokemon) => {
         ExpressionAttributeValues: {
 
             ":vals": {
-                "pokemon_id": pokemon.pokemon_id,
                 "pokemon_name": pokemon.pokemon_name,
                 "hp": pokemon.hp,
                 "attack": pokemon.attack,
                 "defense": pokemon.defense,
                 "specialattack": pokemon.specialattack,
                 "specialdefense": pokemon.specialdefense,
-                "speed": pokemon.speed,
-                "types": pokemon.types
+                "speed": pokemon.speed
             }
 
         },

@@ -194,7 +194,8 @@ describe('Adding Pokemon to Team', () => {
     test('Adding Pokemon but team could not be found, should return false', async () => {
         teamService.viewMyTeams.mockResolvedValueOnce({response: true, message: "My teams", teams: [emptyTeam]});
         myPokemonDAO.ViewMyPokemons.mockResolvedValueOnce([inPoke]);
-        teamService.viewTeamById.mockResolvedValueOnce({response: false, message: `No team found with id ${emptyTeam.team_id}`})
+        teamService.viewTeamById.mockResolvedValueOnce({response: false, message: `No team found with id ${emptyTeam.team_id}`});
+        teamService.viewTeamByName.mockResolvedValueOnce({response: false});
         const data = await myPokemonService.addPokemonToTeam(in_user_id, 0, {team_name: emptyTeam.team_name});
         expect(data.response).toBeFalsy();
     });
