@@ -43,7 +43,7 @@ function ViewPokemon({ pokemons }: any) {
     }
 
     const userPokemons = pokemons.map((pokemon: any, index: number) => (
-        <Card className="mx-1" key={pokemon.pokemon_id}>
+        <Card className="mx-1" key={index}>
             <Card.Body >
                 <Card.Img variant="top" width="200px" height="200px" src="https://fastly.picsum.photos/id/508/200/200.jpg?hmac=K4JUehX1v2yEPLUOyJDAmRhZu8PgMu4vv6ypO-CA5nw" />
                 <Card.Title >{pokemon.pokemon_name.toUpperCase()}</Card.Title>
@@ -54,7 +54,7 @@ function ViewPokemon({ pokemons }: any) {
                     Special Attack: {pokemon.specialattack}<br />
                     Special Defense: {pokemon.specialdefense}<br />
                     Speed: {pokemon.speed}<br />
-                    Types: <strong>{getTypesString(pokemon.type)}</strong>
+                    Types: {pokemon.type.length > 0 ? <strong>{getTypesString(pokemon.type)}</strong> : [] }
                 </Card.Text>
             </Card.Body>
         </Card>

@@ -12,37 +12,37 @@ import DeleteTeamView from './DeleteTeamView';
 const ViewMyTeams = ({ userTeams, setTeams }: any) => {
 
   const [editTeamName, setEditTeamName] = useState(false);
-  const [deleteTeam, setDeleteTeam] = useState(false);
   const [show, setShow] = useState(false);
 
   const toggleEditTeam = () => {
     setEditTeamName((editTeamName) => !editTeamName)
   }
 
-  const toggleDeleteTeam = () => {
-    setDeleteTeam((deleteTeam) => !deleteTeam)
-  }
+  // const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const postTeam = (team_index: any) => {
+    console.log(team_index)
+  }
 
   const listUserTeams = userTeams.map((teams: any, index: any) =>
     <Accordion.Item key={teams.team_id} eventKey={`${index}`}>
       <Accordion.Header >{teams.team_name} </Accordion.Header>
-      <Accordion.Body > 
+      <Accordion.Body >
         <div className="float-end mb-3">
           <Button onClick={toggleEditTeam} className='pull-right mx-2'>Edit Team</Button>
-          <Button onClick={handleShow} className='pull-right'>Delete Team</Button>
+          <Button onClick={() => setShow(true)}>Delete Team</Button>;
           {editTeamName && <EditTeamView team_index={index} userTeams={userTeams} setTeams={setTeams} />}
           {show && <DeleteTeamView
             team={teams}
             team_index={index}
             userTeams={userTeams}
             setTeams={setTeams}
-            show={show}
-            handleClose={handleClose} />}
+            show = {show}
+            setShow = {setShow}
+          /> }
         </div>
-        <ViewUsersTeams userTeams={[teams]} />
+        <ViewUsersTeams userTeams={[teams]} team_index={index} setTeams={setTeams} />
       </Accordion.Body>
     </Accordion.Item>
   );
