@@ -12,11 +12,15 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(201).json({
+                response,
                 message,
                 pokemon
             })
         } else {
-            throw new BadRequestError(errors);
+            return res.status(400).json({
+                response,
+                message,
+            })
         }
     } catch (err) {
         return next(err);
@@ -31,11 +35,15 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 pokemons
             })
         } else {
-            throw new BadRequestError(message);
+            return res.status(400).json({
+                response, 
+                message
+            })
         }
     } catch (err) {
         return next(err);
@@ -52,11 +60,13 @@ router.put('/:id', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response, 
                 message,
                 pokemon
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
@@ -75,11 +85,36 @@ router.delete('/:id', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 pokemon
             })
         } else {
             return res.status(400).json({
+                response,
+                message
+            })
+        }
+    } catch (err) {
+        return next(err);
+    }
+});
+
+router.post('/add/:id', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id;
+    const pokemon_id = req.params.id;
+
+    try {
+        const { response, errors, message, data } = await pokemonService.addPokemonToTeam(user_id, pokemon_id, req.body);
+        if (response) {
+            return res.status(201).json({
+                response,
+                message,
+                pokemon: data
+            })
+        } else {
+            return res.status(400).json({
+                response,
                 message
             })
         }

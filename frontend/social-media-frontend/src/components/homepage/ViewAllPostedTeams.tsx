@@ -4,12 +4,12 @@ import ViewUsersTeam from './ViewUsersTeams';
 
 const ViewAllPostedTeams = ({ postedTeams }: any) => {
     const teams = postedTeams.map((teams: any, index: number) => (
-        <Accordion.Item key={teams.team_id} eventKey={`${index}`}>
-            <Accordion.Header key={teams.team_id} >{teams.username}</Accordion.Header>
-            <Accordion.Body key={teams.team_id} >
+        <Accordion.Item key={teams.user_id} eventKey={`${index}`}>
+            <Accordion.Header>{teams.username}</Accordion.Header>
+            <Accordion.Body>
                     <ViewUsersTeam userTeams={teams.teams} index={index}/>
             </Accordion.Body>
-        </Accordion.Item>
+        </Accordion.Item>   
         )
     )
 

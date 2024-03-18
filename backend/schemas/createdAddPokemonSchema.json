@@ -5,16 +5,12 @@
     "properties": {
         "team_name": {
             "type": "string",
-            "minLength": 1,
+            "minLength": 5,
             "maxLength": 30
-        },
-        "pokemon_name": {
-            "type": "string"
         }
     },
     "additionalProperties": false,
     "required": [
-        "team_name",
-        "pokemon_name"
+        "team_name"
     ]
 }

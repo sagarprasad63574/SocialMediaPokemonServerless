@@ -18,6 +18,8 @@ import AddTeamContainer from './components/teams/AddTeamContainer';
 import CommentsContainer from './components/comments/CommentsContainer';
 import HomePageController from './components/homepage/HomePageController';
 import PostedTeamContainer from './components/postedTeam/PostedTeamContainer';
+import CreatePokemonContainer from './components/myPokemons/CreatePokemonContainer';
+import ViewCreatedPokemons from './components/myPokemons/ViewCreatedPokemons';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
             <Route path='/teams/add' element={<AddTeamContainer />} />
             <Route path='/comments' element={<CommentsContainer />} />
             <Route path='/teams/:teamID' element={<PostedTeamContainer/>}/>
+            <Route path='/createPokemon' element={<CreatePokemonContainer/>}/>
+            <Route path='/viewCreatedPokemons' element={<ViewCreatedPokemons/>}/>
           </Route>
         </Routes>
       </main>
