@@ -27,7 +27,15 @@ const createMyPokemon = async (user_id, receivedData) => {
             specialdefense: receivedData.specialdefense,
             speed: receivedData.speed,
             hp: receivedData.hp,
-            types: []
+            type: [
+                {
+                    type: {
+                        name: "normal"
+                    },
+                    slot: 1
+                }
+            ],
+            moves: []
         });
 
 
@@ -176,7 +184,7 @@ const addPokemonToTeam = async (user_id, pokemon_id, receivedData) => {
         specialdefense: pokemon.pokemon.specialdefense, 
         speed: pokemon.pokemon.speed, 
         hp: pokemon.pokemon.hp, 
-        type: [],
+        type: pokemon.pokemon.type,
         moves:[]
     };
 

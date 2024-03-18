@@ -71,6 +71,7 @@ const addPokemonToTeam = async (team_index, user_id, pokemon) => {
                     "speed":pokemon.speed, 
                     "type":pokemon.type,
                     "sprite":pokemon.sprite,
+                    "mypokemon":false,
                     "moves":pokemon.moves
                 }
             ]

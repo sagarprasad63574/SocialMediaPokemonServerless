@@ -41,7 +41,7 @@ const createMyPokemon = async (user_id, pokemon) => {
                     "specialattack": pokemon.specialattack,
                     "specialdefense": pokemon.specialdefense,
                     "speed": pokemon.speed,
-                    "types": pokemon.types
+                    "type": pokemon.type
                 }
             ]
         },
@@ -150,7 +150,10 @@ const addPokemonToTeam = async (user_id, team_index, pokemon) => {
                     "speed":pokemon.speed, 
                     "hp": pokemon.hp,
                     "type":pokemon.type,
-                    "moves":pokemon.moves
+                    "sprite":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+                    "mypokemon":true,
+                    "moves":pokemon.moves,
+                    
                 }
             ]
 

@@ -119,21 +119,23 @@ const addMoveToPokemon = async (user_id, team_id, pokemon_id, receivedData) => {
     const { response, message, teams } = await viewMyTeams(user_id);
     if (!response) return { response: false, message: "No team found!" }
 
-    const checkmove = await pokemonDAO.pokedata(teams[team_id].pokemons[pokemon_id].pokemon_name);
-
-    let movefound = false;
-    for(let i = 0; i < checkmove.data.moves.length; i++)
+    if(!teams[team_id].pokemons[pokemon_id].mypokemon)
     {
-        if(receivedData.move_name == checkmove.data.moves[i].move.name)
+        const checkmove = await pokemonDAO.pokedata(teams[team_id].pokemons[pokemon_id].pokemon_name);
+
+        let movefound = false;
+        for(let i = 0; i < checkmove.data.moves.length; i++)
         {
-            movefound = true;
-            break
+            if(receivedData.move_name == checkmove.data.moves[i].move.name)
+            {
+                movefound = true;
+                break
+            }
         }
-    }
-
-    if(!movefound)
-    {
-        return { response: false, message: `${teams[team_id].pokemons[pokemon_id].pokemon_name} cannot learn ${receivedData.move_name}` };
+        if(!movefound)
+        {
+            return { response: false, message: `${teams[team_id].pokemons[pokemon_id].pokemon_name} cannot learn ${receivedData.move_name}` };
+        }
     }
 
     const pokemove = await pokemonDAO.pokemove(receivedData.move_name);
