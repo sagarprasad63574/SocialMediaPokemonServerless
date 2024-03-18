@@ -23,9 +23,6 @@
         },
         "hp": {
             "type": "number"
-        },
-        "types": {
-            "type": "array"
         }
     },
     "additionalProperties": false,
