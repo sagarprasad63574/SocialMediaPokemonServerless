@@ -92,6 +92,18 @@ const viewTeamById = async (user_id, team_id) => {
 
 }
 
+const viewTeamByName = async (user_id, team_name) => {
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response, message }
+
+    const team = teams.filter((team, index) => (team.team_name === team_name))
+    if (team.length == 0) return {response: false, message: `No team found with team name ${team_name}`}
+
+    return { response: true, team }
+
+}
+
+
 const editTeam = async (user_id, team_id, receivedData) => {
 
     let { response, errors } = validateEditTeam(receivedData);
@@ -224,8 +236,10 @@ module.exports = {
     addTeam,
     viewMyTeams,
     viewTeamById,
+    viewTeamByName,
     editTeam,
     deleteTeam,
     addPokemonToTeam,
+    findTeamIndexToAddPokemon, 
     deletePokemonFromTeam
 }

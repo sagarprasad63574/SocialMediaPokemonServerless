@@ -2,16 +2,17 @@ const jsonschema = require('jsonschema');
 const uuid = require('uuid');
 const pokemonDAO = require('../repository/myPokemonDAO');
 const createPokemonSchema = require('../schemas/createMyPokemonSchema.json');
-const editPokemonSchema = require('../schemas/editMyPokemonSchema.json')
+const createdAddPokemonSchema = require('../schemas/createdAddPokemonSchema.json');
+const {viewMyTeams, findTeamIndexToAddPokemon, viewTeamByName} = require('./teamService')
 const logger = require('../util/logger');
 
 const createMyPokemon = async (user_id, receivedData) => {
 
     let validPokemon = validatePokemon(receivedData);
-    if (!validPokemon.response) return { response: false, errors: validPokemon.errors }
+    if (!validPokemon.response) return { response: false, message: validPokemon.errors }
 
     const duplicatePokemonName = await checkDuplicatedPokemonName(user_id, receivedData.pokemon_name);
-    if (duplicatePokemonName.response) return { response: false, errors: duplicatePokemonName.message }
+    if (duplicatePokemonName.response) return { response: false, message: duplicatePokemonName.message }
 
     const pokemon_id = uuid.v4();
 
@@ -73,7 +74,7 @@ const viewMyCreatedPokemons = async (user_id) => {
 const editMyPokemon = async (user_id, pokemon_index, receivedData) => {
 
     let { response, errors } = validateEditMyPokemon(receivedData);
-    if (!response) return { response: false, errors: errors }
+    if (!response) return { response: false, message: errors }
 
     const getMyPokemon = await viewMyPokemonsById(user_id, pokemon_index);
     if (!getMyPokemon.response) return { response: getMyPokemon.response, message: getMyPokemon.message };
@@ -146,9 +147,61 @@ const deleteMyPokemon = async (user_id, pokemon_index) => {
 
 }
 
+const addPokemonToTeam = async (user_id, pokemon_id, receivedData) => {
+
+    let validate = validateAddPokemon(receivedData);
+    if (!validate.response) return { response: validate.response, message: validate.errors }
+
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response: false, message: "No team found!" }
+
+    const pokemon = await viewMyPokemonsById(user_id, pokemon_id);
+    if (!pokemon.response) return { response: false, message: pokemon.message};
+    console.log(pokemon)
+
+    const findTeam = await viewTeamByName(user_id, receivedData.team_name);
+    if (!findTeam.response) return { response: false, message: findTeam.message}
+    
+    const team_index = findTeamIndexToAddPokemon(receivedData.team_name, teams);
+    if (team_index < 0) return { response: false, message: "No team found with given name!" }
+
+    if (teams[team_index].pokemons.length >= 6)
+        return { response: false, message: "A team can only have 6 pokemon!" }
+
+    const poke = {
+        pokemon_id: pokemon.pokemon.pokemon_id, 
+        pokemon_name: pokemon.pokemon.pokemon_name,
+        attack: pokemon.pokemon.attack, 
+        defense: pokemon.pokemon.defense, 
+        specialattack: pokemon.pokemon.specialattack,
+        specialdefense: pokemon.pokemon.specialdefense, 
+        speed: pokemon.pokemon.speed, 
+        hp: pokemon.pokemon.hp, 
+        type: [],
+        moves:[]
+    };
+
+    let data = await pokemonDAO.addPokemonToTeam(user_id, team_index, poke);
+
+    if (data) { return { response: true, message: "New pokemon added to team", data } }
+
+    return { response: false, message: "Cannot add to team" };
+}
+
+function validateAddPokemon(receivedData) {
+    const validator = jsonschema.validate(receivedData, createdAddPokemonSchema);
+    if (!validator.valid) {
+        const errs = validator.errors.map(e => e.stack);
+        logger.error(errs);
+        return { reponse: false, errors: errs }
+    }
+    return { response: true }
+}
+
 module.exports = {
     createMyPokemon,
     viewMyCreatedPokemons,
     editMyPokemon,
-    deleteMyPokemon
+    deleteMyPokemon,
+    addPokemonToTeam
 }

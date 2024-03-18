@@ -48,7 +48,8 @@ router.get('/:id', ensureLoggedIn, async (req, res, next) => {
 
 //posts/:id post a team to homepage
 router.post('/:id', ensureLoggedIn, async (req, res, next) => {
-    const user_id = res.locals.user.id
+    const user_id = res.locals.user.id;
+    console.log(user_id)
     const team_id = req.params.id;
 
     try {
@@ -56,11 +57,13 @@ router.post('/:id', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
-            return res.status(200).json({
+            return res.status(400).json({
+                response,
                 message
             })
         }

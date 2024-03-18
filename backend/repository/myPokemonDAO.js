@@ -130,9 +130,47 @@ const deleteMyPokemon = async (user_id, pokemon_index) => {
     }
 }
 
+const addPokemonToTeam = async (user_id, team_index, pokemon) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `SET teams[${team_index}].pokemons = list_append(teams[${team_index}].pokemons, :vals)`,
+        ExpressionAttributeValues: {
+
+            ":vals": [
+                {   
+                    "pokemon_id": pokemon.pokemon_id, 
+                    "pokemon_name": pokemon.pokemon_name,
+                    "attack": pokemon.attack,
+                    "defense": pokemon.defense,
+                    "specialattack":pokemon.specialattack,
+                    "specialdefense":pokemon.specialdefense, 
+                    "speed":pokemon.speed, 
+                    "hp": pokemon.hp,
+                    "type":pokemon.type,
+                    "moves":pokemon.moves
+                }
+            ]
+
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data.Attributes.teams[0].pokemons[0];
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 module.exports = {
     createMyPokemon,
     ViewMyPokemons,
     editMyPokemon,
-    deleteMyPokemon
+    deleteMyPokemon,
+    addPokemonToTeam
 }
