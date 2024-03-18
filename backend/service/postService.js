@@ -48,7 +48,35 @@ const viewTeamById = async (user_id, team_id) => {
 
 }
 
+const viewTeamByIdFromAll = async team_id => {
+    const {response, message, teams} = await viewAllPostedTeams();
+    if(!response) return {response, message};
+    const userObjs = teams;
+    let teamObj;
+    let foundUsername;
+    for(let i=0; i<userObjs.length; i++){
+        userObjs[i].teams.forEach(team => {
+            if(team.team_id === team_id){
+                teamObj = team;
+                foundUsername = userObjs[i].username
+            }
+        });
+    }
+    if(!foundUsername || !teamObj){
+        return {response: false, message: `No team found with id ${team_id}`};
+    }
+    let foundTeam = {
+        username: foundUsername,
+        team: teamObj
+    };
+    if(response && foundTeam){
+        return {response, message: `Got team with team id ${team_id}`, foundTeam};
+    }
+    return {response: false, message: `No team found with id ${team_id}`};
+}
+
 module.exports = {
     viewAllPostedTeams,
     postTeam,
+    viewTeamByIdFromAll
 }

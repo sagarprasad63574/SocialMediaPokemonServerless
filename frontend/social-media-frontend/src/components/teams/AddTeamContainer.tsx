@@ -2,65 +2,51 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AddTeam } from '../../api/teams/teamAPI'
 import Error from '../common/Error';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Spinner from '../common/Spinner';
+import Container from 'react-bootstrap/esm/Container';
+import Form from 'react-bootstrap/esm/Form';
+import Button from 'react-bootstrap/esm/Button';
+import MyTeamsContainer from './MyTeamsContainer';
 
-const TeamScreen = () => {
+const TeamScreen = ({userTeams, setTeams}: any) => {
     const [message, setMessage] = useState("");
-    const [status, setStatus] = useState(0);
-    const [teams, setTeams]: any = useState({});
-    const { loading, userInfo, userToken, error, success } = useSelector(
-        (state: any) => state.auth
-    )
+    const [teamName, setTeamName] = useState({
+        team_name: ""
+    })
+    const { userToken } = useSelector((state: any) => state.auth)
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const { register, handleSubmit } = useForm()
+    // const { register, handleSubmit } = useForm()
 
-    const submitForm = async (data: any) => {
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+
         try {
-            let teams = await AddTeam(userToken, data);
-            setMessage(teams.message);
-            if (teams.status) {setStatus(status)} else {setStatus(201)};
-            setTeams(teams.teams);
+            const newTeam = await AddTeam(userToken, teamName);
+            console.log(newTeam);
+            setMessage(newTeam.message);
+            if (newTeam.response) setTeams([...userTeams, newTeam.teams]);
 
         } catch (error: any) {
-            console.log("IAM HERE", error);
+            console.log("error: ", error);
         }
     }
 
     return (
-
-        status===201 ? (
-            <div>
-            <h1>Message: {message}</h1>
-            <ul>
-                <li>Team Name: {teams.team_name}</li>
-                <li>Loss: {teams.loss}</li>
-                <li>Win: {teams.win}</li>
-                <li>Points: {teams.points}</li>
-                <li>Index: {teams.index}</li>
-            </ul>
-            </div>
-
-        ) : (
-            <form onSubmit={handleSubmit(submitForm)}>
-                {<Error>{message}</Error>}
-                <div className='form-group'>
-                    <label htmlFor='team_name'>Team Name</label>
-                    <input
-                        type='text'
-                        className='form-input'
-                        {...register('team_name')}
-                        required
-                    />
-                </div>
-                <button type='submit' className='button' disabled={loading}>
-                    {loading ? <Spinner /> : 'Add'}
-                </button>
-            </form>
-        )
+        <Container className="d-grid">
+            {message && <Error>{message}</Error>}
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="teamName">
+                    <Form.Label>Add New Team</Form.Label>
+                    <Form.Control type="text" placeholder="Enter team name" required
+                        onChange={(event) => setTeamName({ ...teamName, team_name: event.target.value })} />
+                    <Button variant="primary" type="submit">
+                        Add Team
+                    </Button>
+                </Form.Group>
+            </Form>
+        </Container>
     );
 }
 

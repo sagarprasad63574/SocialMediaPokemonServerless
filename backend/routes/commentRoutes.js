@@ -15,27 +15,28 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
-router.get('/', async (req, res, next) => {
-    const username = req.query.username;
-    const team_name = req.query.team_name;
-    const role = req.query.role;
+router.get('/', ensureLoggedIn, async (req, res, next) => {
+    const username = res.locals.user.username;
+    const showTeamId = req.query.team_id;
+    const showRole = req.query.role;
+    const showAll = req.query.showAll;
     try {
-        if(username){
-            const data = await commentService.getCommentsByUsername(username);
+        if(showTeamId){
+            const data = await commentService.getCommentsByTeam(showTeamId);
             if(!data.response) throw new NotFoundError(data.errors);
             return res.status(200).json(data);
         }
-        if(team_name){
-            const data = await commentService.getCommentsByTeam(team_name);
+        if(showRole){
+            const data = await commentService.getCommentsByRole(showRole);
             if(!data.response) throw new NotFoundError(data.errors);
             return res.status(200).json(data);
         }
-        if(role){
-            const data = await commentService.getCommentsByRole(role);
+        if(showAll){
+            const data = await commentService.getEveryComment();
             if(!data.response) throw new NotFoundError(data.errors);
             return res.status(200).json(data);
         }
-        const data = await commentService.getEveryComment();
+        const data = await commentService.getCommentsByUsername(username);
         if(!data.response) throw new NotFoundError(data.errors);
         return res.status(200).json(data);
     } catch (error) {

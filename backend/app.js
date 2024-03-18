@@ -6,7 +6,7 @@ const teamRouter = require('./routes/teamRoutes');
 const commentRouter = require('./routes/commentRoutes');
 const profileRouter = require('./routes/profileRoutes');
 const tokenRouter = require('./routes/tokenRoute');
-//const postRouter = require('./routes/postRoutes');
+const postRouter = require('./routes/postRoutes');
 const pokemonRouter = require('./routes/pokemonRoute');
 const myPokemonRouter = require('./routes/myPokemonRoutes');
 const battleSimRouter = require('./routes/battleSimRoutes');
@@ -28,7 +28,7 @@ app.use('/teams', teamRouter);
 app.use('/comments', commentRouter);
 app.use('/profiles', profileRouter);
 app.use('/token', tokenRouter);
-//app.use('/posts', postRouter); 
+app.use('/posts', postRouter); 
 app.use('/pokemon', pokemonRouter);
 app.use('/token', tokenRouter)
 app.use('/myPokemon', myPokemonRouter); 

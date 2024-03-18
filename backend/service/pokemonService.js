@@ -43,14 +43,14 @@ const addPokemonToTeam = async (user_id, receivedData) => {
     if (teams[team_index].pokemons.length >= 6)
         return { response: false, message: "A team can only have 6 pokemon!" }
 
-    //duplicate pokemon in the team list 
-
+    const pokemon_id = uuid.v4();
     const pokemon = await pokemonDAO.pokedata(receivedData.pokemon_name);
 
     if(pokemon == null)
         return { response: false, message: "Pokemon does not exist" };
 
     const poke = {
+        pokemon_id: pokemon_id, 
         pokemon_name:receivedData.pokemon_name,
         hp:pokemon.data.stats[0].base_stat, 
         attack:pokemon.data.stats[1].base_stat, 

@@ -19,6 +19,7 @@ const addTeam = async (user_id, receivedData) => {
     const win = 0;
     const loss = 0;
     const points = 0;
+    const post = false; 
     const pokemons = [];
     const battlelog = [];
 
@@ -30,6 +31,7 @@ const addTeam = async (user_id, receivedData) => {
             win,
             loss,
             points,
+            post, 
             pokemons,
             battlelog
         });
@@ -89,6 +91,18 @@ const viewTeamById = async (user_id, team_id) => {
     return { response: false, message: `No team found with id ${team_id}` }
 
 }
+
+const viewTeamByName = async (user_id, team_name) => {
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response, message }
+
+    const team = teams.filter((team, index) => (team.team_name === team_name))
+    if (team.length == 0) return {response: false, message: `No team found with team name ${team_name}`}
+
+    return { response: true, team }
+
+}
+
 
 const editTeam = async (user_id, team_id, receivedData) => {
 
@@ -222,8 +236,10 @@ module.exports = {
     addTeam,
     viewMyTeams,
     viewTeamById,
+    viewTeamByName,
     editTeam,
     deleteTeam,
     addPokemonToTeam,
+    findTeamIndexToAddPokemon, 
     deletePokemonFromTeam
 }

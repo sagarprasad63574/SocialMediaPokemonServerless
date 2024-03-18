@@ -56,6 +56,7 @@ const createTeam = async (user_id, team) => {
                     "win": team.win,
                     "loss": team.loss,
                     "points": team.points,
+                    "post": team.post, 
                     "pokemons": team.pokemons,
                     "battlelog": team.battlelog
                 }

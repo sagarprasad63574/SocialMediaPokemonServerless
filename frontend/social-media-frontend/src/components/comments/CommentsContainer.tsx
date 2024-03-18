@@ -3,10 +3,15 @@ import Error from '../common/Error';
 import ViewComments from './ViewComments';
 import { useSelector } from 'react-redux';
 import { getCommentsFromUser } from '../../api/comments/commentAPI';
+import { Button } from 'react-bootstrap';
+import EditCommentForm from './EditCommentForm';
+import DeleteCommentForm from './DeleteCommentForm';
 
 const CommentsContainer = () => {
     const {userToken, userInfo, error} = useSelector((state: any) => state.auth);
     const [comments, setComments] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     useEffect(() => {
         async function myComments(){
             try {
@@ -20,11 +25,23 @@ const CommentsContainer = () => {
         }
         myComments();
     }, [userToken]);
+    const handleEditButton = (event: any) => {
+        event.preventDefault();
+        setIsEditing(!isEditing);
+    }
+    const handleDeleteButton = (event: any) => {
+        event.preventDefault();
+        setIsDeleting(!isDeleting);
+    }
     return (
         <div>
             {error && <Error>{error}</Error>}
             <h3>Comments made by user {userInfo?.username}</h3>
-            {comments && <ViewComments comments={comments} />}
+            <Button onClick={handleEditButton}>Edit Comments</Button>
+            <Button onClick={handleDeleteButton}>Delete Comments</Button>
+            {isEditing && <EditCommentForm comments={comments} setComments={setComments} setVisible={setIsEditing}/>}
+            {isDeleting && <DeleteCommentForm comments={comments} setComments={setComments} setVisible={setIsDeleting}/>}
+            {(comments && !isEditing && !isDeleting) && <ViewComments comments={comments} />}
         </div>
     );
 };
