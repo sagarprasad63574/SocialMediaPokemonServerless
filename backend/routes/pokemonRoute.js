@@ -38,7 +38,7 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
                 pokemon
             })
         } else {
-            res.status(400).json({
+            return res.status(400).json({
                 message
             })
         }

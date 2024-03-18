@@ -140,7 +140,6 @@ const editPokemonFromTeam = async (user_id, team_index, pokemon_index, pokemon) 
 }
 
 const addMoveToPokemon = async (user_id, team_index, pokemon_index, pokemon) => {
-    console.log(user_id, team_index, pokemon_index, pokemon);
     const command = new UpdateCommand({
         TableName,
         Key: {

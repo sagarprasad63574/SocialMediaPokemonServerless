@@ -9,6 +9,7 @@ const tokenRouter = require('./routes/tokenRoute');
 //const postRouter = require('./routes/postRoutes');
 const pokemonRouter = require('./routes/pokemonRoute');
 const myPokemonRouter = require('./routes/myPokemonRoutes');
+const battleSimRouter = require('./routes/battleSimRoutes');
 const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
@@ -31,6 +32,7 @@ app.use('/token', tokenRouter);
 app.use('/pokemon', pokemonRouter);
 app.use('/token', tokenRouter)
 app.use('/myPokemon', myPokemonRouter); 
+app.use('/battleSim', battleSimRouter);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
