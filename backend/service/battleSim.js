@@ -29,13 +29,13 @@ const battleSim = async (user_id, receivedData) =>
 
     for(let i = 0; i < team1.length; i++){
         if(team1[i].moves.length == 0){
-            return { response: false, message: `pokemon ${team1[i].pokemon_name} must have at least one move!` }
+            return { response: false, message: `pokemon ${team1[i].pokemon_name} from ${team1[i].team_name} must have at least one move!` }
         }
     }
 
     for(let i = 0; i < team2.length; i++){
         if(team2[i].moves.length == 0){
-            return { response: false, message: `pokemon ${team2[i].pokemon_name} must have at least one move!` }
+            return { response: false, message: `pokemon ${team2[i].pokemon_name} from ${team1[i].team_name} must have at least one move!` }
         }
     }
 
@@ -173,6 +173,7 @@ const battleSim = async (user_id, receivedData) =>
         won = true;
     battleReport = {summary,details,won};
     recieved2 = await battleSimDAO.addBattleReport(opponent_team_index, receivedData.opponent_id, battleReport);
+
     return {response: true, details: details, summary: summary, message: mess};
 };
 

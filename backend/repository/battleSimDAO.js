@@ -43,6 +43,42 @@ const addBattleReport = async (team_index, user_id, report) => {
     }
 }
 
+const addPointsWinsAndLosses = async (user_id, team) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: "SET #t = list_append(#t, :vals)",
+        ExpressionAttributeNames: {
+            "#t": "teams"
+        },
+        ExpressionAttributeValues: {
+            ":vals": [
+                {
+                    "team_id": team.team_id,
+                    "team_name": team.team_name,
+                    "win": team.win,
+                    "loss": team.loss,
+                    "points": team.points,
+                    "post": team.post, 
+                    "pokemons": team.pokemons,
+                    "battlelog": team.battlelog
+                }
+            ]
+        },
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data.Attributes.teams;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 module.exports = {
     addBattleReport
 }
