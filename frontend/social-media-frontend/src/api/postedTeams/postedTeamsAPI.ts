@@ -31,6 +31,7 @@ export const getPostedTeamWithId = async (userToken: any, team_id: any) => {
                 'Authorization': `Bearer ${userToken}`
             }
         }
+        console.log(team_id)
         const { data } = await axios.get(
             `${BASE_URL}/posts/${team_id}`,
             config
@@ -43,8 +44,8 @@ export const getPostedTeamWithId = async (userToken: any, team_id: any) => {
         return error;
     }
 }
-export const postedTeamWithId = async (userToken: any, team_id: any) => {
-    console.log("USER TOKEN HERE", userToken)
+
+export const postTeamWithId = async (userToken: any, team_index: any) => {
     try {
         const config = {
             headers: {
@@ -52,8 +53,8 @@ export const postedTeamWithId = async (userToken: any, team_id: any) => {
                 'Authorization': `Bearer ${userToken}`
             }
         }
-        const { data } = await axios.post(
-            `${BASE_URL}/posts/${team_id}`,
+        const { data } = await axios.get(
+            `${BASE_URL}/posts/${team_index}`,
             config
         )
 
