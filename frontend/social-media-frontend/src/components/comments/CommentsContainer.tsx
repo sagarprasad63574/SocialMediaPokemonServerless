@@ -36,9 +36,19 @@ const CommentsContainer = () => {
     return (
         <div>
             {error && <Error>{error}</Error>}
-            <h3>Comments made by user {userInfo?.username}</h3>
-            <Button onClick={handleEditButton}>Edit Comments</Button>
-            <Button onClick={handleDeleteButton}>Delete Comments</Button>
+            {comments && (
+                <div>
+                    <h3>Comments made by user {userInfo?.username}</h3>
+                    <Button onClick={handleEditButton}>Edit Comments</Button>
+                    <Button onClick={handleDeleteButton}>Delete Comments</Button>
+                </div>
+            )}
+            {!comments && (
+                <div>
+                    <h3>User {userInfo?.username} has not posted any comments</h3>
+                    <h4>Go onto a team page in order to add a comment, and those comments will show up here</h4>
+                </div>
+            )}
             {isEditing && <EditCommentForm comments={comments} setComments={setComments} setVisible={setIsEditing}/>}
             {isDeleting && <DeleteCommentForm comments={comments} setComments={setComments} setVisible={setIsDeleting}/>}
             {(comments && !isEditing && !isDeleting) && <ViewComments comments={comments} />}
