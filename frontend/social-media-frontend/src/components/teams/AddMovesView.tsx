@@ -21,10 +21,11 @@ const AddMovesView = ({ team_index, pokemon_index, toggleEditMove, userTeams, se
     try {
       const pokemon = await AddMoveToPokemon(userToken, team_index, pokemon_index, data.move_name);
       setMessage(pokemon.message);
-      console.log(pokemon);
       if (pokemon.response) { 
         setMessage(`${pokemon.message}: ${data.move_name}`);
-        console.log(userTeams);
+        setTeams([...userTeams], 
+          userTeams[team_index].pokemons[pokemon_index].moves = 
+          [...userTeams[team_index].pokemons[pokemon_index].moves, {move_name: data.move_name}])
       } else {
         setMessage(pokemon.message);
       }

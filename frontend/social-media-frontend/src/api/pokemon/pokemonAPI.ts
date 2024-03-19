@@ -70,3 +70,25 @@ export const AddMoveToPokemon = async (userToken: any, team_index: any, pokemon_
         return (error.response.data) ? error.response.data : error.message;
     }
 }
+
+export const DeletePokemonFromTeam = async (userToken: any, team_index: any, pokemon_index: any) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+
+        const { data } = await axios.delete(
+            `${BASE_URL}/pokemon/${parseInt(team_index)}/${parseInt(pokemon_index)}`,
+            config
+        )
+        
+        console.log(team_index, pokemon_index)
+        console.log("GETTING DATA FROM API", data);
+        return data;
+    } catch (error: any) { //axios status codes from 400-500 300?
+        return (error.response.data) ? error.response.data : error.message;
+    }
+}

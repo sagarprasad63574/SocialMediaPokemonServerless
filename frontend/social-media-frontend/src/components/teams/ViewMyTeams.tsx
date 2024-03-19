@@ -9,21 +9,33 @@ import EditTeamView from './EditTeamView';
 import DeleteTeamView from './DeleteTeamView';
 import { useSelector } from 'react-redux';
 import ViewUsersTeams from './ViewUsersTeams';
+import { postTeamWithId } from '../../api/postedTeams/postedTeamsAPI';
+import Nav from 'react-bootstrap/esm/Nav';
 
 const ViewMyTeams = ({ userTeams, setTeams }: any) => {
 
+  console.log("USER TEAMS IS HERE", userTeams)
   const [editTeamName, setEditTeamName] = useState(false);
   const [show, setShow] = useState(false);
-  
+  const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
+
   const toggleEditTeam = () => {
     setEditTeamName((editTeamName) => !editTeamName)
   }
 
-  // const handleShow = () => setShow(true);
-  // const handleClose = () => setShow(false);
+  const handlePost = async (event: any) => {
+    event.preventDefault();
+    console.log(event.target.value)
+    try {
+      console.log("Current user token", userToken)
 
-  const postTeam = (team_index: any) => {
-    console.log(team_index)
+      const postTeam = await postTeamWithId(userToken, event.target.value);
+      if (postTeam.response) {
+        setTeams([...userTeams], userTeams[event.target.value].post = true)
+      }
+    } catch (error: any) {
+      console.log("HEllo I am here: ", error);
+    }
   }
 
   const listUserTeams = userTeams.map((teams: any, index: any) =>
@@ -31,12 +43,15 @@ const ViewMyTeams = ({ userTeams, setTeams }: any) => {
       <Accordion.Header >{teams.team_name} </Accordion.Header>
       <Accordion.Body >
         <div className="float-end mb-3">
-          <Button onClick={toggleEditTeam} className='pull-right mx-2'>Edit Team</Button>
+          <Card.Link as={Link} to={`/search`}>
+            <Button variant="primary">Add Pokemon</Button>
+          </Card.Link>
+          <Button onClick={toggleEditTeam} className='pull-right mx-2'>Edit Team Name</Button>
           <Button onClick={() => setShow(true)}>Delete Team</Button>
           {editTeamName && <EditTeamView
-              team_index={index}
-              userTeams={userTeams}
-              setTeams={setTeams} />}
+            team_index={index}
+            userTeams={userTeams}
+            setTeams={setTeams} />}
           {show && <DeleteTeamView
             team={teams}
             team_index={index}
@@ -46,7 +61,7 @@ const ViewMyTeams = ({ userTeams, setTeams }: any) => {
             setShow={setShow}
           />}
         </div>
-        <ViewUsersTeams userTeams={[teams]} team_index={index} setTeams={setTeams} />
+        <ViewUsersTeams userTeams={userTeams} team={[teams]} team_index={index} setTeams={setTeams} handlePost={handlePost} />
       </Accordion.Body>
     </Accordion.Item>
   );

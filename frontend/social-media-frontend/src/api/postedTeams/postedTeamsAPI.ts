@@ -53,8 +53,9 @@ export const postTeamWithId = async (userToken: any, team_index: any) => {
                 'Authorization': `Bearer ${userToken}`
             }
         }
-        const { data } = await axios.get(
+        const { data } = await axios.post(
             `${BASE_URL}/posts/${team_index}`,
+            {},
             config
         )
 

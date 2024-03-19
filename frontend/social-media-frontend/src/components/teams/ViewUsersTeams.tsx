@@ -8,24 +8,10 @@ import { postTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
 import ViewPokemon from './ViewPokemon'
 
 
-const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
-
-    const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
+const ViewUsersTeams = ({ userTeams, team, team_index, setTeams, handlePost }: any) => {
     const [pokemonIndex, setPokemonIndex] = useState(null);
-
-    const handlePost = async (event: any) => {
-        event.preventDefault();
-        try {
-            console.log("Current user token", userToken)
-
-            const postTeam = await postTeamWithId(userToken, team_index);
-            console.log(postTeam)
-        } catch (error: any) {
-            console.log("HEllo I am here: ", error);
-        }
-    }
-
-    const userTeam = userTeams.map((team: any, index: number) => (
+    
+    const userTeam = team.map((team: any, index: number) => (
         <div key={team.team_id}>
             <Card className="my-4" style={{ width: '100%' }}>
                 <Card.Body >
@@ -38,7 +24,7 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
                     <div className='mt-1'>
                         {team.post ?
                             <p>Click to view details about a post</p> :
-                            <Button onClick={handlePost}>Post</Button>
+                            <Button value={team_index} onClick={(event) => handlePost(event)}>Post</Button>
                         }
                     </div>
                     <div className="mt-1">
