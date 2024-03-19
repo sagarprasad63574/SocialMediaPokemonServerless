@@ -47,31 +47,53 @@ router.get('/:id', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
-//posts/:id post a team to homepage
 router.post('/:id', ensureLoggedIn, async (req, res, next) => {
-    const user_id = res.locals.user.id;
-    console.log(user_id)
+    const user_id = res.locals.user.id; 
     const team_id = req.params.id;
-
     try {
-        const { response, message, team } = await postService.postTeam(user_id, team_id);
-
-        if (response) {
+        const {response, message, team} = await postService.postTeam(user_id, team_id);
+        if(response){
             return res.status(200).json({
                 response,
                 message,
                 team
-            })
+            });
         } else {
             return res.status(400).json({
                 response,
                 message
-            })
-        }
-    } catch (err) {
-        return next(err);
+            });
+        };
+    } catch (error) {
+        return next(error);
     }
 });
+
+//posts/:id post a team to homepage
+// router.post('/:id', ensureLoggedIn, async (req, res, next) => {
+//     const user_id = res.locals.user.id;
+//     console.log(user_id)
+//     const team_id = req.params.id;
+
+//     try {
+//         const { response, message, team } = await postService.postTeam(user_id, team_id);
+
+//         if (response) {
+//             return res.status(200).json({
+//                 response,
+//                 message,
+//                 team
+//             })
+//         } else {
+//             return res.status(400).json({
+//                 response,
+//                 message
+//             })
+//         }
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 
 
