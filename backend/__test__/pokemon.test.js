@@ -2,6 +2,7 @@ const pokemonService = require('../service/pokemonService');
 const pokemonDAO = require('../repository/pokemonDAO');
 const teamDAO = require('../repository/teamDAO');
 const axios = require('axios');
+const uuid = require('uuid');
 
 jest.mock('../repository/teamDAO');
 jest.mock('../repository/pokemonDAO');
@@ -33,7 +34,6 @@ describe('pokemon Test', () => {
         };
         const pokemon = {
             team_name: "testeam",
-            pokemon_id: "0",
             pokemon_name: "charizard"
         };
         let pokemondata;
@@ -47,6 +47,7 @@ describe('pokemon Test', () => {
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team]);
         pokemonDAO.pokedata.mockResolvedValueOnce(pokemondata);
         pokemonDAO.addPokemonToTeam.mockResolvedValueOnce([pokemon]);
+        uuid.v4.mockReturnValueOnce("1");
         const data = await pokemonService.addPokemonToTeam(1,pokemon);
         expect(data.response).toBeTruthy();
     });

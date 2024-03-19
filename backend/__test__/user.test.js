@@ -256,3 +256,20 @@ describe('Getting Users', () => {
         expect(data.response).toBeTruthy();
     });
 });
+
+describe('Deleting Users', () => {
+    test('Deleting user but no user id provided, should return false', async () => {
+        const data = await userService.deleteUser();
+        expect(data.response).toBeFalsy();
+    });
+    test('Deleting user but user does not exist, should return false', async () => {
+        userDAO.deleteUser.mockResolvedValueOnce(null);
+        const data = await userService.deleteUser("0");
+        expect(data.response).toBeFalsy();
+    });
+    test('Deleting user and user exists, should return true', async () => {
+        userDAO.deleteUser.mockResolvedValueOnce(true);
+        const data = await userService.deleteUser("0");
+        expect(data.response).toBeTruthy();
+    });
+});

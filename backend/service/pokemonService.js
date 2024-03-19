@@ -106,12 +106,11 @@ const editPokemonFromTeam = async (user_id, team_id, pokemon_id, receivedData) =
     };
 
     let data = await pokemonDAO.editPokemonFromTeam(user_id, team_id, pokemon_id, pokemon);
-
     if (data) {
-        return { response: true, message: "Failed to edit pokemon" };
+        return { response: true, message: "Edited pokemon successfully"};
     }
 
-    return { response: false };
+    return { response: false, message: "Failed to edit pokemon"  };
 }
 
 const addMoveToPokemon = async (user_id, team_id, pokemon_id, receivedData) => {

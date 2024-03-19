@@ -118,15 +118,13 @@ const editPokemonFromTeam = async (user_id, team_index, pokemon_index, pokemon) 
         ExpressionAttributeValues: {
 
             ":vals": {
-                "pokemon_id": pokemon.pokemon_id,
                 "pokemon_name": pokemon.pokemon_name,
                 "hp": pokemon.hp,
                 "attack": pokemon.attack,
                 "defense": pokemon.defense,
                 "specialattack": pokemon.specialattack,
                 "specialdefense": pokemon.specialdefense,
-                "speed": pokemon.speed,
-                "types": pokemon.types
+                "speed": pokemon.speed
             }
 
         },
@@ -135,7 +133,7 @@ const editPokemonFromTeam = async (user_id, team_index, pokemon_index, pokemon) 
 
     try {
         const data = await documentClient.send(command);
-        return data.Attributes.my_pokemons[0];
+        return data.Attributes.teams[0].pokemons[0];
     } catch (error) {
         logger.error(error);
         return null;

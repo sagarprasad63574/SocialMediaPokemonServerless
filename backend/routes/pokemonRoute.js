@@ -62,11 +62,13 @@ router.delete('/:teamid/:pokeid', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
@@ -78,7 +80,7 @@ router.delete('/:teamid/:pokeid', ensureLoggedIn, async (req, res, next) => {
 //edit a pokemon from team
 router.put('/:teamid/:pokeid', ensureLoggedIn, async (req, res, next) => {
     const user_id = res.locals.user.id;
-    const team_id = req.params.id;
+    const team_id = req.params.teamid;
     const pokemon_id = req.params.pokeid;
 
     try {
@@ -86,11 +88,13 @@ router.put('/:teamid/:pokeid', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
@@ -109,11 +113,13 @@ router.post('/:teamid/:pokeid', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
