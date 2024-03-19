@@ -20,6 +20,7 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
     const showTeamId = req.query.team_id;
     const showRole = req.query.role;
     const showAll = req.query.showAll;
+    const allByTeam = req.query.allByTeam;
     try {
         if(showTeamId){
             const data = await commentService.getCommentsByTeam(showTeamId);
@@ -33,6 +34,11 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
         }
         if(showAll){
             const data = await commentService.getEveryComment();
+            if(!data.response) throw new NotFoundError(data.errors);
+            return res.status(200).json(data);
+        }
+        if(allByTeam){
+            const data = await commentService.getAllCommentsGroupedByTeam();
             if(!data.response) throw new NotFoundError(data.errors);
             return res.status(200).json(data);
         }

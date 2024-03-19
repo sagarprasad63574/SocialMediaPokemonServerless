@@ -109,3 +109,23 @@ export const deleteComment = async (userToken: any, comment_index: any) => {
         return error;
     }
 };
+
+export const getCommentsForAllTeams = async (userToken: any) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        };
+        const {data} = await axios.get(
+            `${BASE_URL}/comments?allByTeam=true`,
+            config
+        );
+        console.log("GETTING DATA FROM API", data);
+        return data;
+    } catch (error: any) {
+        console.log(error);
+        return error;
+    }
+}

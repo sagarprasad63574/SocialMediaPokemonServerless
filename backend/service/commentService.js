@@ -24,6 +24,36 @@ const getCommentsByTeam = async team_id => {
     return {response: true, message: `Got comments for team ${team_id}`, comments};
 }
 
+const getAllCommentsGroupedByTeam = async () => {
+    const allComments = await commentDAO.getEveryComment();
+    if(!allComments || !allComments.length) return {response: false, errors: "No comments"};
+    const teamIDs = [];
+    const allTeamComments = [];
+    for(let i=0; i<allComments.length; i++){
+        let currentUser = allComments[i];
+        for(let j=0; j<currentUser.comments.length; j++){
+            if(!teamIDs.includes(currentUser.comments[j].team_id)) teamIDs.push(currentUser.comments[j].team_id);
+        }
+    }
+    for(let i=0; i<teamIDs.length; i++){
+        let currentID = teamIDs[i];
+        let teamComments = [];
+        for(let j=0; j<allComments.length; j++){
+            let currentUser = allComments[j];
+            let reducedComments = currentUser.comments.filter(comment => {return comment.team_id === currentID});
+            if(!reducedComments || !reducedComments.length) continue;
+            let reducedUser = {
+                username: currentUser.username,
+                comments: reducedComments
+            };
+            teamComments.push(reducedUser);
+        }
+        allTeamComments.push({team_id: currentID, comments: teamComments});
+    }
+    if(!allTeamComments || !allTeamComments.length) return {response: false, errors: "No Team Comments"};
+    return {response: true, message: "Got all comments for all teams", comments: allTeamComments};
+}
+
 const getCommentsByRole = async role => {
     if(!role) return {response: false, errors: "No role provided"};
     const comments = await commentDAO.getCommentsByRole(role);
@@ -103,6 +133,7 @@ module.exports = {
     getCommentsByUsername,
     getCommentsByTeam,
     getCommentsByRole,
+    getAllCommentsGroupedByTeam,
     postComment,
     updateComment,
     deleteComment

@@ -6,8 +6,7 @@ import Button from 'react-bootstrap/esm/Button'
 import BattleLogView from '../battlelog/BattleLogView'
 import { postedTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
 import { useSelector } from 'react-redux'
-import ViewComments from '../comments/ViewComments'
-import { getCommentsForTeam } from '../../api/comments/commentAPI'
+import { getCommentsForAllTeams, getCommentsForTeam } from '../../api/comments/commentAPI'
 import ViewCommentsForTeam from '../postedTeam/ViewCommentsForTeam'
 
 
@@ -30,13 +29,9 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
     useEffect(() => {
         async function getAllTeamComments(){
             try {
-                let teamComms = new Array();
-                for(let i=0; i<userTeams.length; i++){
-                    let comms = await getCommentsForTeam(userToken, userTeams[i].team_id);
-                    if(!comms) continue;
-                    teamComms.push({team_id: userTeams[i].team_id, comments: comms.comments});
-                }
-                setTeamComments(teamComms);
+                const allTeamComms = await getCommentsForAllTeams(userToken);
+                console.log(allTeamComms.comments);
+                setTeamComments(allTeamComms.comments);
             } catch (error) {
                 console.log(error);
             }
