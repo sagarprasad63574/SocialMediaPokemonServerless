@@ -27,11 +27,17 @@ const battleSim = async (user_id, receivedData) =>
     let team1 = recieved1.pokemons;
     let team2 = recieved2.pokemons;
 
-    let t1 = team1.length;
-    let t2 = team2.length;
+    for(let i = 0; i < team1.length; i++){
+        if(team1[i].moves.length == 0){
+            return { response: false, message: `pokemon ${team1[i].pokemon_name} must have at least one move!` }
+        }
+    }
 
-    let c1 = 0;
-    let c2 = 0;
+    for(let i = 0; i < team2.length; i++){
+        if(team2[i].moves.length == 0){
+            return { response: false, message: `pokemon ${team2[i].pokemon_name} must have at least one move!` }
+        }
+    }
 
     let p1 = team1[0];
     let p2 = team2[0];
