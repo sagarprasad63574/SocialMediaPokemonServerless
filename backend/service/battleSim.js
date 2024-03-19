@@ -24,6 +24,9 @@ const battleSim = async (user_id, receivedData) =>
 
     let recieved2 = teams2[opponent_team_index];
 
+    let deep1 = JSON.parse(JSON.stringify(teams1));
+    let deep2 = JSON.parse(JSON.stringify(teams2));
+
     let team1 = recieved1.pokemons;
     let team2 = recieved2.pokemons;
     if(team1.length == 0)
@@ -170,45 +173,41 @@ const battleSim = async (user_id, receivedData) =>
     }
     let mess = "";
     let points = ((team1.length + team2.length) - details.length);
-
-    let deep1 = await teamDAO.ViewUsersTeams(user_id);
-    let deep2 = await teamDAO.ViewUsersTeams(receivedData.opponent_id);
-
-    recieved1.pokemons = deep1[user_team_index].pokemons;
-    recieved2.pokemons = deep2[opponent_team_index].pokemons;
+    recieved1 = deep1[user_team_index];
+    recieved2 = deep2[opponent_team_index];
 
     if(won)
     {
         recieved1.win += 1;
         recieved1.points += points;
-        await battleSimDAO.addDetails(user_team_index, user_id,recieved1);
+        let battleReport = {summary,details,won};
+        recieved1.battlelog.push(battleReport);
+        await battleSimDAO.addDetails(user_team_index, user_id, recieved1);
         recieved2.loss += 1;
         recieved2.points -= points;
         if(recieved2.points < 0)
             recieved2.points = 0;
-        await battleSimDAO.addDetails(opponent_team_index, receivedData.opponent_id,recieved2);
-        let battleReport = {summary,details,won};
-        await battleSimDAO.addBattleReport(user_team_index, user_id, battleReport);
         won = false;
         battleReport = {summary,details,won};
-        await battleSimDAO.addBattleReport(opponent_team_index, receivedData.opponent_id, battleReport);
+        recieved2.battlelog.push(battleReport);
+        await battleSimDAO.addDetails(opponent_team_index, receivedData.opponent_id, recieved2);
         mess = "You Won!";
     }
     else
     {
         recieved2.win += 1;
         recieved2.points += points;
-        await battleSimDAO.addDetails(opponent_team_index, receivedData.opponent_id,recieved2);
+        let battleReport = {summary,details,won};
+        recieved2.battlelog.push(battleReport);
+        await battleSimDAO.addDetails(opponent_team_index, receivedData.opponent_id, recieved2);
         recieved1.loss += 1;
         recieved1.points -= points;
         if(recieved1.points < 0)
             recieved1.points = 0;
-        await battleSimDAO.addDetails(user_team_index, user_id,recieved1);
-        let battleReport = {summary,details,won};
-        await battleSimDAO.addBattleReport(user_team_index, user_id, battleReport);
         won = true;
         battleReport = {summary,details,won};
-        await battleSimDAO.addBattleReport(opponent_team_index, receivedData.opponent_id, battleReport);
+        recieved1.battlelog.push(battleReport);
+        await battleSimDAO.addDetails(user_team_index, user_id, recieved1);
         mess = "You Lost!";
     }
 

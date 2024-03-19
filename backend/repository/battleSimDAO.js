@@ -13,36 +13,6 @@ const dynamoDBClient = new DynamoDBClient({
 const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
-const addBattleReport = async (team_index, user_id, report) => {
-    const command = new UpdateCommand({
-        TableName,
-        Key: {
-            user_id
-        },
-        UpdateExpression: `SET teams[${team_index}].battlelog = list_append(teams[${team_index}].battlelog, :vals)`,
-        ExpressionAttributeValues: {
-
-            ":vals": [
-                {
-                    "summary": report.summary,
-                    "details": report.details,
-                    "won": report.won
-                }
-            ]
-
-        },
-        ReturnValues: "UPDATED_NEW"
-    });
-
-    try {
-        const data = await documentClient.send(command);
-        return data.Attributes.teams[0].report;
-    } catch (error) {
-        logger.error(error);
-        return null;
-    }
-}
-
 const addDetails = async (team_index, user_id, team) => {
     const command = new UpdateCommand({
         TableName,
@@ -77,6 +47,5 @@ const addDetails = async (team_index, user_id, team) => {
 }
 
 module.exports = {
-    addBattleReport,
     addDetails
 }
