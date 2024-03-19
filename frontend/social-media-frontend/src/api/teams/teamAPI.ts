@@ -23,6 +23,27 @@ export const getTeams = async (userToken: any) => {
     }
 }
 
+export const getTeamById = async (userToken: any, team_id: any) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        }
+        const { data } = await axios.get(
+            `${BASE_URL}/teams/${team_id}`,
+            config
+        )        
+        console.log("GETTING DATA FROM API", data);
+        return data;
+    } catch (error: any) { //axios status codes from 400-500 300?
+        console.log(error)
+        return (error.response.data) ? error.response.data: error.message;
+    }
+}
+
+
 export const AddTeam = async (userToken: any, { team_name }: any) => {
     try {
         const config = {

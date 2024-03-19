@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import Accordion from 'react-bootstrap/esm/Accordion';
 import ViewPokemon from '../homepage/ViewPokemon';
-import ViewUsersTeams from '../homepage/ViewUsersTeams';
 import Button from 'react-bootstrap/esm/Button';
 import Card from 'react-bootstrap/esm/Card';
 import { Link } from 'react-router-dom';
 import TestComponent from '../TestComponent/TestComponent';
 import EditTeamView from './EditTeamView';
 import DeleteTeamView from './DeleteTeamView';
+import { useSelector } from 'react-redux';
+import ViewUsersTeams from './ViewUsersTeams';
 
 const ViewMyTeams = ({ userTeams, setTeams }: any) => {
 
   const [editTeamName, setEditTeamName] = useState(false);
   const [show, setShow] = useState(false);
-
+  
   const toggleEditTeam = () => {
     setEditTeamName((editTeamName) => !editTeamName)
   }

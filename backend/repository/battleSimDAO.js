@@ -13,22 +13,25 @@ const dynamoDBClient = new DynamoDBClient({
 const documentClient = DynamoDBDocumentClient.from(dynamoDBClient);
 const TableName = "SocialMediaPokemon";
 
-const addBattleReport = async (team_index, user_id, report) => {
+const addDetails = async (team_index, user_id, team) => {
     const command = new UpdateCommand({
         TableName,
         Key: {
             user_id
         },
-        UpdateExpression: `SET teams[${team_index}].battlelog = list_append(teams[${team_index}].battlelog, :vals)`,
+        UpdateExpression: `SET teams[${team_index}] = :vals`,
         ExpressionAttributeValues: {
 
-            ":vals": [
-                {
-                    "summary": report.summary,
-                    "details": report.details,
-                    "won": report.won
-                }
-            ]
+            ":vals": {
+                "team_id": team.team_id,
+                "team_name": team.team_name,
+                "win": team.win,
+                "loss": team.loss,
+                "points": team.points,
+                "post": team.post, 
+                "pokemons": team.pokemons,
+                "battlelog": team.battlelog
+            }
 
         },
         ReturnValues: "UPDATED_NEW"
@@ -36,43 +39,7 @@ const addBattleReport = async (team_index, user_id, report) => {
 
     try {
         const data = await documentClient.send(command);
-        return data.Attributes.teams[0].report;
-    } catch (error) {
-        logger.error(error);
-        return null;
-    }
-}
-
-const addPointsWinsAndLosses = async (user_id, team) => {
-    const command = new UpdateCommand({
-        TableName,
-        Key: {
-            user_id
-        },
-        UpdateExpression: "SET #t = list_append(#t, :vals)",
-        ExpressionAttributeNames: {
-            "#t": "teams"
-        },
-        ExpressionAttributeValues: {
-            ":vals": [
-                {
-                    "team_id": team.team_id,
-                    "team_name": team.team_name,
-                    "win": team.win,
-                    "loss": team.loss,
-                    "points": team.points,
-                    "post": team.post, 
-                    "pokemons": team.pokemons,
-                    "battlelog": team.battlelog
-                }
-            ]
-        },
-        ReturnValues: "UPDATED_NEW"
-    });
-
-    try {
-        const data = await documentClient.send(command);
-        return data.Attributes.teams;
+        return data.Attributes.teams[0];
     } catch (error) {
         logger.error(error);
         return null;
@@ -80,5 +47,5 @@ const addPointsWinsAndLosses = async (user_id, team) => {
 }
 
 module.exports = {
-    addBattleReport
+    addDetails
 }

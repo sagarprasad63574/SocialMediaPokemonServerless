@@ -1,50 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Card from 'react-bootstrap/esm/Card'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/esm/Button'
 import BattleLogView from '../battlelog/BattleLogView'
 import { useSelector } from 'react-redux'
-import { getCommentsForAllTeams} from '../../api/comments/commentAPI'
 import { postTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
 import ViewPokemon from './ViewPokemon'
-import ViewComments from '../comments/ViewComments'
-import ViewCommentsForTeam from '../postedTeam/ViewCommentsForTeam'
 
 
 const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
 
-    const { userToken } = useSelector((state: any) => state.auth)
-    const [teamComments, setTeamComments] = useState([] as any[]);
+    const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
+    const [pokemonIndex, setPokemonIndex] = useState(null);
+
     const handlePost = async (event: any) => {
         event.preventDefault();
         try {
-            console.log("What is my token", userToken)
+            console.log("Current user token", userToken)
+
             const postTeam = await postTeamWithId(userToken, team_index);
             console.log(postTeam)
-            //if (newTeam.response) setTeams([...userTeams], userTeams[team_index].team_name = data.team_name);
         } catch (error: any) {
             console.log("HEllo I am here: ", error);
         }
-    }
-
-    useEffect(() => {
-        async function getAllTeamComments(){
-            try {
-                const allTeamComms = await getCommentsForAllTeams(userToken);
-                console.log(allTeamComms.comments);
-                setTeamComments(allTeamComms.comments);
-            } catch (error) {
-                console.log(error);
-            }
-            
-        }
-        getAllTeamComments();
-    }, [userToken]);
-
-    const getCommentsOfTeam = (team_id: string) => {
-        let teamC = teamComments.filter((comms) => comms.team_id === team_id);
-        if(!teamC || !teamC.length) return null;
-        return teamC[0].comments;
     }
 
     const userTeam = userTeams.map((team: any, index: number) => (
@@ -58,8 +36,8 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
                         Points: {team.points}
                     </Card.Text>
                     <div className='mt-1'>
-                        {team.post ? 
-                            <p>Click to view details about a post</p>:
+                        {team.post ?
+                            <p>Click to view details about a post</p> :
                             <Button onClick={handlePost}>Post</Button>
                         }
                     </div>
@@ -73,15 +51,15 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
                     </div>
                 </Card.Body>
             </Card>
-            <ViewPokemon pokemons={team.pokemons} />
+            <ViewPokemon
+                pokemons={team.pokemons}
+                team_index={team_index}
+                pokemonIndex={pokemonIndex}
+                setPokemonIndex={setPokemonIndex}
+                userTeams={userTeams}
+                setTeams={setTeams}
+            />
             <BattleLogView battlelog={team.battlelog} />
-            <hr />
-            {getCommentsOfTeam(team.team_id) && (
-                <div>
-                    <h4>Comments</h4>
-                    <ViewCommentsForTeam comments={getCommentsOfTeam(team.team_id)}/>
-                </div>
-            )}
         </div>
     ))
     return (

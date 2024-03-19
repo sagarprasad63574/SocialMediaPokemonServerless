@@ -20,6 +20,8 @@ import HomePageController from './components/homepage/HomePageController';
 import PostedTeamContainer from './components/postedTeam/PostedTeamContainer';
 import CreatePokemonContainer from './components/myPokemons/CreatePokemonContainer';
 import ViewCreatedPokemons from './components/myPokemons/ViewCreatedPokemons';
+import SearchPokemonContainer from './components/search/SearchPokemonContainer';
+import BattleSimulatorContainer from './components/battle/BattleSimulatorContainer';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route path='/teams/:teamID' element={<PostedTeamContainer/>}/>
             <Route path='/createPokemon' element={<CreatePokemonContainer/>}/>
             <Route path='/viewCreatedPokemons' element={<ViewCreatedPokemons/>}/>
+            <Route path='/search' element={<SearchPokemonContainer/>}/>
+            <Route path='/battle' element={<BattleSimulatorContainer/>}/>
           </Route>
         </Routes>
       </main>

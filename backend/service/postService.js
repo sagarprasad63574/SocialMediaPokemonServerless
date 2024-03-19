@@ -54,11 +54,13 @@ const viewTeamByIdFromAll = async team_id => {
     const userObjs = teams;
     let teamObj;
     let foundUsername;
+    let foundUserId;
     for(let i=0; i<userObjs.length; i++){
         userObjs[i].teams.forEach(team => {
             if(team.team_id === team_id){
                 teamObj = team;
-                foundUsername = userObjs[i].username
+                foundUsername = userObjs[i].username;
+                foundUserId = userObjs[i].user_id
             }
         });
     }
@@ -67,6 +69,7 @@ const viewTeamByIdFromAll = async team_id => {
     }
     let foundTeam = {
         username: foundUsername,
+        user_id: foundUserId,
         team: teamObj
     };
     if(response && foundTeam){
