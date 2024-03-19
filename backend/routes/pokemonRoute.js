@@ -14,10 +14,12 @@ router.get('/:pokemon', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message
             })
         } else {
             return res.status(200).json({
+                response,
                 message
             })
         }
@@ -34,11 +36,13 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
         const { response, errors, message, pokemon } = await pokemonService.addPokemonToTeam(user_id, req.body);
         if (response) {
             return res.status(201).json({
+                response,
                 message,
                 pokemon
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }

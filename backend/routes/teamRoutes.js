@@ -51,15 +51,17 @@ router.get('/:id', ensureLoggedIn, async (req, res, next) => {
     const team_id = req.params.id;
     const user_id = res.locals.user.id
     try {
-        const { response, message, team } = await teamService.viewTeamById(user_id, team_id);
+        const { response, message, team } = await teamService.viewTeamByTeamId(user_id, team_id);
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 team
             })
         } else {
             return res.status(200).json({
+                response,
                 message
             })
         }
