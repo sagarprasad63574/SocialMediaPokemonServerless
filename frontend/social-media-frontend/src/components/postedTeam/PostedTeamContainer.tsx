@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { getPostedTeamWithId } from "../../api/postedTeams/postedTeamsAPI";
 import { useParams } from "react-router-dom";
 import PostedTeamScreen from './PostedTeamScreen';
-import { getCommentsForTeam } from "../../api/comments/commentAPI";
 import AddCommentForm from "./AddCommentForm";
 import ViewCommentsForTeam from "./ViewCommentsForTeam";
 
@@ -22,16 +21,7 @@ const PostedTeamContainer = () => {
                 console.log(error);
             }
         }
-        async function retrieveComments(){
-            try {
-                let foundComments = await getCommentsForTeam(userToken, teamID);
-                setComments(foundComments.comments);
-            } catch (error) {
-                console.log(error);
-            }
-        }
         retrieveTeam();
-        retrieveComments();
     }, [userToken]);
     return (
         <div>
@@ -39,7 +29,12 @@ const PostedTeamContainer = () => {
                 <div>
                     <PostedTeamScreen postedTeam={postedTeam}/>
                     <AddCommentForm setComments={setComments} teamID={teamID}/>
-                    <ViewCommentsForTeam comments={comments}/>
+                    {(comments && comments.length > 0) && (
+                        <div>
+                            <h2>View Comments</h2>
+                            <ViewCommentsForTeam comments={comments}/>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

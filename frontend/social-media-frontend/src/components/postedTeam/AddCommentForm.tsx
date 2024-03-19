@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
 import { getCommentsForTeam, postComment } from "../../api/comments/commentAPI";
 import { useSelector } from "react-redux";
@@ -17,6 +17,7 @@ const AddCommentForm = ({setComments, teamID}: any) => {
             let data = await postComment(userToken, commBody);
             let newComms = await getCommentsForTeam(userToken, teamID);
             setComments(newComms.comments);
+            
         } catch (error) {
             console.log("ERROR HERE: ", error);
         }
