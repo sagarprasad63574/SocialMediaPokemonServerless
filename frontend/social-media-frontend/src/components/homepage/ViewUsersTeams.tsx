@@ -4,17 +4,14 @@ import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/esm/Button'
 import BattleLogView from '../battlelog/BattleLogView'
 import { useSelector } from 'react-redux'
-import { getCommentsForAllTeams} from '../../api/comments/commentAPI'
 import { postTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
 import ViewPokemon from './ViewPokemon'
-import ViewComments from '../comments/ViewComments'
 import ViewCommentsForTeam from '../postedTeam/ViewCommentsForTeam'
 
 
-const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
+const ViewUsersTeams = ({ userTeams, team_index, setTeams, teamComments }: any) => {
 
     const { userToken } = useSelector((state: any) => state.auth)
-    const [teamComments, setTeamComments] = useState([] as any[]);
     const handlePost = async (event: any) => {
         event.preventDefault();
         try {
@@ -27,22 +24,9 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
         }
     }
 
-    useEffect(() => {
-        async function getAllTeamComments(){
-            try {
-                const allTeamComms = await getCommentsForAllTeams(userToken);
-                console.log(allTeamComms.comments);
-                setTeamComments(allTeamComms.comments);
-            } catch (error) {
-                console.log(error);
-            }
-            
-        }
-        getAllTeamComments();
-    }, [userToken]);
 
     const getCommentsOfTeam = (team_id: string) => {
-        let teamC = teamComments.filter((comms) => comms.team_id === team_id);
+        let teamC = teamComments.filter((comms: any) => comms.team_id === team_id);
         if(!teamC || !teamC.length) return null;
         return teamC[0].comments;
     }
