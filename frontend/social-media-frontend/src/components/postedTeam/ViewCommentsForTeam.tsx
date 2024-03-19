@@ -3,10 +3,9 @@ import { Card, ListGroup } from "react-bootstrap";
 import { convertTimestampToUTC } from "../../api/comments/commentAPI";
 
 const ViewCommentsForTeam = ({comments}: any) => {
-    console.log(comments);
+    console.log("Team Comments: ", comments);
     return (
         <div>
-            <h2>View Comments</h2>
             {comments && (
                 <ListGroup>
                     {comments.map((comment: any, index: number) => (

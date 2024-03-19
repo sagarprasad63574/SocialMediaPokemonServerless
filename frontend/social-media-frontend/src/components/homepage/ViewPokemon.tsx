@@ -27,7 +27,7 @@ function ViewPokemon({ pokemons }: any) {
     const userPokemons = pokemons.map((pokemon: any, index: number) => (
         <Card className="mx-1" key={index}>
             <Card.Body >
-                <Card.Img variant="top" width="200px" height="200px" src={pokemon.sprite} />
+                {pokemon.sprite && <Card.Img variant="top" width="200px" height="200px" src={pokemon.sprite} />}
                 <Card.Title >{pokemon.pokemon_name.toUpperCase()}</Card.Title>
                 <Card.Text >
                     Defense: {pokemon.defense}<br />

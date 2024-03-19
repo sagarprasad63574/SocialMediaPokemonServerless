@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getPostedTeamWithId } from "../../api/postedTeams/postedTeamsAPI";
 import { useParams } from "react-router-dom";
-import PostedTeamScreen from './postedTeamScreen';
-import { getCommentsForTeam } from "../../api/comments/commentAPI";
+import PostedTeamScreen from './PostedTeamScreen';
 import AddCommentForm from "./AddCommentForm";
 import ViewCommentsForTeam from "./ViewCommentsForTeam";
+import { getCommentsForTeam } from "../../api/comments/commentAPI";
 
 const PostedTeamContainer = () => {
     const {teamID} = useParams();
@@ -22,15 +22,15 @@ const PostedTeamContainer = () => {
                 console.log(error);
             }
         }
+        retrieveTeam();
         async function retrieveComments(){
             try {
-                let foundComments = await getCommentsForTeam(userToken, teamID);
-                setComments(foundComments.comments);
+                let newComms = await getCommentsForTeam(userToken, teamID);
+                setComments(newComms.comments);
             } catch (error) {
                 console.log(error);
             }
         }
-        retrieveTeam();
         retrieveComments();
     }, [userToken]);
     return (
@@ -38,8 +38,9 @@ const PostedTeamContainer = () => {
             {postedTeam && (
                 <div>
                     <PostedTeamScreen postedTeam={postedTeam}/>
-                    <AddCommentForm setComments={setComments} teamID={teamID}/>
+                    <h2>View Comments</h2>
                     <ViewCommentsForTeam comments={comments}/>
+                    <AddCommentForm setComments={setComments} teamID={teamID}/>
                 </div>
             )}
         </div>
