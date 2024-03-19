@@ -28,11 +28,11 @@ app.use('/teams', teamRouter);
 app.use('/comments', commentRouter);
 app.use('/profiles', profileRouter);
 app.use('/token', tokenRouter);
-app.use('/posts', postRouter); 
 app.use('/pokemon', pokemonRouter);
 app.use('/token', tokenRouter)
 app.use('/myPokemon', myPokemonRouter); 
 app.use('/battleSim', battleSimRouter);
+app.use('/posts', postRouter); 
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;

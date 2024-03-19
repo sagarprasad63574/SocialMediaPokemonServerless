@@ -92,6 +92,20 @@ const viewTeamById = async (user_id, team_id) => {
 
 }
 
+const viewTeamByTeamId = async (user_id, team_id) => {
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response, message }
+
+    const team = teams.filter((t, index) => t.team_id === team_id)
+
+    if (response && team.length > 0) {
+        return { response, team }
+    }
+
+    return { response: false, message: `No team found with id ${team_id}` }
+
+}
+
 const viewTeamByName = async (user_id, team_name) => {
     const { response, message, teams } = await viewMyTeams(user_id);
     if (!response) return { response, message }
@@ -236,6 +250,7 @@ module.exports = {
     addTeam,
     viewMyTeams,
     viewTeamById,
+    viewTeamByTeamId,
     viewTeamByName,
     editTeam,
     deleteTeam,

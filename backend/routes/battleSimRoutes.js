@@ -12,12 +12,14 @@ router.post('/', ensureLoggedIn, async (req, res, next) => {
         const { response, errors, message, details, summary } = await battleSimService.battleSim(user_id, req.body);
         if (response) {
             return res.status(201).json({
+                response,
                 message,
                 summary,
                 details
             })
         } else {
             return res.status(400).json({
+                response,
                 message
             })
         }
