@@ -1,25 +1,24 @@
 import React from 'react'
 import Card from 'react-bootstrap/esm/Card'
-import ViewPokemon from './ViewPokemon'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/esm/Button'
 import BattleLogView from '../battlelog/BattleLogView'
-import { postedTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
 import { useSelector } from 'react-redux'
+import { postTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
+import ViewPokemon from './ViewPokemon'
 
 
 const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
 
-    const { userToken } = useSelector((state: any) => state.auth)
+    const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
 
     const handlePost = async (event: any) => {
         event.preventDefault();
         try {
-            console.log("What is my token", userToken)
-            const postTeam = await postedTeamWithId(userToken, team_index);
-            console.log(postTeam)
-            //if (newTeam.response) setTeams([...userTeams], userTeams[team_index].team_name = data.team_name);
+            console.log("Current user token", userToken)
 
+            const postTeam = await postTeamWithId(userToken, team_index);
+            console.log(postTeam)
         } catch (error: any) {
             console.log("HEllo I am here: ", error);
         }
@@ -44,6 +43,9 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams }: any) => {
                     <div className="mt-1">
                         <Card.Link as={Link} to={`/teams/${team.team_id}`}>
                             <Button variant="primary">View Team In Detail</Button>
+                        </Card.Link>
+                        <Card.Link as={Link} to={`/battle`}>
+                            <Button variant="primary">Battle</Button>
                         </Card.Link>
                     </div>
                 </Card.Body>
