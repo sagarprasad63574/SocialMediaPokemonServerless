@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import PostedTeamScreen from './PostedTeamScreen';
 import AddCommentForm from "./AddCommentForm";
 import ViewCommentsForTeam from "./ViewCommentsForTeam";
+import { getCommentsForTeam } from "../../api/comments/commentAPI";
 
 const PostedTeamContainer = () => {
     const {teamID} = useParams();
@@ -22,19 +23,24 @@ const PostedTeamContainer = () => {
             }
         }
         retrieveTeam();
+        async function retrieveComments(){
+            try {
+                let newComms = await getCommentsForTeam(userToken, teamID);
+                setComments(newComms.comments);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        retrieveComments();
     }, [userToken]);
     return (
         <div>
             {postedTeam && (
                 <div>
                     <PostedTeamScreen postedTeam={postedTeam}/>
+                    <h2>View Comments</h2>
+                    <ViewCommentsForTeam comments={comments}/>
                     <AddCommentForm setComments={setComments} teamID={teamID}/>
-                    {(comments && comments.length > 0) && (
-                        <div>
-                            <h2>View Comments</h2>
-                            <ViewCommentsForTeam comments={comments}/>
-                        </div>
-                    )}
                 </div>
             )}
         </div>
