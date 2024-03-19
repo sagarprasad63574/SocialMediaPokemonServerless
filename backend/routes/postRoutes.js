@@ -12,6 +12,7 @@ router.get('/', ensureLoggedIn, async (req, res, next) => {
 
         if (response) {
             return res.status(200).json({
+                response,
                 message,
                 teams
             })
