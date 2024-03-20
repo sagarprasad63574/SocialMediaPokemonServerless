@@ -9,16 +9,13 @@ const ViewMyTeams = ({ teams, pokemon_index, setMessagePokemon}: any) => {
     const { userToken } = useSelector((state: any) => state.auth)
 
     const addPokemonToTeam = async (team_name: any) => {
-        console.log("Team_name:", team_name)
-        console.log("Pokemon_index:", pokemon_index)
         try {
             const addedPokemon = await AddCreatedPokemonToTeam(userToken, pokemon_index, team_name);
-            console.log("Iam here", addedPokemon)
             if (addedPokemon.response) {
                 setMessagePokemon(addedPokemon.message);
             }
         } catch (error: any) {
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
 

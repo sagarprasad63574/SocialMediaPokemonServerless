@@ -4,7 +4,7 @@ import ViewUsersTeam from './ViewUsersTeams';
 
 const ViewAllPostedTeams = ({ postedTeams, teamComments }: any) => {
     const teams = postedTeams.map((teams: any, index: number) => (
-        <Accordion.Item key={teams.user_id} eventKey={`${index}`}>
+        <Accordion.Item key={teams.user_id} eventKey={`${index}`} style={{backgroundColor: "#98B4D4"}}>
             <Accordion.Header>{teams.username}</Accordion.Header>
             <Accordion.Body>
                     <ViewUsersTeam userTeams={teams.teams} index={index} teamComments={teamComments}/>
@@ -14,7 +14,7 @@ const ViewAllPostedTeams = ({ postedTeams, teamComments }: any) => {
     )
 
     return (
-        <Accordion defaultActiveKey="0">
+        <Accordion defaultActiveKey="0" >
             {teams}
         </Accordion>
 

@@ -39,15 +39,13 @@ const ViewPokemon = ({ pokemons, team_index, pokemonIndex, setPokemonIndex, user
 
     const handleDelete = async (event: any) => {
         event.preventDefault();
-        console.log("What is this team index: ", team_index)
         try {
             const deletePokemon = await DeletePokemonFromTeam(userToken, team_index, event.target.value);
-            console.log(deletePokemon)
             if (deletePokemon.response) {
                 setTeams([...userTeams], userTeams[team_index].pokemons.splice(event.target.value, 1))
             }
         } catch (error: any) {
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
 

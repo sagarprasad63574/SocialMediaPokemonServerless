@@ -29,7 +29,7 @@ const DeleteCommentForm = ({ comments, setComments, setVisible }: any) => {
             setHasIndex(false);
             setVisible(false);
         } catch (error) {
-            console.log("ERROR HERE: ", error);
+            console.log("error: ", error);
         }
     }
     const handleRevert = () => {

@@ -6,7 +6,6 @@ import ViewPokemon from '../homepage/ViewPokemon';
 const PostedTeamScreen = ({ postedTeam }: any) => {
     const foundTeam = postedTeam?.foundTeam;
     const pokemons = foundTeam?.team.pokemons;
-    console.log("Pokemons for team: ", pokemons);
     const getTypesString = (typeArr: any[]) => {
         let tString = `[${typeArr[0].type.name}`;
         for (let i = 1; i < typeArr.length; i++) {

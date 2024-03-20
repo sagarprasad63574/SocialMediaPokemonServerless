@@ -9,10 +9,10 @@ import { Button, Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 const Header = () => {
     const { userInfo } = useSelector((state: any) => state.auth)
     const dispatch = useDispatch()
-    console.log("At headers", userInfo)
+
     // automatically authenticate user if token is found
     const { data, isFetching } = useGetUserDetailsQuery('userDetails', {
-        pollingInterval: 900000, // 15mins
+        pollingInterval: 1800000, // 30mins
     })
 
     useEffect(() => {

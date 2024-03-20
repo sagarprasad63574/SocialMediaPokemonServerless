@@ -30,9 +30,11 @@ const CreatePokemonContainer = () => {
         event.preventDefault();
         try {
             const createPokemon = await CreatePokemon(userToken, data);
-            console.log(createPokemon);
-            setMessage(createPokemon.message);
-            //if (newTeam.response) setTeams([...userTeams, newTeam.teams]);
+            if (createPokemon.response) {
+                setMessage(createPokemon.message);
+            } else {
+                setMessage("Duplicated pokemon name")
+            }
 
         } catch (error: any) {
             console.log("error: ", error);
@@ -44,13 +46,19 @@ const CreatePokemonContainer = () => {
             <DropdownButton id="dropdown-basic-button" title="Navigate">
                 <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                 <Dropdown.Item as={Link} to="/viewCreatedPokemons">View Created Pokemons</Dropdown.Item>
-                <Dropdown.Item as={Link }to="/teams">View Teams</Dropdown.Item>
-                <Dropdown.Item as={Link }to="/comments">View Comments</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/teams">View Teams</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/comments">View Comments</Dropdown.Item>
             </DropdownButton>
             <Container className="d-grid justify-content-lg-center">
                 <h1>CREATE POKEMON</h1>
                 {message && <Error>{message}</Error>}
                 <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="pokemon_image">
+                        <Form.Label>Image</Form.Label>
+                        <Form.Control type="text" placeholder="Enter Image" defaultValue={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png`}
+                        />
+                    </Form.Group>
+
                     <Form.Group className="mb-3" controlId="pokemon_name">
                         <Form.Label>Pokemon Name</Form.Label>
                         <Form.Control type="text" placeholder="Enter Pokemon Name" required

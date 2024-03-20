@@ -39,7 +39,7 @@ const EditPokemonContainer = ({pokemon_index, createdPokemons, setCreatedPokemon
                 togglePokemon();
             }
         } catch (error: any) {
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
 

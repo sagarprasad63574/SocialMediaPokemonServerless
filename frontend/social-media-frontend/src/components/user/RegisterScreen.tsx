@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import Error from '../common/Error'
+import Error from './Error'
 import Spinner from '../common/Spinner'
 import { registerUser } from '../../store/actions/authActions'
 import Container from 'react-bootstrap/esm/Container'
@@ -42,6 +42,7 @@ const RegisterScreen = () => {
             setCustomError('Password mismatch')
             return
         }
+        setCustomError("")
         data.email = data.email.toLowerCase()
 
         dispatch(registerUser(data))
@@ -54,7 +55,7 @@ const RegisterScreen = () => {
             <h1>REGISTER USER</h1>
             <Form onSubmit={handleSubmit}>
                 {error && <Error>{error}</Error>}
-                {customError && <Error>{customError}</Error>}
+                {customError && <div className='text-danger'>{customError}</div>}
                 <Form.Group className="mb-3" controlId="name">
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter Name" required

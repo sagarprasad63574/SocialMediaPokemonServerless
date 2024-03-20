@@ -29,8 +29,7 @@ const BattleSimulatorContainer = () => {
         async function allPostedTeams() {
             try {
                 let posts = await getAllPostedTeams(userToken);
-                console.log(posts);
-                setPostedTeams(posts.teams);
+                if (posts.response) setPostedTeams(posts.teams);
             } catch (error) {
                 console.log(error);
             }
@@ -39,8 +38,7 @@ const BattleSimulatorContainer = () => {
         async function allMyTeams() {
             try {
                 let myTeams = await getTeams(userToken);
-                console.log(myTeams);
-                setMyTeams(myTeams.teams);
+                if (myTeams.response) setMyTeams(myTeams.teams);
             } catch (error) {
                 console.log(error);
             }
@@ -53,13 +51,13 @@ const BattleSimulatorContainer = () => {
         <div>
             <h1 className="display-3 text-center">Battle Simulator</h1>
             {postedTeams.length ?
-                <ViewPostedTeams 
-                postedTeams={postedTeams} 
-                myTeams={myTeams}
-                yourTeam={yourTeam}
-                setYourTeam={setYourTeam}
-                selectedOpponentTeam={selectedOpponentTeam}
-                setSelectedOpponentTeam={setSelectedOpponentTeam}
+                <ViewPostedTeams
+                    postedTeams={postedTeams}
+                    myTeams={myTeams}
+                    yourTeam={yourTeam}
+                    setYourTeam={setYourTeam}
+                    selectedOpponentTeam={selectedOpponentTeam}
+                    setSelectedOpponentTeam={setSelectedOpponentTeam}
 
                 /> :
                 <div>No Posted Teams</div>

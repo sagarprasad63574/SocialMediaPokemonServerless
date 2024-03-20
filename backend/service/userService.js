@@ -77,7 +77,7 @@ const registerUser = async (receivedData) => {
 const validateRegister = receivedData => {
     const validator = jsonschema.validate(receivedData, userRegisterSchema);
     if(!validator.valid){
-        const errs = validator.errors.map(e => e.stack);
+        const errs = validator.errors.map(e => e.stack.substring(9));
         return {response: false, errors: errs};
     }
     return {response: true};
@@ -102,7 +102,7 @@ const loginUser = async receivedData => {
 const validateLogin = receivedData => {
     const validator = jsonschema.validate(receivedData, userLoginSchema);
     if(!validator.valid){
-        const errs = validator.errors.map(e => e.stack);
+        const errs = validator.errors.map(e => e.stack.substring(9));
         return {response: false, errors: errs};
     }
     return {response: true};

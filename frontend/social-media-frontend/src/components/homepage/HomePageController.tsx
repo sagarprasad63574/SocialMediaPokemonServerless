@@ -4,6 +4,7 @@ import { getAllPostedTeams } from '../../api/postedTeams/postedTeamsAPI';
 import ViewAllPostedTeams from './ViewAllPostedTeams';
 import ProfileCard from '../profiles/ProfileCard';
 import { getCommentsForAllTeams } from '../../api/comments/commentAPI';
+import './homepage.css';
 
 const HomePageController = () => {
     const { userToken, userInfo } = useSelector((state: any) => state.auth);
@@ -13,7 +14,6 @@ const HomePageController = () => {
         async function allPostedTeams() {
             try {
                 let posts = await getAllPostedTeams(userToken);
-                console.log(posts);
                 setPostedTeams(posts.teams);
             } catch (error) {
                 console.log(error);
@@ -23,7 +23,6 @@ const HomePageController = () => {
         async function getAllTeamComments(){
             try {
                 const allTeamComms = await getCommentsForAllTeams(userToken);
-                console.log(allTeamComms.comments);
                 setAllTeamComments(allTeamComms.comments);
             } catch (error) {
                 console.log(error);
@@ -35,7 +34,8 @@ const HomePageController = () => {
 
     return (
         <div>
-            <h1 className="display-2 text-center">Welcome To Social Media Pokemon!</h1>
+            <h1 className="text-center">Welcome To Social Media Pokemon!</h1> <hr/>
+            
             <div className="my-4"> <ProfileCard user={userInfo} /> </div>
             <p>Below are a list of posted teams!</p>
             {postedTeams.length ?

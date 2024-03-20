@@ -18,7 +18,6 @@ const DeleteTeamView = ({ team, team_index, userTeams, setTeams, show, setShow }
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        console.log("What is this team index: ", team_index)
         try {
             const deleteTeam = await DeleteTeam(userToken, team_index);
             setMessage(deleteTeam.message);
@@ -28,7 +27,7 @@ const DeleteTeamView = ({ team, team_index, userTeams, setTeams, show, setShow }
                 setShow(false)
             }
         } catch (error: any) {
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
     return (

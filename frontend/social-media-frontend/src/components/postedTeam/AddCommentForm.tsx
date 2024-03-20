@@ -19,7 +19,7 @@ const AddCommentForm = ({setComments, teamID}: any) => {
             setComments(newComms.comments);
             
         } catch (error) {
-            console.log("ERROR HERE: ", error);
+            console.log("error: ", error);
         }
     }
     return (

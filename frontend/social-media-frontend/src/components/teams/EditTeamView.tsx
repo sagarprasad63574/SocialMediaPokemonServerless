@@ -20,14 +20,13 @@ const EditTeamView = ({team_index, userTeams, setTeams}: any) => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         try {
-            console.log("What is this team index: ", team_index)
             const newTeam = await EditTeam(userToken, team_index, data);
             setMessage(newTeam.message);
             if (newTeam.response) setTeams([...userTeams], userTeams[team_index].team_name = data.team_name);
 
         } catch (error: any) {
 
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
 

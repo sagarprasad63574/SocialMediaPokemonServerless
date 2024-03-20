@@ -3,7 +3,6 @@ import { Card, ListGroup } from "react-bootstrap";
 import { convertTimestampToUTC } from "../../api/comments/commentAPI";
 
 const ViewCommentsForTeam = ({comments}: any) => {
-    console.log("Team Comments: ", comments);
     return (
         <div>
             {comments && (
@@ -12,7 +11,7 @@ const ViewCommentsForTeam = ({comments}: any) => {
                         <ListGroup.Item key={index}>
                             <strong>{comment.username}</strong>
                             {comment.comments.map((innerComment: any, innerIndex: number) => (
-                                <Card key={innerIndex}>
+                                <Card key={innerIndex} className="my-3">
                                     <Card.Body>
                                         <Card.Title>Rating: {innerComment.rating}</Card.Title>
                                         <Card.Subtitle>{convertTimestampToUTC(innerComment.timestamp)}</Card.Subtitle>

@@ -27,16 +27,11 @@ const SetUpTeams = ({ postedTeams,
             details: []
         }
     );
-
-    // const toggleBattleButton = () => {
-    //     setBattle((battle) => !battle)
-    //     battleSim();
-    // }
+    
     const opponentClicked = async (event: any) => {
         event.preventDefault();
         try {
             const postedTeam = await getPostedTeamWithId(userToken, event.target.value);
-            console.log(postedTeam);
             if (postedTeam.response) {
                 setSelectedOpponentTeam({
                     ...selectedOpponentTeam,
@@ -59,7 +54,6 @@ const SetUpTeams = ({ postedTeams,
         event.preventDefault();
         try {
             const myTeam = await getTeamById(userToken, event.target.value);
-            console.log(myTeam);
             if (myTeam.response) {
                 setYourTeam({
                     ...yourTeam,
@@ -86,7 +80,6 @@ const SetUpTeams = ({ postedTeams,
                 yourTeam.team_name, 
                 selectedOpponentTeam.team_name, 
                 selectedOpponentTeam.user_id);
-            console.log(simBattle);
             if (simBattle.response) {
                 setBattleResult({...battleResult,
                     message: simBattle.message,

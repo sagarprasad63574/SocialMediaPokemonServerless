@@ -14,8 +14,6 @@ export const SearchPokemon = async (userToken: any, { pokemon_name }: any) => {
             `${BASE_URL}/pokemon/${pokemon_name}`,
             config
         )
-
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data.error) ? error.response.data.error : error.message;
@@ -38,8 +36,6 @@ export const AddPokemonToTeam = async (userToken: any, pokemon_name: any, team_n
             },
             config
         )
-
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data) ? error.response.data : error.message;
@@ -62,10 +58,7 @@ export const AddMoveToPokemon = async (userToken: any, team_index: any, pokemon_
             },
             config
         )
-        
-        console.log(team_index, pokemon_index)
-        console.log("GETTING DATA FROM API", data);
-        return data;
+                return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data) ? error.response.data : error.message;
     }
@@ -85,8 +78,6 @@ export const DeletePokemonFromTeam = async (userToken: any, team_index: any, pok
             config
         )
         
-        console.log(team_index, pokemon_index)
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data) ? error.response.data : error.message;

@@ -17,11 +17,10 @@ const ProfileEditForm = (props: any) => {
         };
         try {
             let data = await editProfile(userToken, newBio);
-            console.log(data);
             setProfile(newBio);
             setVisible(!visible);
         } catch (error) {
-            console.log("ERROR HERE: ", error);
+            console.log("error: ", error);
         }
     };
     const handleRevert = (event: any) => {

@@ -14,7 +14,6 @@ export const getCommentsFromUser = async (userToken: any) => {
             `${BASE_URL}/comments`,
             config
         );
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);
@@ -40,7 +39,6 @@ export const getCommentsForTeam = async (userToken: any, team_id: any) => {
             `${BASE_URL}/comments?team_id=${team_id}`,
             config
         );
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);
@@ -61,7 +59,6 @@ export const postComment = async (userToken: any, {team_id, comment, rating}: an
             {team_id, comment, rating},
             config
         );
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error) {
         console.log(error);
@@ -82,7 +79,6 @@ export const updateComment = async (userToken: any, {team_id, comment, rating}: 
             {team_id, comment, rating},
             config
         );
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error) {
         console.log(error);
@@ -102,7 +98,6 @@ export const deleteComment = async (userToken: any, comment_index: any) => {
             `${BASE_URL}/comments?comment_index=${comment_index}`,
             config
         );
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error) {
         console.log(error);
@@ -122,7 +117,6 @@ export const getCommentsForAllTeams = async (userToken: any) => {
             `${BASE_URL}/comments?allByTeam=true`,
             config
         );
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);

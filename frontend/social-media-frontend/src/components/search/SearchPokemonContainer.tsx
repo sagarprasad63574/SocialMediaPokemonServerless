@@ -27,7 +27,6 @@ const SearchPokemonContainer = () => {
         event.preventDefault();
         try {
             const searchPokemon = await SearchPokemon(userToken, pokemonName);
-            console.log(searchPokemon);
             setMessage(searchPokemon.response);
             if (searchPokemon.response) setPokemon({...pokemon, 
                 pokemon_name: searchPokemon.message.name,
@@ -47,10 +46,10 @@ const SearchPokemonContainer = () => {
         <div>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="pokemonName">
-                    <Form.Label>Search for pokemon name</Form.Label>
+                    <Form.Label className="text-center" style={{fontSize: "5vh"}}>Search for pokemon name</Form.Label>
                     <Form.Control type="text" placeholder="Enter pokemon name" required
                         onChange={(event) => setPokemonName({ ...pokemonName, pokemon_name: event.target.value })} />
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" className='my-4'>
                         Search
                     </Button>
                 </Form.Group>
