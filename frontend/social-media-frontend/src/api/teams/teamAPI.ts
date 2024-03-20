@@ -15,7 +15,6 @@ export const getTeams = async (userToken: any) => {
             config
         )
 
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);
@@ -35,7 +34,6 @@ export const getTeamById = async (userToken: any, team_id: any) => {
             `${BASE_URL}/teams/${team_id}`,
             config
         )        
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         console.log(error)
@@ -58,7 +56,6 @@ export const AddTeam = async (userToken: any, { team_name }: any) => {
             config
         )
         
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data.error) ? error.response.data.error: error.message;
@@ -78,7 +75,6 @@ export const EditTeam = async (userToken: any, team_index: any, { team_name }: a
             { team_name },
             config
         )        
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         console.log(error)
@@ -98,7 +94,6 @@ export const DeleteTeam = async (userToken: any, team_index: any) => {
             `${BASE_URL}/teams/${team_index}`,
             config
         )        
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         console.log(error)

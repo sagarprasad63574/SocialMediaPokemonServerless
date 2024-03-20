@@ -14,7 +14,6 @@ import Nav from 'react-bootstrap/esm/Nav';
 
 const ViewMyTeams = ({ userTeams, setTeams }: any) => {
 
-  console.log("USER TEAMS IS HERE", userTeams)
   const [editTeamName, setEditTeamName] = useState(false);
   const [show, setShow] = useState(false);
   const { userToken, userInfo, error } = useSelector((state: any) => state.auth); //redux state
@@ -25,29 +24,27 @@ const ViewMyTeams = ({ userTeams, setTeams }: any) => {
 
   const handlePost = async (event: any) => {
     event.preventDefault();
-    console.log(event.target.value)
     try {
-      console.log("Current user token", userToken)
 
       const postTeam = await postTeamWithId(userToken, event.target.value);
       if (postTeam.response) {
         setTeams([...userTeams], userTeams[event.target.value].post = true)
       }
     } catch (error: any) {
-      console.log("HEllo I am here: ", error);
+      console.log("error: ", error);
     }
   }
 
   const listUserTeams = userTeams.map((teams: any, index: any) =>
     <Accordion.Item key={teams.team_id} eventKey={`${index}`}>
       <Accordion.Header >{teams.team_name} </Accordion.Header>
-      <Accordion.Body >
+      <Accordion.Body style={{backgroundColor: "#98B4D4"}}>
         <div className="float-end mb-3">
           <Card.Link as={Link} to={`/search`}>
-            <Button variant="primary">Add Pokemon</Button>
+            <Button variant="success">Add Pokemon</Button>
           </Card.Link>
-          <Button onClick={toggleEditTeam} className='pull-right mx-2'>Edit Team Name</Button>
-          <Button onClick={() => setShow(true)}>Delete Team</Button>
+          <Button onClick={toggleEditTeam} className='pull-right mx-2' variant='primary'>Edit Team Name</Button>
+          <Button onClick={() => setShow(true)} variant='danger'>Delete Team</Button>
           {editTeamName && <EditTeamView
             team_index={index}
             userTeams={userTeams}

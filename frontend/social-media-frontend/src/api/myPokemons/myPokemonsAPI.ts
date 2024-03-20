@@ -23,8 +23,6 @@ export const CreatePokemon = async (userToken: any, receviedData: any) => {
             },
             config
         )
-
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data.error) ? error.response.data.error : error.message;
@@ -43,8 +41,6 @@ export const getCreatedPokemons = async (userToken: any) => {
             `${BASE_URL}/myPokemon`,
             config
         )
-
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data.error) ? error.response.data.error : error.message;
@@ -64,8 +60,6 @@ export const AddCreatedPokemonToTeam = async (userToken: any, pokemon_index: any
             {team_name}, 
             config
         )
-
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data.error) ? error.response.data.error : error.message;
@@ -93,7 +87,6 @@ export const EditCreatedPokemon = async (userToken: any, pokemon_index: any, rec
             },
             config
         )
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         console.log(error)
@@ -113,7 +106,6 @@ export const DeleteCreatedPokemon = async (userToken: any, pokemon_index: any) =
             `${BASE_URL}/myPokemon/${pokemon_index}`,
             config
         )
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         console.log(error)

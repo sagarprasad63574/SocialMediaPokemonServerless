@@ -29,10 +29,10 @@ const ViewUsersTeams = ({ userTeams, team, team_index, setTeams, handlePost }: a
                     </div>
                     <div className="mt-1">
                         <Card.Link as={Link} to={`/teams/${team.team_id}`}>
-                            <Button variant="primary">View Team In Detail</Button>
+                            <Button variant="secondary">View Team In Detail</Button>
                         </Card.Link>
                         <Card.Link as={Link} to={`/battle`}>
-                            <Button variant="primary">Battle</Button>
+                            <Button variant="danger">Battle</Button>
                         </Card.Link>
                     </div>
                 </Card.Body>

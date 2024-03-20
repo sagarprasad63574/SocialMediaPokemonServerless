@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getPostedTeamWithId } from "../../api/postedTeams/postedTeamsAPI";
 import { useParams } from "react-router-dom";
-import PostedTeamScreen from "./PostedTeamScreen";
+import PostedTeamScreen from './PostedTeamScreen';
 import AddCommentForm from "./AddCommentForm";
 import ViewCommentsForTeam from "./ViewCommentsForTeam";
 import { getCommentsForTeam } from "../../api/comments/commentAPI";
@@ -16,7 +16,6 @@ const PostedTeamContainer = () => {
         async function retrieveTeam(){
             try {
                 let team = await getPostedTeamWithId(userToken, teamID);
-                console.log(team);
                 setPostedTeam(team);
             } catch (error) {
                 console.log(error);

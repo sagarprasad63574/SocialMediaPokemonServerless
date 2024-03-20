@@ -26,7 +26,6 @@ const EditCommentForm = ({comments, setComments, setVisible}: any) => {
             rating: Number(elems[0].value),
             comment: elems[1].value
         };
-        console.log(newCommBody);
         try {
             const data = await updateComment(userToken, newCommBody, cindex);
             const newComms = await getCommentsFromUser(userToken);
@@ -35,7 +34,7 @@ const EditCommentForm = ({comments, setComments, setVisible}: any) => {
             setHasIndex(false);
             setVisible(false);
         } catch (error) {
-            console.log("ERROR HERE: ", error);
+            console.log("error: ", error);
         }
     }
     const handleRevert = (event: any) => {

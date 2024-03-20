@@ -15,7 +15,6 @@ export const getAllPostedTeams = async (userToken: any) => {
             config
         )
 
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);
@@ -31,13 +30,11 @@ export const getPostedTeamWithId = async (userToken: any, team_id: any) => {
                 'Authorization': `Bearer ${userToken}`
             }
         }
-        console.log(team_id)
         const { data } = await axios.get(
             `${BASE_URL}/posts/${team_id}`,
             config
         )
 
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);
@@ -59,7 +56,6 @@ export const postTeamWithId = async (userToken: any, team_index: any) => {
             config
         )
 
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);

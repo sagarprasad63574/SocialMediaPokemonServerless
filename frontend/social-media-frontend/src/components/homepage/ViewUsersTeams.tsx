@@ -15,12 +15,9 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams, teamComments }: any) 
     const handlePost = async (event: any) => {
         event.preventDefault();
         try {
-            console.log("What is my token", userToken)
             const postTeam = await postTeamWithId(userToken, team_index);
-            console.log(postTeam)
-            //if (newTeam.response) setTeams([...userTeams], userTeams[team_index].team_name = data.team_name);
         } catch (error: any) {
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
 
@@ -33,7 +30,7 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams, teamComments }: any) 
 
     const userTeam = userTeams.map((team: any, index: number) => (
         <div key={team.team_id}>
-            <Card className="my-4" style={{ width: '100%' }}>
+            <Card className="my-4" style={{ width: '100%'}}>
                 <Card.Body >
                     <Card.Title>{team.team_name}</Card.Title>
                     <Card.Text>
@@ -49,10 +46,10 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams, teamComments }: any) 
                     </div>
                     <div className="mt-1">
                         <Card.Link as={Link} to={`/teams/${team.team_id}`}>
-                            <Button variant="primary">View Team In Detail</Button>
+                            <Button variant="info">View Team In Detail</Button>
                         </Card.Link>
                         <Card.Link as={Link} to={`/battle`}>
-                            <Button variant="primary">Battle</Button>
+                            <Button variant="danger">Battle</Button>
                         </Card.Link>
                     </div>
                 </Card.Body>

@@ -10,15 +10,6 @@ import ViewMyTeams from './ViewMyTeams';
 import Alert from 'react-bootstrap/esm/Alert';
 
 const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
-    // if (searchPokemon.response) setPokemon({...pokemon, 
-    //     pokemon_name: searchPokemon.message.name,
-    //     height: searchPokemon.message.height,
-    //     weight: searchPokemon.message.weight,
-    //     base_experience: searchPokemon.message.base_experience,
-    //     stats: searchPokemon.message.stats,
-    //     types: searchPokemon.message.types,
-    //     sprites: searchPokemon.message.sprites.front_default
-    // });
     const { userToken } = useSelector((state: any) => state.auth);
     const [messagePokemon, setMessagePokemon] = useState("");
     const [messageTeam, setMessageTeam] = useState("");
@@ -52,7 +43,7 @@ const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
     );
 
     return (
-        <Card style={{ width: '100%' }}>
+        <Card style={{ width: '100%', backgroundColor: "lightblue", borderRadius: "25px"}}>
             <Card.Body className='d-flex'>
                 <Card.Title className='text-uppercase'>{pokemon.pokemon_name}</Card.Title>
                 <Card.Img width="500px" variant="left" src={pokemon.sprites} />
@@ -62,18 +53,20 @@ const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
                     <h5>Base Experience: {pokemon.base_experience}</h5>
                     <h5>Stats: {listStats}</h5>
                     <h5>Types: {listTypes}</h5>
-                    <DropdownButton onClick={() => getMyTeams()} id="dropdown-basic-button" title="Add To Team">
-                        {messageTeam && <Error>{messageTeam}</Error>}
-                        <ViewMyTeams 
-                        teams={teams} 
-                        pokemon_name={pokemon.pokemon_name} 
-                        setMessagePokemon={setMessagePokemon} 
-                        setResponse={setResponse}/>
-                    </DropdownButton>
-                    { messageTeam && 
-                    <Alert variant={response ? "success": "danger"} className='w-25 p-3 my-3'>
-                        {messagePokemon}
-                    </Alert>
+                    {teams ?
+                        <DropdownButton onClick={() => getMyTeams()} id="dropdown-basic-button" title="Add To Team">
+                            <ViewMyTeams
+                                teams={teams}
+                                pokemon_name={pokemon.pokemon_name}
+                                setMessagePokemon={setMessagePokemon}
+                                setResponse={setResponse} />
+                        </DropdownButton> :
+                        <p>Please add team</p>
+                    }
+                    {messageTeam &&
+                        <Alert variant={response ? "success" : "danger"} className='w-25 p-3 my-3'>
+                            {messageTeam && <p>{messagePokemon}</p>}
+                        </Alert>
                     }
                 </Card.Body>
             </Card.Body>

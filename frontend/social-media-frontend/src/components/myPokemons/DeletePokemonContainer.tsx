@@ -18,14 +18,13 @@ const DeletePokemonContainer = ({ pokemon, pokemon_index, createdPokemons, setCr
         try {
             const deletedPokemon = await DeleteCreatedPokemon(userToken, pokemon_index);
             setMessage(deletedPokemon.message);
-            console.log(deletedPokemon)
             if (deletedPokemon.response) {
                 const removedPokemonFromMyPokemons = createdPokemons.filter((pokemon: any, index: any) => index != pokemon_index);
                 setCreatedPokemons(removedPokemonFromMyPokemons)
                 setShow(false)
             }
         } catch (error: any) {
-            console.log("HEllo I am here: ", error);
+            console.log("error: ", error);
         }
     }
     return (

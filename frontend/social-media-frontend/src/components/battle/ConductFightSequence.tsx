@@ -14,14 +14,6 @@ const ConductFightSequence = ({ user_team_name, opponent_team_name, opponent_id,
       {sum.map((s: any, index: any) => <ListGroup.Item key={index}>{s}</ListGroup.Item>)}
     </ListGroup>
     
-
-    // return (
-    //   <ListGroup key={index}>
-    //     <ListGroup>
-    //       <ListGroup.Item>{sum}</ListGroup.Item>
-    //     </ListGroup>
-    //   </ListGroup>
-    // )
   })
 
   return (
@@ -29,7 +21,6 @@ const ConductFightSequence = ({ user_team_name, opponent_team_name, opponent_id,
       <h1>BATTLE</h1>
       <h5>User Team Name: {user_team_name}</h5>
       <h5>Opponent Team Name: {opponent_team_name}</h5>
-      <h5>Opponent Id: {opponent_id}</h5>
       <h5>Message: {battleResult.message}</h5>
       <h5>Summary:</h5>
       {battleResult.summary ? <ListGroup>{battleSummary}</ListGroup> : <h5>No summary</h5>}

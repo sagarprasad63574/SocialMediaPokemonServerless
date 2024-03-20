@@ -19,8 +19,6 @@ export const BattleSimulate = async (userToken: any, user_team_name: any, oppone
             },
             config
         )
-
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500 300?
         return (error.response.data.error) ? error.response.data.error : error.message;

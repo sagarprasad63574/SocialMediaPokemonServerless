@@ -26,6 +26,7 @@ const AddMovesView = ({ team_index, pokemon_index, toggleEditMove, userTeams, se
         setTeams([...userTeams], 
           userTeams[team_index].pokemons[pokemon_index].moves = 
           [...userTeams[team_index].pokemons[pokemon_index].moves, {move_name: data.move_name}])
+          toggleEditMove(false)
       } else {
         setMessage(pokemon.message);
       }
@@ -33,7 +34,7 @@ const AddMovesView = ({ team_index, pokemon_index, toggleEditMove, userTeams, se
 
     } catch (error: any) {
 
-      console.log("HEllo I am here: ", error);
+      console.log("error: ", error);
     }
   }
 

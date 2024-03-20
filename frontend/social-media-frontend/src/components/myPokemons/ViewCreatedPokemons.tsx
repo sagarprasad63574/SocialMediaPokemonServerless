@@ -27,7 +27,6 @@ const ViewCreatedPokemons = () => {
         async function createdPokemons() {
             try {
                 let pokemons = await getCreatedPokemons(userToken);
-                console.log(pokemons);
                 setCreatedPokemons(pokemons.pokemons);
             } catch (error) {
                 console.log(error);
@@ -44,7 +43,7 @@ const ViewCreatedPokemons = () => {
         try {
             let userTeams = await getTeams(userToken);
             setMessageTeam(userTeams.message);
-            setTeams(userTeams.teams);
+            if (userTeams.response) setTeams(userTeams.teams);
         } catch (error) {
             console.log(error);
         }
@@ -56,7 +55,7 @@ const ViewCreatedPokemons = () => {
             <Accordion.Body className='d-flex'>
                 <Card className="mx-1" style={{ width: '50%' }}>
                     <Card.Body >
-                        <Card.Img variant="left" width="400px" height="400px" src="https://fastly.picsum.photos/id/508/200/200.jpg?hmac=K4JUehX1v2yEPLUOyJDAmRhZu8PgMu4vv6ypO-CA5nw" />
+                        <Card.Img variant="left" width="200px" height="200px" src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png' />
                         <Card.Title >{pokemon.pokemon_name.toUpperCase()}</Card.Title>
                         <Card.Text >
                             Attack: {pokemon.attack}<br />

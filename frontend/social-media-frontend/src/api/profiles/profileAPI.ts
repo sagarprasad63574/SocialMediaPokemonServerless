@@ -15,7 +15,6 @@ export const getProfile = async (userToken: any) => {
             config
         )
 
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) {
         console.log(error);
@@ -37,7 +36,6 @@ export const editProfile = async (userToken: any, { biography, name, email }: an
             config
         )
 
-        console.log("GETTING DATA FROM API", data);
         return data;
     } catch (error: any) { //axios status codes from 400-500
         return (error.response.data.error) ? error.response.data.error: error.message;

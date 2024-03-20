@@ -24,9 +24,12 @@ const TeamScreen = ({userTeams, setTeams}: any) => {
 
         try {
             const newTeam = await AddTeam(userToken, teamName);
-            console.log(newTeam);
             setMessage(newTeam.message);
-            if (newTeam.response) setTeams([...userTeams, newTeam.teams]);
+            if (newTeam.response) {
+                userTeams ? setTeams([...userTeams, newTeam.teams]) :
+                setTeams([newTeam.teams]); 
+                setMessage("")
+            }
 
         } catch (error: any) {
             console.log("error: ", error);
@@ -41,7 +44,7 @@ const TeamScreen = ({userTeams, setTeams}: any) => {
                     <Form.Label>Add New Team</Form.Label>
                     <Form.Control type="text" placeholder="Enter team name" required
                         onChange={(event) => setTeamName({ ...teamName, team_name: event.target.value })} />
-                    <Button variant="primary" type="submit">
+                    <Button variant="success" type="submit">
                         Add Team
                     </Button>
                 </Form.Group>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const BattleLogView = ({ battlelog }: any) => {
     const battlelogs = battlelog.map((battle: any, index: number) => (
-        <div>battle</div>
+        <div key={index}>battle</div>
         )
     )
     return (
