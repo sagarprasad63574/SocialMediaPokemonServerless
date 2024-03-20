@@ -35,7 +35,7 @@ const LoginScreen = () => {
             <Form onSubmit={handleSubmit}>
                 {error && <Error>{error}</Error>}
                 <Form.Group className="mb-3" controlId="formBasicUsername">
-                    <Form.Label>username</Form.Label>
+                    <Form.Label>Username</Form.Label>
                     <Form.Control type="text" placeholder="Enter username" required
                         onChange={(event) => setData({ ...data, username: event.target.value })} />
                 </Form.Group>
