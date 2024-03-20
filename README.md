@@ -19,6 +19,7 @@ Users can pit two teams against each other in battle.
  - React-Bootstrap
 
 ## Additional Software
+ - Pokemon API
  - EC2 instance
  - S3 bucket
  - CodePipeline
