@@ -16,12 +16,6 @@ const ViewProfile = (props: any) => {
                     <Button onClick={handleEdit} variant="primary">Edit Profile</Button>
                 </Card.Body>
             </Card>
-            {/* <Stack gap={3}>
-                <div className='p-2'>Name: {profile.name}</div>
-                <div className='p-2'>Email: {profile.email}</div>
-                <div className='p-2'>Biography: {profile.biography}</div>
-            </Stack>
-            <Button onClick={handleEdit}>Edit</Button> */}
         </div>
     )
 };
