@@ -10,7 +10,7 @@ const BattleLogView = ({ battlelog }: any) => {
                 <h4>Full List</h4>
                 <ul>
                     {battle.details.map((detail: any, dIndex: number) => (
-                        <li key="dIndex">{detail}</li>
+                        <li key={dIndex}>{detail}</li>
                     ))}
                 </ul>
             </div>
