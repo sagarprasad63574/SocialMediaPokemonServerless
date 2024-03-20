@@ -36,7 +36,8 @@ describe('basic simulation between 2 pokemon', () => {
                     max_turns: null,
                     drain: 0,
                     stat_chance: 10
-                }
+                },
+                damage_class: "special"
             },
             {
                 accuracy: 100,
@@ -62,7 +63,8 @@ describe('basic simulation between 2 pokemon', () => {
                     max_turns: null,
                     drain: 0,
                     stat_chance: 0
-                }
+                },
+                damage_class: "physical"
             }
         ],
         pokemon_name: "blastoise",
@@ -109,7 +111,8 @@ describe('basic simulation between 2 pokemon', () => {
                     max_turns: null,
                     drain: 0,
                     stat_chance: 0
-                }
+                },
+                damage_class: "special"
             },
             {
                 accuracy: 100,
@@ -135,7 +138,8 @@ describe('basic simulation between 2 pokemon', () => {
                     max_turns: null,
                     drain: 0,
                     stat_chance: 0
-                }
+                },
+                damage_class: "physical"
             }
         ],
         pokemon_name: "charizard",
@@ -189,7 +193,8 @@ describe('basic simulation between 2 pokemon', () => {
                     max_turns: null,
                     drain: 0,
                     stat_chance: 0
-                }
+                },
+                damage_class: "special"
             },
             {
                 accuracy: 100,
@@ -215,7 +220,8 @@ describe('basic simulation between 2 pokemon', () => {
                     max_turns: null,
                     drain: 0,
                     stat_chance: 0
-                }
+                },
+                damage_class: "special"
             }
         ],
         pokemon_name: "venusaur",
@@ -293,11 +299,21 @@ describe('basic simulation between 2 pokemon', () => {
         "opponent_id": "1",
         "opponent_team_name": "team"
     }
+    
     test('Charizard VS Blastoise', async () => {
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team1]);
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team2]);
         battleDAO.addBattleReport.mockResolvedValueOnce([team1]);
         battleDAO.addBattleReport.mockResolvedValueOnce([team2]);
+        const result = await battle.battleSim(0,recieved);
+        expect(result).toBeTruthy();
+    });
+
+    test('Blastoise VS Charizard', async () => {
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team2]);
+        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team1]);
+        battleDAO.addBattleReport.mockResolvedValueOnce([team2]);
+        battleDAO.addBattleReport.mockResolvedValueOnce([team1]);
         const result = await battle.battleSim(0,recieved);
         expect(result).toBeTruthy();
     });
@@ -308,7 +324,7 @@ describe('basic simulation between 2 pokemon', () => {
         "win": 0,
         "loss": 0,
         "points": 0,
-        "pokemons": [blastoise],
+        "pokemons": [nomove],
         "battlelog": []
     };
 
@@ -318,49 +334,13 @@ describe('basic simulation between 2 pokemon', () => {
         "win": 0,
         "loss": 0,
         "points": 0,
-        "pokemons": [charizard],
+        "pokemons": [venusaur],
         "battlelog": []
     };
 
-    test('Blastoise VS Charizard', async () => {
+    test('pokemon without moves on team one', async () => {
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team3]);
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team4]);
-        battleDAO.addBattleReport.mockResolvedValueOnce([team3]);
-        battleDAO.addBattleReport.mockResolvedValueOnce([team4]);
-        const result = await battle.battleSim(0,recieved);
-        expect(result).toBeTruthy();
-    });
-
-    let team5 = {
-        "team_id": "1",
-        "team_name": "team",
-        "win": 0,
-        "loss": 0,
-        "points": 0,
-        "pokemons": [nomove],
-        "battlelog": []
-    };
-
-    let team6 = {
-        "team_id": "1",
-        "team_name": "team",
-        "win": 0,
-        "loss": 0,
-        "points": 0,
-        "pokemons": [charizard],
-        "battlelog": []
-    };
-
-    test('pokemon without moves on team one', async () => {
-        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team5]);
-        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team6]);
-        const result = await battle.battleSim(0,recieved);
-        expect(result.response).toBeFalsy();
-    });
-
-    test('pokemon without moves on team one', async () => {
-        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team6]);
-        teamDAO.ViewUsersTeams.mockResolvedValueOnce([team5]);
         const result = await battle.battleSim(0,recieved);
         expect(result.response).toBeFalsy();
     });

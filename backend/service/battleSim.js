@@ -216,7 +216,11 @@ const battleSim = async (user_id, receivedData) =>
 
 function damageCalculation(attackPokemon, defendPokemon, moveCount)
 {
-    let damage = (attackPokemon.moves[moveCount].power * (attackPokemon.attack/defendPokemon.defense)/50) + 2;
+    let damage = 0;
+    if(attackPokemon.moves[moveCount].damage_class == "special")
+        damage = (attackPokemon.moves[moveCount].power * (attackPokemon.specialattack/defendPokemon.specialdefense)/50) + 2;
+    else
+        damage = (attackPokemon.moves[moveCount].power * (attackPokemon.attack/defendPokemon.defense)/50) + 2;
     if(attackPokemon.moves[moveCount].type == attackPokemon.type[0].type.name)
         damage = damage * 1.5;
     if(attackPokemon.type.length == 2)

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getPostedTeamWithId } from "../../api/postedTeams/postedTeamsAPI";
 import { useParams } from "react-router-dom";
-import PostedTeamScreen from "./PostedTeamScreen";
+import PostedTeamScreen from "./postedTeamScreen";
 import AddCommentForm from "./AddCommentForm";
 import ViewCommentsForTeam from "./ViewCommentsForTeam";
 import { getCommentsForTeam } from "../../api/comments/commentAPI";

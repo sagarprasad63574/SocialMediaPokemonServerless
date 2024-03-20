@@ -6,6 +6,9 @@ import BattleLogView from '../battlelog/BattleLogView'
 import { useSelector } from 'react-redux'
 import { postTeamWithId } from '../../api/postedTeams/postedTeamsAPI'
 import ViewPokemon from './ViewPokemon'
+import goldMedal from '../../images/goldMedal.png'
+import silverMedal from '../../images/silverMedal.png'
+import bronzeMedal from '../../images/bronzeMedal.png'
 
 
 const ViewUsersTeams = ({ userTeams, team, team_index, setTeams, handlePost }: any) => {
@@ -19,7 +22,11 @@ const ViewUsersTeams = ({ userTeams, team, team_index, setTeams, handlePost }: a
                     <Card.Text>
                         Loss: {team.loss} <br />
                         Win: {team.win} <br />
-                        Points: {team.points}
+                        { (team.win + team.loss) > 0 ? <div> Win percentage: {team.win/(team.win+team.loss)*100}% </div> : <div>0%</div>}
+                        Points: {team.points} <br />
+                        {team.points < 10 ? <strong><img src={bronzeMedal} width="50px" height="50px" alt="Example" /></strong> : <span> </span>} 
+                        {team.points > 10 && team.points < 20 ? <strong><img src={silverMedal} width="50px" height="50px" alt="Example" /></strong> : <span> </span>}
+                        {team.points > 20  ? <strong><img src={goldMedal} width="50px" height="50px" alt="Example" /></strong> : <span> </span>}
                     </Card.Text>
                     <div className='mt-1'>
                         {team.post ?
