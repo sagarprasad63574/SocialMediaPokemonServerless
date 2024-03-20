@@ -128,4 +128,30 @@ router.post('/:teamid/:pokeid', ensureLoggedIn, async (req, res, next) => {
     }
 });
 
+router.delete('/:teamid/:pokeid/:moveid', ensureLoggedIn, async (req, res, next) => {
+    const user_id = res.locals.user.id;
+    const team_id = req.params.teamid;
+    const pokemon_id = req.params.pokeid;
+    const move_id = req.params.moveid;
+
+    try {
+        const { response, message, team } = await pokemonService.deleteMoveFromPokemon(user_id, team_id, pokemon_id, move_id);
+
+        if (response) {
+            return res.status(200).json({
+                response,
+                message,
+                team
+            })
+        } else {
+            return res.status(400).json({
+                response,
+                message
+            })
+        }
+    } catch (err) {
+        return next(err);
+    }
+});
+
 module.exports = router;

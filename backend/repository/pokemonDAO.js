@@ -155,7 +155,8 @@ const addMoveToPokemon = async (user_id, team_index, pokemon_index, pokemon) => 
                     "accuracy": pokemon.accuracy,
                     "type": pokemon.type,
                     "power": pokemon.power,
-                    "info": pokemon.info
+                    "info": pokemon.info,
+                    "damage_class": pokemon.damage_class
                 }
             ]
 
@@ -172,11 +173,31 @@ const addMoveToPokemon = async (user_id, team_index, pokemon_index, pokemon) => 
     }
 }
 
+const deleteMoveFromPokemon = async (user_id, team_index, pokemon_index, moves_index) => {
+    const command = new UpdateCommand({
+        TableName,
+        Key: {
+            user_id
+        },
+        UpdateExpression: `REMOVE teams[${team_index}].pokemons[${pokemon_index}].moves[${moves_index}]`,
+        ReturnValues: "UPDATED_NEW"
+    });
+
+    try {
+        const data = await documentClient.send(command);
+        return data;
+    } catch (error) {
+        logger.error(error);
+        return null;
+    }
+}
+
 module.exports = {
     addPokemonToTeam,
     deletePokemonFromTeam,
     pokedata,
     editPokemonFromTeam,
     pokemove,
-    addMoveToPokemon
+    addMoveToPokemon,
+    deleteMoveFromPokemon
 }

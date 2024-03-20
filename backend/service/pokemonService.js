@@ -144,19 +144,39 @@ const addMoveToPokemon = async (user_id, team_id, pokemon_id, receivedData) => {
         return { response: false, message: `Move must be a generation 1 move!` };
     }
 
+    if(pokemove.data.damage_class.name != "physical" && pokemove.data.damage_class.name != "special")
+    {
+        return { response: false, message: `Move must either physical or special!` };
+    }
+
     const pokemonMove = 
     {
         name:receivedData.move_name,
         accuracy:pokemove.data.accuracy,
         power:pokemove.data.power,
         type:pokemove.data.type.name,
-        info:pokemove.data.meta
+        info:pokemove.data.meta,
+        damage_class:pokemove.data.damage_class.name
     }
 
     const data = await pokemonDAO.addMoveToPokemon(user_id, team_id, pokemon_id, pokemonMove);
 
     if (data) {
         return { response: true, message: "added move" };
+    }
+
+    return { response: false };
+}
+
+const deleteMoveFromPokemon = async (user_id, team_id, pokemon_id, moves_id) => {
+
+    const { response, message, teams } = await viewMyTeams(user_id);
+    if (!response) return { response: false, message: "No team found!" }
+
+    let data = await pokemonDAO.deleteMoveFromPokemon(user_id, team_id, pokemon_id, moves_id);
+
+    if (data) {
+        return { response: true, message: "deleted move" };
     }
 
     return { response: false };
@@ -183,5 +203,6 @@ module.exports = {
     addPokemonToTeam,
     deletePokemonFromTeam,
     editPokemonFromTeam,
-    addMoveToPokemon
+    addMoveToPokemon,
+    deleteMoveFromPokemon
 }
