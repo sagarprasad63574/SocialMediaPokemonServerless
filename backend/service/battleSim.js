@@ -72,7 +72,6 @@ const battleSim = async (user_id, receivedData) =>
 
     while(!finished)
     {
-        console.log(Math.floor(Math.random() * 100)) ;
         let p1speed = p1.speed;
         let p2speed = p2.speed;
         if(p1status.status == "paralysis")
@@ -87,15 +86,19 @@ const battleSim = async (user_id, receivedData) =>
         {
             if(p1status.name == "paralysis" && Math.floor(Math.random() * 100) < 50)
             {
-                detailed.push(`${p1.pokemon_name} is paralyzed and can't move`);
+                detailed.push(`${p1.pokemon_name} is paralyzed and can't move \n`);
             }
             else if (p1status.name == "freeze")
             {
-                detailed.push(`${p1.pokemon_name} is frozen`);
+                detailed.push(`${p1.pokemon_name} is frozen \n`);
             }
             else if(p1status.name == "sleep")
             {
-                detailed.push(`${p1.pokemon_name} is asleep`);
+                detailed.push(`${p1.pokemon_name} is asleep \n`);
+            }
+            else if(p1status.status == "flinch")
+            {
+                detailed.push(`${p1.pokemon_name} flinched \n`);
             }
             else if(Math.floor(Math.random() * 100) < p1.moves[p1mc].accuracy)
             {
@@ -103,44 +106,45 @@ const battleSim = async (user_id, receivedData) =>
                 {
                     let damage = damageCalculation(p1,p2,p1mc);
                     p2.hp = p2.hp - damage;
-                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} and deals ${damage} damage`);
+                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} and deals ${damage} damage \n`);
                 }
                 else
                 {
                     p2status.status = p1.moves[p1mc].info.ailment.name;
                     p2status.turnsleft = 2;
-                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name}`);
+                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name} \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p1.moves[p1mc].info.flinch_chance)
                 {
                     p2status.status = "flinch";
                     p2status.turnsleft = 1;
-                    detailed.push(`${p1.moves[p1mc].move_name} causes flinch`);
+                    detailed.push(`${p1.moves[p1mc].move_name} causes flinch \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p1.moves[p1mc].info.ailment_chance)
                 {
                     p2status.status = p1.moves[p1mc].info.ailment.name;
                     p2status.turnsleft = 2;
-                    detailed.push(`${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name}`);
+                    detailed.push(`${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name} \n`);
                 }
                 if(p1.moves[p1mc].info.drain > 0)
                 {
+                    let damage = damageCalculation(p1,p2,p1mc);
                     let heal = (damage * p1.moves[p1mc].info.drain / 100);
                     p1.hp = p1.hp + heal;
-                    detailed.push(`${p1.pokemon_name} heals ${heal}`);
+                    detailed.push(`${p1.pokemon_name} heals ${heal} \n`);
                 }
             }
             else
             {
-                detailed.push(`${p1.pokemon_name} misses`);
+                detailed.push(`${p1.pokemon_name} misses \n`);
             }
 
             if(p2.hp <= 0)
             {
-                detailed.push(`${p2.pokemon_name} faints`);
+                detailed.push(`${p2.pokemon_name} faints \n`);
                 details.push(detailed);
                 detailed = [];
-                summary.push(`${p2.pokemon_name} faints`);
+                summary.push(`${p2.pokemon_name} faints `);
                 team2PokeCounter++;
                 p2status.status = null;
                 p2status.turnsleft = 0;
@@ -159,15 +163,19 @@ const battleSim = async (user_id, receivedData) =>
 
             if(p2status.status == "paralysis" && Math.floor(Math.random() * 100) < 50)
             {
-                detailed.push(`${p2.pokemon_name} is paralyzed and can't move`);
+                detailed.push(`${p2.pokemon_name} is paralyzed and can't move \n`);
             }
             else if (p2status.status == "freeze")
             {
-                detailed.push(`${p2.pokemon_name} is frozen`);
+                detailed.push(`${p2.pokemon_name} is frozen \n`);
             }
             else if(p2status.status == "sleep")
             {
-                detailed.push(`${p2.pokemon_name} is asleep`);
+                detailed.push(`${p2.pokemon_name} is asleep \n`);
+            }
+            else if(p2status.status == "flinch")
+            {
+                detailed.push(`${p2.pokemon_name} flinched \n`);
             }
             else if(Math.floor(Math.random() * 100) < p2.moves[p2mc].accuracy)
             {
@@ -175,42 +183,45 @@ const battleSim = async (user_id, receivedData) =>
                 {
                     let damage = damageCalculation(p2,p1,p2mc);
                     p1.hp = p1.hp - damage;
-                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} and deals ${damage} damage`);
+                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} and deals ${damage} damage \n`);
                 }
                 else
                 {
                     p1status.status = p2.moves[p2mc].info.ailment.name;
                     p1status.turnsleft = 2;
-                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name}`);
+                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name} \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p2.moves[p2mc].info.flinch_chance)
                 {
                     p1status.status = "flinch";
                     p1status.turnsleft = 1;
-                    detailed.push(`${p2.moves[p2mc].move_name} causes flinch`);
+                    detailed.push(`${p2.moves[p2mc].move_name} causes flinch \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p2.moves[p2mc].info.ailment_chance)
                 {
                     p1status.status = p2.moves[p2mc].info.ailment.name;
                     p1status.turnsleft = 2;
-                    detailed.push(`${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name}`);
+                    detailed.push(`${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name} \n`);
                 }
                 if(p2.moves[p2mc].info.drain > 0)
                 {
-                    p2.hp = p2.hp + (damage * p2.moves[p2mc].info.drain / 100)
+                    let damage = damageCalculation(p2,p1,p2mc);
+                    let heal = (damage * p2.moves[p2mc].info.drain / 100);
+                    p2.hp = p2.hp + heal;
+                    detailed.push(`${p2.pokemon_name} heals ${heal} \n`);
                 }
             }
             else
             {
-                detailed.push(`${p2.pokemon_name} misses`);
+                detailed.push(`${p2.pokemon_name} misses \n`);
             }
 
             if(p1.hp <= 0)
             {
-                detailed.push(`${p1.pokemon_name} faints`);
+                detailed.push(`${p1.pokemon_name} faints \n`);
                 details.push(detailed);
                 detailed = [];
-                summary.push(`${p1.pokemon_name} faints`);
+                summary.push(`${p1.pokemon_name} faints `);
                 team1PokeCounter++;
                 p1status.status = null;
                 p1status.turnsleft = 0;
@@ -232,15 +243,19 @@ const battleSim = async (user_id, receivedData) =>
         {
             if(p2status.status == "paralysis" && Math.floor(Math.random() * 100) < 50)
             {
-                detailed.push(`${p2.pokemon_name} is paralyzed and can't move`);
+                detailed.push(`${p2.pokemon_name} is paralyzed and can't move \n`);
             }
             else if (p2status.status == "freeze")
             {
-                detailed.push(`${p2.pokemon_name} is frozen`);
+                detailed.push(`${p2.pokemon_name} is frozen \n`);
             }
             else if(p2status.status == "sleep")
             {
-                detailed.push(`${p2.pokemon_name} is asleep`);
+                detailed.push(`${p2.pokemon_name} is asleep \n`);
+            }
+            else if(p2status.status == "flinch")
+            {
+                detailed.push(`${p2.pokemon_name} flinched \n`);
             }
             else if(Math.floor(Math.random() * 100) < p2.moves[p2mc].accuracy)
             {
@@ -248,41 +263,44 @@ const battleSim = async (user_id, receivedData) =>
                 {
                     let damage = damageCalculation(p2,p1,p2mc);
                     p1.hp = p1.hp - damage;
-                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} and deals ${damage} damage`);
+                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} and deals ${damage} damage \n`);
                 }
                 else
                 {
                     p1status.status = p2.moves[p2mc].info.ailment.name;
                     p1status.turnsleft = 2;
-                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name}`);
+                    detailed.push(`${p2.pokemon_name} uses ${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name} \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p2.moves[p2mc].info.flinch_chance)
                 {
                     p1status.status = "flinch";
                     p1status.turnsleft = 1;
-                    detailed.push(`${p2.moves[p2mc].move_name} causes flinch`);
+                    detailed.push(`${p2.moves[p2mc].move_name} causes flinch \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p2.moves[p2mc].info.ailment_chance)
                 {
                     p1status.status = p2.moves[p2mc].info.ailment.name;
                     p1status.turnsleft = 2;
-                    detailed.push(`${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name}`);
+                    detailed.push(`${p2.moves[p2mc].move_name} causes ${p2.moves[p2mc].info.ailment.name} \n`);
                 }
                 if(p2.moves[p2mc].info.drain > 0)
                 {
-                    p2.hp = p2.hp + (damage * p2.moves[p2mc].info.drain / 100)
+                    let damage = damageCalculation(p2,p1,p2mc);
+                    let heal = (damage * p2.moves[p2mc].info.drain / 100);
+                    p2.hp = p2.hp + heal;
+                    detailed.push(`${p2.pokemon_name} heals ${heal} \n`);
                 }
             }
             else
             {
-                detailed.push(`${p2.pokemon_name} misses`);
+                detailed.push(`${p2.pokemon_name} misses \n`);
             }
             if(p1.hp <= 0)
             {
-                detailed.push(`${p1.pokemon_name} faints`);
+                detailed.push(`${p1.pokemon_name} faints \n`);
                 details.push(detailed);
                 detailed = [];
-                summary.push(`${p1.pokemon_name} faints`);
+                summary.push(`${p1.pokemon_name} faints `);
                 team1PokeCounter++;
                 p1status.status = null;
                 p1status.turnsleft = 0;
@@ -302,15 +320,19 @@ const battleSim = async (user_id, receivedData) =>
 
             if(p1status.status == "paralysis" && Math.floor(Math.random() * 100) < 50)
             {
-                detailed.push(`${p1.pokemon_name} is paralyzed and can't move`);
+                detailed.push(`${p1.pokemon_name} is paralyzed and can't move \n`);
             }
             else if (p1status.status == "freeze")
             {
-                detailed.push(`${p1.pokemon_name} is frozen`);
+                detailed.push(`${p1.pokemon_name} is frozen \n`);
             }
             else if(p1status.status == "sleep")
             {
-                detailed.push(`${p1.pokemon_name} is asleep`);
+                detailed.push(`${p1.pokemon_name} is asleep \n`);
+            }
+            else if(p1status.status == "flinch")
+            {
+                detailed.push(`${p1.pokemon_name} flinched \n`);
             }
             else if(Math.floor(Math.random() * 100) < p1.moves[p1mc].accuracy)
             {
@@ -318,43 +340,44 @@ const battleSim = async (user_id, receivedData) =>
                 {
                     let damage = damageCalculation(p1,p2,p1mc);
                     p2.hp = p2.hp - damage;
-                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} and deals ${damage} damage`);
+                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} and deals ${damage} damage \n`);
                 }
                 else
                 {
                     p2status.status = p1.moves[p1mc].info.ailment.name;
                     p2status.turnsleft = 2;
-                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name}`);
+                    detailed.push(`${p1.pokemon_name} uses ${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name} \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p1.moves[p1mc].info.flinch_chance)
                 {
                     p2status.status = "flinch";
                     p2status.turnsleft = 1;
-                    detailed.push(`${p1.moves[p1mc].move_name} causes flinch`);
+                    detailed.push(`${p1.moves[p1mc].move_name} causes flinch \n`);
                 }
                 if(Math.floor(Math.random() * 100) < p1.moves[p1mc].info.ailment_chance)
                 {
                     p2status.status = p1.moves[p1mc].info.ailment.name;
                     p2status.turnsleft = 2;
-                    detailed.push(`${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name}`);
+                    detailed.push(`${p1.moves[p1mc].move_name} causes ${p1.moves[p1mc].info.ailment.name} \n`);
                 }
                 if(p1.moves[p1mc].info.drain > 0)
                 {
+                    let damage = damageCalculation(p1,p2,p1mc);
                     let heal = (damage * p1.moves[p1mc].info.drain / 100);
                     p1.hp = p1.hp + heal;
-                    detailed.push(`${p1.pokemon_name} heals ${heal}`);
+                    detailed.push(`${p1.pokemon_name} heals ${heal} \n`);
                 }
             }
             else
             {
-                detailed.push(`${p1.pokemon_name} misses`);
+                detailed.push(`${p1.pokemon_name} misses \n`);
             }
             if(p2.hp <= 0)
             {
-                detailed.push(`${p2.pokemon_name} faints`);
+                detailed.push(`${p2.pokemon_name} faints \n`);
                 details.push(detailed);
                 detailed = [];
-                summary.push(`${p2.pokemon_name} faints`);
+                summary.push(`${p2.pokemon_name} faints `);
                 team2PokeCounter++;
                 p2status.status = null;
                 p2status.turnsleft = 0;
@@ -387,13 +410,13 @@ const battleSim = async (user_id, receivedData) =>
         {
             let damage = (deep1[user_team_index].pokemons[team1PokeCounter].hp * 1/8);
             p1.hp = p1.hp - damage;
-            detailed.push(`${p1.pokemon_name} takes ${damage} from ${p1status.status}`);
+            detailed.push(`${p1.pokemon_name} takes ${damage} from ${p1status.status} \n`);
         }
         if(p2status.status == "burn" || p2.status == "poison")
         {
             let damage = (deep1[opponent_team_index].pokemons[team2PokeCounter].hp * 1/8);
             p2.hp = p2.hp - damage;
-            detailed.push(`${p2.pokemon_name} takes ${damage} from ${p2status.status}`);
+            detailed.push(`${p2.pokemon_name} takes ${damage} from ${p2status.status} \n`);
         }
         
         if(p1status.status != null)
