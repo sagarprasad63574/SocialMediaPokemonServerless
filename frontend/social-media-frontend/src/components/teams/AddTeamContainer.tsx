@@ -41,7 +41,7 @@ const TeamScreen = ({userTeams, setTeams}: any) => {
             {message && <Error>{message}</Error>}
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="teamName">
-                    <Form.Label>Add New Team</Form.Label>
+                    <Form.Label><h3>Add New Team</h3></Form.Label>
                     <Form.Control type="text" placeholder="Enter team name" required
                         onChange={(event) => setTeamName({ ...teamName, team_name: event.target.value })} />
                     <Button variant="success" type="submit">

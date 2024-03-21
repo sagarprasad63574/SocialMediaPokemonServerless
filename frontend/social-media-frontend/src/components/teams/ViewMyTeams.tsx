@@ -37,7 +37,7 @@ const ViewMyTeams = ({ userTeams, setTeams }: any) => {
 
   const listUserTeams = userTeams.map((teams: any, index: any) =>
     <Accordion.Item key={teams.team_id} eventKey={`${index}`}>
-      <Accordion.Header >{teams.team_name} </Accordion.Header>
+      <Accordion.Header ><h4>{teams.team_name}</h4></Accordion.Header>
       <Accordion.Body style={{backgroundColor: "#98B4D4"}}>
         <div className="float-end mb-3">
           <Card.Link as={Link} to={`/search`}>
@@ -64,7 +64,7 @@ const ViewMyTeams = ({ userTeams, setTeams }: any) => {
   );
 
   return (
-    <Accordion defaultActiveKey="0">
+    <Accordion defaultActiveKey="0" className='mb-5'>
       {listUserTeams}
     </Accordion>
   )

@@ -32,7 +32,7 @@ const ProfileEditForm = (props: any) => {
         <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formName">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" required placeholder={profile.name}/>
+                <Form.Control type="text" required placeholder={profile.name} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formEmail">
                 <Form.Label>Email</Form.Label>
@@ -42,9 +42,11 @@ const ProfileEditForm = (props: any) => {
                 <Form.Label>Biography</Form.Label>
                 <Form.Control as="textarea" rows={3} required placeholder={profile.biography} />
             </Form.Group>
-            <Button variant="primary" type="submit">Submit</Button>
-            <Button type="reset">Reset</Button>
-            <Button onClick={handleRevert}>Revert</Button>
+            <div className="mt-4">
+                <Button style={{marginRight: "20px"}} variant="success" type="submit">Submit</Button>
+                <Button  style={{marginRight: "20px"}} variant="danger" type="reset">Reset</Button>
+                <Button variant="info" onClick={handleRevert}>Revert</Button>
+            </div>
         </Form>
     );
 };

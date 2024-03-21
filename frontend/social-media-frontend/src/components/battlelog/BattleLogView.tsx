@@ -1,33 +1,29 @@
 import React, { useState } from 'react'
+import Carousel from 'react-bootstrap/esm/Carousel'
 
 const BattleLogView = ({ battlelog }: any) => {
     const battlelogs = battlelog.map((battle: any, index: number) => (
-        <div key={index}>
-            <div>
-                <h4>Summary: {battlelog.summary}</h4>
+        <Carousel.Item key={index}>
+            <div style={{ padding: "50px 150px 50px 150px" }}>
+                {battle.details.map((detail: any, detailIndex: number) => {
+                    return <li key={detailIndex}>{detail}</li>
+                })}
             </div>
-            <div>
-                <h4>Full List</h4>
-                <ul>
-                    {battle.details.map((detail: any, dIndex: number) => (
-                        <li key={dIndex}>{detail}</li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-
-        )
+        </Carousel.Item>
+    )
     )
     return (
         <div>
-            {battlelog.length ? (
-                <div>
-                    <h1>BattleLog</h1>
-                    {battlelogs}
-                </div>
-            ) : (
-                <div>No Battle Log</div>
-            )
+            <hr />
+            {
+                battlelog.length ?
+                    <div className='mt-4'>
+                        <h3>BattleLog</h3>
+                        <Carousel data-bs-theme="dark">
+                            {battlelogs}
+                        </Carousel>
+                    </div> :
+                    <div>No Battle Log</div>
             }
         </div>
     )

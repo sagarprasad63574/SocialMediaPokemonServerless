@@ -59,7 +59,7 @@ const ViewUsersTeams = ({ userTeams, team_index, setTeams, teamComments }: any) 
             <hr />
             {getCommentsOfTeam(team.team_id) && (
                 <div>
-                    <h4>Comments</h4>
+                    <h3>Comments</h3>
                     <ViewCommentsForTeam comments={getCommentsOfTeam(team.team_id)}/>
                 </div>
             )}
