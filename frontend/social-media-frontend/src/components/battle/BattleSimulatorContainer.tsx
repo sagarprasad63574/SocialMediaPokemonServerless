@@ -48,8 +48,8 @@ const BattleSimulatorContainer = () => {
         allMyTeams();
     }, [userToken]);
     return (
-        <div>
-            <h1 className="display-3 text-center">Battle Simulator</h1>
+        <div className='mt-4'>
+            <h1 className="text-center">Battle Simulator</h1>
             {postedTeams.length ?
                 <ViewPostedTeams
                     postedTeams={postedTeams}

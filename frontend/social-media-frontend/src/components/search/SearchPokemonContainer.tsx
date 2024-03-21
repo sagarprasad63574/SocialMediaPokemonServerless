@@ -46,10 +46,10 @@ const SearchPokemonContainer = () => {
         <div>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="pokemonName">
-                    <Form.Label className="text-center" style={{fontSize: "5vh"}}>Search for pokemon name</Form.Label>
+                    <Form.Label className="text-center mt-4"><h1>Search For Pokemon</h1></Form.Label>
                     <Form.Control type="text" placeholder="Enter pokemon name" required
                         onChange={(event) => setPokemonName({ ...pokemonName, pokemon_name: event.target.value })} />
-                    <Button variant="primary" type="submit" className='my-4'>
+                    <Button variant="success" type="submit" className='my-4'>
                         Search
                     </Button>
                 </Form.Group>
@@ -58,7 +58,7 @@ const SearchPokemonContainer = () => {
             {message ? <ViewPokemonContainer 
             pokemon={pokemon} 
             setPokemon={setPokemon} 
-            />: "Pokemon name not found"}
+            />: <h3>Pokemon name not found</h3>}
 
         </div>
     )

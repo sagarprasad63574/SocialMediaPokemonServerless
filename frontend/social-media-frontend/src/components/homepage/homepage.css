@@ -1,5 +1,11 @@
 h1 {
-    font-size: 70px;
+    font-size: 45px;
+    font-weight: 500;
+    color: #34568B
+}
+
+h3 {
+    font-size: 35px;
     font-weight: 500;
     color: #34568B
 }

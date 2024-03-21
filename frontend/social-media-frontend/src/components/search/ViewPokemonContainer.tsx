@@ -27,7 +27,7 @@ const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
     }
 
     const listStats = pokemon.stats.map((stat: any, index: any) =>
-        <Card style={{ width: '18rem' }} key={index}>
+        <Card className='mt-1' style={{ width: '18rem' }} key={index}>
             <ListGroup variant="flush">
                 <ListGroup.Item>{stat.stat.name}: {stat.base_stat}</ListGroup.Item>
             </ListGroup>
@@ -35,7 +35,7 @@ const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
     );
 
     const listTypes = pokemon.types.map((type: any, index: any) =>
-        <Card style={{ width: '18rem' }} key={index}>
+        <Card className="mt-1" style={{ width: '18rem' }} key={index}>
             <ListGroup variant="flush">
                 <ListGroup.Item>{type.type.name}</ListGroup.Item>
             </ListGroup>
@@ -43,7 +43,7 @@ const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
     );
 
     return (
-        <Card style={{ width: '100%', backgroundColor: "lightblue", borderRadius: "25px"}}>
+        <Card style={{ width: '100%', backgroundColor: "lightblue", borderRadius: "25px", marginBottom: "30px"}}>
             <Card.Body className='d-flex'>
                 <Card.Title className='text-uppercase'>{pokemon.pokemon_name}</Card.Title>
                 <Card.Img width="500px" variant="left" src={pokemon.sprites} />
@@ -51,8 +51,8 @@ const ViewPokemonContainer = ({ pokemon, setPokemon }: any) => {
                     <h5>Height: {pokemon.height}</h5>
                     <h5>Weight: {pokemon.weight}</h5>
                     <h5>Base Experience: {pokemon.base_experience}</h5>
-                    <h5>Stats: {listStats}</h5>
-                    <h5>Types: {listTypes}</h5>
+                    <h5 className='mt-2'>Stats: {listStats}</h5>
+                    <h5 className='mt-2'>Types: {listTypes}</h5>
                     {teams ?
                         <DropdownButton onClick={() => getMyTeams()} id="dropdown-basic-button" title="Add To Team">
                             <ViewMyTeams

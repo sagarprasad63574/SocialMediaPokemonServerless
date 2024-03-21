@@ -37,7 +37,7 @@ const TeamScreen = () => {
       <h1>
         <AddTeamContainer userTeams={teams} setTeams={setTeams}/>
       </h1>
-      {message && <h1 className="text-center p-4">{message}</h1>}
+      {message && <h3 className="text-center p-3">{message}</h3>}
       {teams ?
         <ViewMyTeams userTeams={teams} setTeams={setTeams}/> :
         <div> Use the form above to add a team </div>

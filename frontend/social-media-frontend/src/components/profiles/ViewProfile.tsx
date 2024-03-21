@@ -10,8 +10,8 @@ const ViewProfile = (props: any) => {
         <div>
             <Card style={{ width: '18rem' }}>
                 <Card.Body>
-                    <Card.Title style={{fontWeight: 'bold'}}>{profile.name}</Card.Title>
-                    <Card.Subtitle style={{padding: '5px', color: 'gray'}}>{profile.email}</Card.Subtitle>
+                    <Card.Title style={{fontWeight: 'bold', fontSize: "30px"}}>{profile.name}</Card.Title>
+                    <Card.Subtitle className='mt-4' style={{color: 'gray', fontSize: "20px"}}>{profile.email}</Card.Subtitle>
                     <Card.Text>{profile.biography}</Card.Text>
                     <Button onClick={handleEdit} variant="primary">Edit Profile</Button>
                 </Card.Body>

@@ -127,9 +127,9 @@ const SetUpTeams = ({ postedTeams,
         <div>
             <div className='d-flex' >
                 <ListGroup defaultActiveKey="#link1" style={{ width: '18rem', margin: "auto" }}>
-                    <h2>Opponent Teams</h2>
+                    <h3>Opponent Teams</h3> 
                     <div>{selectedOpponentTeam.team_name ? <h5 className='text-success'>Team: {selectedOpponentTeam.team_name} selected!</h5> :
-                        <h5 className='text-danger'>Select a team</h5>}</div>
+                        <h4 className='text-primary'>Select a team</h4>}</div>
                     {opponentTeams}
                 </ListGroup>
                 <h1 style={{ margin: "auto" }}>
@@ -140,19 +140,20 @@ const SetUpTeams = ({ postedTeams,
 
                 </h1>
                 <ListGroup className='d-flex' defaultActiveKey="#link1" style={{ width: '18rem', margin: "auto" }}>
-                    <h2>Your Teams</h2>
-                    {/* <h5>User: {userInfo.username}</h5> */}
+                    <h3>Your Teams</h3>
                     <div>{yourTeam.team_name ? <h5 className='text-success'>Team: {yourTeam.team_name} selected!</h5> :
-                        <h5 className='text-danger'>Select a team</h5>}</div>
+                        <h4 className='text-primary'>Select a team</h4>}</div>
                     {yourTeams}
                 </ListGroup>
             </div>
+            <div className='d-flex' style={{justifyContent: "space-between"}}>
             {selectedOpponentTeam.team_name ?
                 <ViewPokemon teams={selectedOpponentTeam} user="opponentTeam"></ViewPokemon> :
-                <h5 className='text-danger'>Select a opponent team</h5>}
+                <></>}
             {yourTeam.team_name ?
                 <ViewPokemon teams={yourTeam} user="yourTeam"></ViewPokemon> :
-                <h5 className='text-danger'>Select a team</h5>}
+                <></>}
+            </div>
             {battle && <ConductFightSequence
                 user_team_name={yourTeam.team_name}
                 opponent_team_name={selectedOpponentTeam.team_name}

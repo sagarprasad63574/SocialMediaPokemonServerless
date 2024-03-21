@@ -6,7 +6,7 @@ const ProfileScreen = () => {
     const { userInfo } = useSelector((state: any) => state.auth)
     return (
         <div>
-            <h2 style={{padding: '10px'}}>Welcome {userInfo?.username}! You can see this because you are now logged in!</h2>
+            <h3 style={{padding: '10px'}}>Welcome {userInfo?.username}!</h3>
             <ProfileContainer />
         </div>
     )
