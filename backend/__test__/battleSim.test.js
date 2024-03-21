@@ -303,8 +303,8 @@ describe('basic simulation between 2 pokemon', () => {
     test('Charizard VS Blastoise', async () => {
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team1]);
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team2]);
-        battleDAO.addBattleReport.mockResolvedValueOnce([team1]);
-        battleDAO.addBattleReport.mockResolvedValueOnce([team2]);
+        battleDAO.addDetails.mockResolvedValueOnce([team1]);
+        battleDAO.addDetails.mockResolvedValueOnce([team2]);
         const result = await battle.battleSim(0,recieved);
         expect(result).toBeTruthy();
     });
@@ -312,8 +312,8 @@ describe('basic simulation between 2 pokemon', () => {
     test('Blastoise VS Charizard', async () => {
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team2]);
         teamDAO.ViewUsersTeams.mockResolvedValueOnce([team1]);
-        battleDAO.addBattleReport.mockResolvedValueOnce([team2]);
-        battleDAO.addBattleReport.mockResolvedValueOnce([team1]);
+        battleDAO.addDetails.mockResolvedValueOnce([team2]);
+        battleDAO.addDetails.mockResolvedValueOnce([team1]);
         const result = await battle.battleSim(0,recieved);
         expect(result).toBeTruthy();
     });
