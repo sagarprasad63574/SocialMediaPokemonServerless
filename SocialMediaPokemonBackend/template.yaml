@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SocialMediaPokemonBackend
+
+  Sample SAM Template for SocialMediaPokemonBackend
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/login-function/
+      Handler: login-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: put
+
+  RegisterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/register-function/
+      Handler: register-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Register:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: post
+
+  GeneratorLayers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleArchitectures:
+        - x86_64
+      CompatibleRuntimes: 
+        - nodejs18.x
+      ContentUri: dependencies/
+      Description: dependencies for social media pokemon api
+      LayerName: dependencies
+      LicenseInfo: 'MIT'
+      RetentionPolicy: Retain
+
+  SocialMediaPokemonTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: user_id
+          AttributeType: S
+        - AttributeName: username
+          AttributeType: S
+        - AttributeName: role
+          AttributeType: S
+      KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: username-index
+          KeySchema:
+            - AttributeName: username
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1  
+        - IndexName: role-index
+          KeySchema:
+            - AttributeName: role
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1  
+Outputs:
+  SocialMediaPokemonApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
