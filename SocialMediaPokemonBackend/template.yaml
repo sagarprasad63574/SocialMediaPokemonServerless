@@ -24,6 +24,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
       Layers:
         - !Ref GeneratorLayers
       Events:
@@ -55,6 +56,126 @@ Resources:
           Properties:
             Path: /users
             Method: post
+
+  TokenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/token-function/
+      Handler: token-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /token
+            Method: get
+
+  AddTeamFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: teams/add-team-function/
+      Handler: add-team-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /teams
+            Method: post
+
+  GetUserTeamsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: teams/get-teams-function/
+      Handler: get-teams-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /teams
+            Method: get
+
+  GetUserTeamByTeamIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: teams/get-team-byteamId-function/
+      Handler: get-team-byteamId-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /teams/{id}
+            Method: get
+
+  EditUserTeamFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: teams/edit-team-function/
+      Handler: edit-team-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /teams/{id}
+            Method: put
 
   GeneratorLayers:
     Type: AWS::Serverless::LayerVersion

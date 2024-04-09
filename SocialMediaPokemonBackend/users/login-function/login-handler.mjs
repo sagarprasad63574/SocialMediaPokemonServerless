@@ -2,6 +2,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import jsonschema from 'jsonschema';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const client = new DynamoDBClient({ region: 'us-west-1' });
 
@@ -40,6 +41,7 @@ export const handler = async (event) => {
         };
     };
 
+    const userToken = createToken(foundUser);
 
     const user = {
         user_id: foundUser.user_id,
@@ -53,10 +55,21 @@ export const handler = async (event) => {
         body: JSON.stringify({
             response: true,
             message: `User ${foundUser.username} logged in successfully`,
+            userToken,
             ...user
         }),
     };
 };
+
+function createToken(user) {
+    let payload = {
+        id: user.user_id,
+        username: user.username,
+        role: user.role
+    }
+
+    return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "60m" });
+}
 
 const validateLogin = receivedData => {
     const validator = jsonschema.validate(receivedData, userLoginSchema);
