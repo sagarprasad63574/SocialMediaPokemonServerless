@@ -177,6 +177,30 @@ Resources:
             Path: /teams/{id}
             Method: put
 
+  DeleteUserTeamFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: teams/delete-team-function/
+      Handler: delete-team-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /teams/{id}
+            Method: delete
+
   GeneratorLayers:
     Type: AWS::Serverless::LayerVersion
     Properties:
