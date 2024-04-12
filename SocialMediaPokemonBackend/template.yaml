@@ -33,6 +33,9 @@ Resources:
           Properties:
             Path: /users
             Method: put
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   RegisterFunction:
     Type: AWS::Serverless::Function
@@ -56,6 +59,9 @@ Resources:
           Properties:
             Path: /users
             Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   TokenFunction:
     Type: AWS::Serverless::Function
@@ -80,6 +86,9 @@ Resources:
           Properties:
             Path: /token
             Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   AddTeamFunction:
     Type: AWS::Serverless::Function
@@ -104,6 +113,9 @@ Resources:
           Properties:
             Path: /teams
             Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   GetUserTeamsFunction:
     Type: AWS::Serverless::Function
@@ -128,6 +140,9 @@ Resources:
           Properties:
             Path: /teams
             Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   GetUserTeamByTeamIdFunction:
     Type: AWS::Serverless::Function
@@ -152,6 +167,9 @@ Resources:
           Properties:
             Path: /teams/{id}
             Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   EditUserTeamFunction:
     Type: AWS::Serverless::Function
@@ -176,6 +194,9 @@ Resources:
           Properties:
             Path: /teams/{id}
             Method: put
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   DeleteUserTeamFunction:
     Type: AWS::Serverless::Function
@@ -200,6 +221,414 @@ Resources:
           Properties:
             Path: /teams/{id}
             Method: delete
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  AddPostedTeamFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: post-teams/add-posted-team-function/
+      Handler: add-posted-team-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /posts/{id}
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  GetPostedTeamsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: post-teams/get-posted-teams-function/
+      Handler: get-posted-teams-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /posts
+            Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  GetPostedTeamsByTeamIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: post-teams/get-posted-team-byteamId-function/
+      Handler: get-posted-team-byteamId-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /posts/{id}
+            Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  SearchPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: pokemons/search-pokemon-function/
+      Handler: search-pokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /pokemon/{pokemon}
+            Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  AddPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: pokemons/add-pokemon-function/
+      Handler: add-pokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /pokemon
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  DeletePokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: pokemons/delete-pokemon-function/
+      Handler: delete-pokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /pokemon
+            Method: delete
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  AddMovePokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: pokemons/add-move-function/
+      Handler: add-move-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /move/{teamid}/{pokeid}
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  CreateMyPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: my-pokemons/create-mypokemon-function/
+      Handler: create-mypokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /myPokemon
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  ViewMyPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: my-pokemons/get-mypokemon-function/
+      Handler: get-mypokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /myPokemon
+            Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  EditMyPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: my-pokemons/edit-mypokemon-function/
+      Handler: edit-mypokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /myPokemon/{id}
+            Method: put
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  DeleteMyPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: my-pokemons/delete-mypokemon-function/
+      Handler: delete-mypokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /myPokemon/{id}
+            Method: delete
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  AddMyPokemonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: my-pokemons/add-mypokemon-function/
+      Handler: add-mypokemon-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /myPokemon/add/{id}
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  GetProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: profile/get-profile-function/
+      Handler: get-profile-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /profiles
+            Method: get
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  EditProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: profile/edit-profile-function/
+      Handler: edit-profile-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /profiles
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
+
+  BattleSimulatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: battle/post-battle-simulator-function/
+      Handler: post-battle-simulator-handler.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SocialMediaPokemonTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SocialMediaPokemonTable
+          SECRET_KEY: secret-key
+      Layers:
+        - !Ref GeneratorLayers
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /battleSim
+            Method: post
+          Cors: 
+              AllowOrigins: 
+                - "*"
 
   GeneratorLayers:
     Type: AWS::Serverless::LayerVersion

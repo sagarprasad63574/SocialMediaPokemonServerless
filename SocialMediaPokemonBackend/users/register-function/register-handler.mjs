@@ -10,14 +10,27 @@ const documentClient = DynamoDBDocumentClient.from(client);
 
 export const handler = async (event) => {
     if (!event.body) {
-        return { statusCode: 400, body: "No Body" };
+        return {
+            statusCode: 400,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify({
+                errors: "No Body",
+            }),
+        };
     }
     const receivedData = JSON.parse(event.body);
     const validated = validateRegister(receivedData);
     if (!validated.response) return {
         statusCode: 400,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({
-            response: false, 
+            response: false,
             errors: validated.errors,
         }),
     };
@@ -25,6 +38,10 @@ export const handler = async (event) => {
     const foundUser = await getUserByUsername(receivedData.username);
     if (foundUser) return {
         statusCode: 400,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({
             response: false,
             errors: `User already exists with username ${receivedData.username}`,
@@ -54,8 +71,12 @@ export const handler = async (event) => {
 
     try {
         let data = await postUser(newUser);
-        if(!data) return {
+        if (!data) return {
             statusCode: 500,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
             body: JSON.stringify({
                 response: false,
                 errors: "Could not create user",
@@ -64,6 +85,10 @@ export const handler = async (event) => {
 
         return {
             statusCode: 201,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
             body: JSON.stringify({
                 response: true,
                 message: `Successfully created user ${receivedData.username}`,
@@ -72,6 +97,10 @@ export const handler = async (event) => {
     } catch (error) {
         return {
             statusCode: 500,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
             body: JSON.stringify({
                 message: error,
             }),

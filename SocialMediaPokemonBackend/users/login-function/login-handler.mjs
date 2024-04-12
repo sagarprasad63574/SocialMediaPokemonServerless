@@ -10,12 +10,25 @@ const documentClient = DynamoDBDocumentClient.from(client);
 
 export const handler = async (event) => {
     if (!event.body) {
-        return { statusCode: 400, body: "No Body" };
+        return {
+            statusCode: 400,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify({
+                errors: "No Body",
+            }),
+        };
     }
     const receivedData = JSON.parse(event.body);
     const validated = validateLogin(receivedData);
     if (!validated.response) return {
         statusCode: 400,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({
             response: false,
             errors: validated.errors,
@@ -25,6 +38,10 @@ export const handler = async (event) => {
     const foundUser = await getUserByUsername(receivedData.username);
     if (!foundUser) return {
         statusCode: 400,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({
             response: false,
             errors: "User does not exist",
@@ -34,6 +51,10 @@ export const handler = async (event) => {
     if (!(await bcrypt.compare(receivedData.password, foundUser.password))) {
         return {
             statusCode: 400,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
             body: JSON.stringify({
                 response: false,
                 errors: "Incorrect password",
@@ -52,6 +73,10 @@ export const handler = async (event) => {
 
     return {
         statusCode: 200,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({
             response: true,
             message: `User ${foundUser.username} logged in successfully`,
